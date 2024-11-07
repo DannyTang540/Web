@@ -1,0 +1,28 @@
+.about{
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: blue;
+}
+
+.menu{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+
+.menu-item::before {
+  content: '';
+  display: inline-block;
+  width: 16px; 
+  height: 16px;
+  margin-right: 8px; 
+  background-image: url('../Image/'); 
+  background-size: contain; 
+  background-repeat: no-repeat; 
+}

@@ -1,0 +1,107 @@
+.sign-in {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+.left {
+  width: 50vw;
+  height: 100vh;
+  margin-right: 0vw;
+  text-align: start;
+  background: turquoise;
+}
+.left h3 {
+  margin-top: 40vh;
+  font-family: cursive;
+  text-shadow: 0 0 5px;
+  font-size: 60px;
+}
+.left h4 {
+  color: white;
+  font-style: italic;
+  font-size: 45px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+.right {
+  flex-direction: column;
+  width: 50vw;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.right h3 {
+  font-size: 30px;
+}
+.label {
+  display: table-column;
+  display: flex;
+  color: gray;
+  font-size: 15px;
+}
+/* .signinbtn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 60px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+} */
+.right1 {
+  flex-direction: row;
+  width: 50vw;
+  align-items: end;
+  margin-top: 50vh;
+  justify-content: right;
+}
+.right1 h3{
+  font-style: italic;
+  font-size: 45px;
+  text-shadow: 0 0 20px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 60px;
+  margin-left: 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+}
+.left1 {
+  display: flex;
+  height: 100vh;
+  margin-right: 0vw;
+  flex-direction: column;
+  width: 50vw;
+  align-items: center;
+  justify-content: center;
+  background: turquoise;
+}
+.left1 h3 {
+  font-family: cursive;
+  text-shadow: 0 0 5px;
+  font-size: 60px;
+} 
+.register-form{
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
