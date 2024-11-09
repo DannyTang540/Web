@@ -1,29 +1,22 @@
-import React from "react";
-import Header from "./Components/Header";
-import About from "./Pages/About";
-import User from "./Pages/User";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import DashBoard from "./Pages/DashBoard";
-import Home from "./Pages/Home";
+import Header1 from "./Components/Header1";
 import SignIn from "./Components/Auth/SignIn";
-import SignUp from "./Components/Auth/SignUp";
 
+const App = () => {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false); // State to manage admin login status
 
-function App() {
   return (
     <Router>
-      <Header />
+      <Header1 isAdminLoggedIn={isAdminLoggedIn} /> {/* Pass the login state to Header1 */}
       <Routes>
-        <Route path="/about" element={<About />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/dashboard" element={<DashBoard />} /> 
-        <Route path="/login" element={<SignIn />} /> 
-        <Route path="/register" element={<SignUp/>}/>
+        <Route path="/sign-in" element={<SignIn setIsAdminLoggedIn={setIsAdminLoggedIn} />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/home" element={<div>Home Page</div>} />
+        {/* Thêm các route khác nếu cần */}
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

@@ -8,7 +8,7 @@ const AccountTable = () => {
     ];
 
     return (
-        <div className='account' t>
+        <div className='account'>
 
         </div>
     );
