@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+
 import "@mui/material/Button";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
@@ -7,23 +7,8 @@ import { Box, TextField } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (username === "admin" && password === "admin123") {
-      navigate("/admin/products");
-    } else {
-      alert("Thông tin đăng nhập không chính xác");
-    }
-  };
-
   return (
     <Box
       display="flex"
@@ -58,7 +43,7 @@ const SignIn = () => {
             <Typography variant="h5" fontFamily={"cursive"}>
               Sign In
             </Typography>
-            <form className="sign-in-form" onSubmit={handleSubmit}>
+            <form className="sign-in-form" >
               <Typography>
                 <FaUser />
                 <TextField
@@ -67,8 +52,7 @@ const SignIn = () => {
                   type="text"
                   label="User Name"
                   required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+
                 />
               </Typography>
               <Typography gutterBottom>
@@ -80,8 +64,6 @@ const SignIn = () => {
                   autoComplete="current-password"
                   variant="standard"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Typography>
               <Typography className="Remember-forgot" gutterBottom>
