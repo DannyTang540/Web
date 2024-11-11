@@ -21,22 +21,22 @@ import {
 import "../Style/Header.css";
 
 const Header = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        (event as React.KeyboardEvent).key === "Tab"
-      ) {
-        return;
-      }
-      setDrawerOpen(open);
-    };
+  // const toggleDrawer =
+  //   (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+  //     if (
+  //       event.type === "keydown" &&
+  //       (event as React.KeyboardEvent).key === "Tab"
+  //     ) {
+  //       return;
+  //     }
+  //     setDrawerOpen(open);
+  //   };
 
   return (
     <>
-      <AppBar position="static" >
+      {/* <AppBar position="static" >
         <Toolbar className="header">
           <div className="header-left">
             <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
@@ -51,9 +51,6 @@ const Header = () => {
               Economic_service
             </Typography>
           </div>
-          <button onClick={() => (window.location.href = "/login")} className="login-button">
-            Dang Nhap
-          </button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -87,7 +84,7 @@ const Header = () => {
             <ListItemText primary="DashBoard" />
           </ListItem>
         </List>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 };
