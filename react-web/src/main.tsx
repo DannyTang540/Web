@@ -20,5 +20,12 @@ createRoot(document.getElementById("root")!).render(
       </Routes>
     </BrowserRouter>
     </Provider>
+import Header1 from "./Components/Header1.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <AdminSign />
+    <Header1 />
+
   </StrictMode>
 );
