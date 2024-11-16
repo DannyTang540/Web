@@ -1,4 +1,4 @@
-
+import React, { useState } from "react";
 import "@mui/material/Button";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
+<<<<<<< Updated upstream
 import { Username,Password } from "../Redux/Selector";
 import { useDispatch, useSelector } from "react-redux";
 import Authentication,{ GetToken } from "../Redux/Authentication";
@@ -27,13 +28,25 @@ const SignIn = () => {
       [name]: value,
     }));
   };
+=======
+
+const SignIn = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+>>>>>>> Stashed changes
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (username === "admin" && password === "admin123") {
       navigate("/admin/products");
     } else {
+<<<<<<< Updated upstream
       // alert("Thông tin đăng nhập không chính xác");
+=======
+      alert("Thông tin đăng nhập không chính xác");
+>>>>>>> Stashed changes
     }
   };
 
@@ -115,7 +128,7 @@ const SignIn = () => {
             <Typography variant="h5" fontFamily={"cursive"}>
               Sign In
             </Typography>
-            <form className="sign-in-form" >
+            <form className="sign-in-form" onSubmit={handleSubmit}>
               <Typography>
                 <FaUser />
                 <TextField
@@ -124,7 +137,8 @@ const SignIn = () => {
                   type="text"
                   label="User Name"
                   required
-
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </Typography>
               <Typography gutterBottom>
@@ -138,10 +152,15 @@ const SignIn = () => {
 
                   name="password"
                   required
+<<<<<<< Updated upstream
                   value={text.password}
                   onChange={handleChange}
                   required
 
+=======
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+>>>>>>> Stashed changes
                 />
               </Typography>
               <Typography className="Remember-forgot" gutterBottom>
@@ -154,10 +173,10 @@ const SignIn = () => {
               <Button
 
               onClick={async()=>{
-               await dispatch(SignUp({
-                  username: text.username,
-                  password: text.password,
-                }))
+              //  await dispatch(SignUp({
+              //     username: text.username,
+              //     password: text.password,
+              //   }))
               }}
 
                 variant="contained"
