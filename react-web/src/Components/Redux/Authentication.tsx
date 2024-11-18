@@ -1,6 +1,4 @@
-import { Password } from "@mui/icons-material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import React from "react";
 import { https } from "./Https";
 const local = https + "/authentication";
 
