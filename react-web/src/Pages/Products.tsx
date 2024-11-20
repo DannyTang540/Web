@@ -34,6 +34,7 @@ import TestFieldSmall from "../Components/Input/TestFieldSmall";
 import TestFiedComponent from "../Components/Input/TestFiedComponent";
 import AutocompletedComponent from "../Components/Input/AutocompletedComponent";
 import CheckBoxComponent from "../Components/Input/CheckBoxComponent";
+import TableProduct from "../Components/Table/TableProduct";
 interface SizePrice {
   size: string;
   price: number;
@@ -136,11 +137,7 @@ const Products: React.FC = () => {
             </Breadcrumbs>
           </p>
         </DialogTitle>
-
         <DialogContent>
-          <DialogContentText>
-            You can set my maximum width and whether to adapt or not.
-          </DialogContentText>
           <Stack spacing={1}>
             <Item>
               <List sx={style}>
@@ -182,6 +179,7 @@ const Products: React.FC = () => {
                   <ListItemText
                     primary={
                       <TestFiedComponent
+                      placeholder={"Enter your product title"}
                         title={"Title Product"}
                         value={productName}
                         setvalue={setProductName}
@@ -303,14 +301,55 @@ const Products: React.FC = () => {
                 <Divider component="li" />
               </List>
             </Item>
+             <Item>
+              <List sx={style}>
+                <ListItem>
+                  <ListItemText
+                    primary={
+                      <div>
+                        <h4>Prices</h4>
+                        <p>Price related inputs</p>
+                      </div>
+                    }
+                  />
+                </ListItem>
+                <Divider component="li" />
+                <ListItem>
+                  <ListItemText
+                    primary={
+                      <TestFiedComponent
+                      placeholder={"$ 0.00Đ"}
+                        title={"Origin Price"}
+                        value={productName}
+                        setvalue={setProductName}
+                      />
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={
+                      <TestFiedComponent
+                      placeholder={"$ 0.00Đ"}
+                        title={"Selling Price"}
+                        value={productName}
+                        setvalue={setProductName}
+                      />
+                    }
+                  />
+                </ListItem>
+                <Divider component="li" />
+              </List>
+            </Item>
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button color="info" variant="outlined" onClick={handleClose}>Create</Button>
+          <Button variant="text" color="error" onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
       <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-        <TableContainer component={Paper}>
+        {/* <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
@@ -387,7 +426,8 @@ const Products: React.FC = () => {
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
+        <TableProduct/>
       </Box>
     </Container>
   );
