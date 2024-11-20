@@ -8,15 +8,18 @@ import Header1 from "./Components/Header1.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import Store from "./Components/Redux/Store.tsx";
+import DashBoard from "./Pages/DashBoard.tsx";
+import SignIn from "./Components/Auth/SignIn.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={Store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Products />}/>
-          <Route path="/Sign" element={<Header1 />}/>
-          {/* <Route path="/product" element={<Products />} /> */}
-        </Routes>
+          <Route path="/" element={<DashBoard />}>
+            <Route path="/product" element={<Products/>}/>
+          </Route>
+          <Route path="/Sign" element={<SignIn />}/>
+         </Routes>
       </BrowserRouter>
     </Provider>
   </StrictMode>

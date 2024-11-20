@@ -70,23 +70,6 @@ const userSlice = createSlice({
           state.token = action.payload.result.token;
           localStorage.setItem('token', JSON.stringify(state.token));
         }
-      })
-      .addCase(GetToken.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'An error occurred';
-      })
-      // Getmyinfor cases
-      .addCase(Getmyinfor.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(Getmyinfor.fulfilled, (state, action) => {
-        state.loading = false;
-        state.Infor = action.payload;
-      })
-      .addCase(Getmyinfor.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to fetch user information';
       });
   },
 });

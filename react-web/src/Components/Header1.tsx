@@ -7,12 +7,9 @@
 
 
         return (
-            <header>
-                <nav>
-                    <Link to="/home">Home</Link>
-                    {isAdminLoggedIn && <Link to="/admin/products">Quản lý sản phẩm</Link>}
-                </nav>
-            </header>
+            <div>
+                
+            </div>
         );
     };
     export default Header1;
