@@ -35,6 +35,8 @@ import TestFiedComponent from "../Components/Input/TestFiedComponent";
 import AutocompletedComponent from "../Components/Input/AutocompletedComponent";
 import CheckBoxComponent from "../Components/Input/CheckBoxComponent";
 import TableProduct from "../Components/Table/TableProduct";
+import BreadcrumbComponent from "../Components/Breadcrumbs/BreadcrumbComponent";
+
 interface SizePrice {
   size: string;
   price: number;
@@ -115,26 +117,7 @@ const Products: React.FC = () => {
         <DialogTitle>
           <h3>Create Product</h3>
           <p>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" color="inherit" href="/">
-                Dashboard
-              </Link>
-              <Link
-                underline="hover"
-                color="inherit"
-                href="/material-ui/getting-started/installation/"
-              >
-                Product
-              </Link>
-              <Link
-                underline="hover"
-                color="text.primary"
-                href="/material-ui/react-breadcrumbs/"
-                aria-current="page"
-              >
-                Created
-              </Link>
-            </Breadcrumbs>
+            <BreadcrumbComponent label={[{label:"Dashboard",final:false},{label:"Product",final:false},{label:"Create",final:true}]}/>
           </p>
         </DialogTitle>
         <DialogContent>

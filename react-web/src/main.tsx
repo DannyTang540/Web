@@ -10,6 +10,8 @@ import { Provider } from "react-redux";
 import Store from "./Components/Redux/Store.tsx";
 import DashBoard from "./Pages/DashBoard.tsx";
 import SignIn from "./Components/Auth/SignIn.tsx";
+import UsersSummary from "./Components/DashBoard/UsersSummary.tsx";
+import User from "./Pages/User.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={Store}>
@@ -17,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<DashBoard />}>
             <Route path="/product" element={<Products/>}/>
+            <Route path="/user" element={<User/>}/>
           </Route>
           <Route path="/Sign" element={<SignIn />}/>
          </Routes>

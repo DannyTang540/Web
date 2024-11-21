@@ -8,7 +8,7 @@ import {
   Collapse,
 } from "@mui/material";
 import { FaShoppingCart, FaTshirt } from "react-icons/fa"; // Biểu tượng sản phẩm
-import { ExpandLess, ExpandMore } from "@mui/icons-material"; // Mũi tên đóng/mở
+import { ExpandLess, ExpandMore, Person } from "@mui/icons-material"; // Mũi tên đóng/mở
 import { useNavigate } from "react-router-dom";
 const menuItems = [
   {
@@ -20,6 +20,17 @@ const menuItems = [
       { label: "Details", path: "/product/details" },
       { label: "Create", path: "/product/create" },
       { label: "Edit", path: "/product/edit" },
+    ],
+  },
+  {
+    label: "User",
+    path:"/user",
+    icon: <Person />,
+    children: [
+      { label: "List", path: "/user" },
+      { label: "Details", path: "/user/details" },
+      { label: "Create", path: "/user/create" },
+      { label: "Edit", path: "/user/edit" },
     ],
   },
   {
