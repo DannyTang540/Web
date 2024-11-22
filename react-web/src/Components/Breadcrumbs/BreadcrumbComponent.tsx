@@ -1,17 +1,22 @@
-import { Breadcrumbs,Link } from '@mui/material'
-import React from 'react'
+import { Breadcrumbs, Link } from "@mui/material";
+import React from "react";
 
-const BreadcrumbComponent = ({label}) => {
+const BreadcrumbComponent = ({ label }) => {
   return (
-    <Breadcrumbs aria-label="breadcrumb">
-      {
-        label.map((el,index)=>{
-          return <Link key={index} underline="hover" color={el.final?"text.primary":"inherit"} href={`/${el}`}>
+    <Breadcrumbs sx={{padding:2}} aria-label="breadcrumb">
+      {label.map((el, index) => {
+        return (
+          <Link
+            key={index}
+            underline="hover"
+            color={el.final ? "text.primary" : "inherit"}
+            href={`/${el}`}
+          >
             {el.label}
           </Link>
-        })
-      }
-              {/* <Link underline="hover" color="inherit" href="/">
+        );
+      })}
+      {/* <Link underline="hover" color="inherit" href="/">
                 Dashboard
               </Link>
               <Link
@@ -29,8 +34,8 @@ const BreadcrumbComponent = ({label}) => {
               >
                 Created
               </Link> */}
-            </Breadcrumbs>
-  )
-}
+    </Breadcrumbs>
+  );
+};
 
-export default BreadcrumbComponent
+export default BreadcrumbComponent;

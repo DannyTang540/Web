@@ -8,7 +8,7 @@ import {
   Collapse,
 } from "@mui/material";
 import { FaShoppingCart, FaTshirt } from "react-icons/fa"; // Biểu tượng sản phẩm
-import { ExpandLess, ExpandMore, Person } from "@mui/icons-material"; // Mũi tên đóng/mở
+import { Category, ExpandLess, ExpandMore, Person } from "@mui/icons-material"; // Mũi tên đóng/mở
 import { useNavigate } from "react-router-dom";
 const menuItems = [
   {
@@ -31,6 +31,14 @@ const menuItems = [
       { label: "Details", path: "/user/details" },
       { label: "Create", path: "/user/create" },
       { label: "Edit", path: "/user/edit" },
+    ],
+  },
+  {
+    label: "Property",
+    path:"/property",
+    icon: <Category />,
+    children: [
+      { label: "List", path: "/property" },
     ],
   },
   {
@@ -91,13 +99,13 @@ const SidebarMenu = () => {
               {item.children.map((child) => (
                 <ListItemButton
                   key={child.label}
-                  sx={{ pl: 4 }}
+                  sx={{ pl: 4 ,fontSize:"1.2rem"}}
                   onClick={() => navigate(child.path)}
                 >
                   <ListItemText
                     primary={child.label}
                     sx={{
-                      "& span": { fontSize: "1.1rem", fontWeight: "bold" },
+                      "& span": { fontSize: "0.8rem", fontWeight: "bold" },
                     }}
                   />
                 </ListItemButton>

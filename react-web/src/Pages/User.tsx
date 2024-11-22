@@ -26,7 +26,7 @@ import { Search } from "@mui/icons-material";
 
 const createRow = ["Name", "Phone", "Gender", "Dob", "Role", "Status"];
 const Status = [
-  { status: "Action", Color: "#59fbd6" },
+  { status: "Active", Color: "#59fbd6" },
   { status: "Pending", Color: "#f6d050" },
   { status: "Delete", Color: "#f9556b" },
 ];
@@ -39,7 +39,7 @@ const users = [
     Gender: "Female",
     Dob: "20/11/2000",
     Role: "Content Creator",
-    Status: "Action",
+    Status: "Active",
   },
   {
     Name: "Ariana Lang",
@@ -79,22 +79,25 @@ const User = () => {
     switch (key) {
       case "Name":
         return <CardProduct />;
-       case "Status":{
-      // Tìm màu theo Status
-      const statusColor = Status.find((s) => s.status === user.Status)?.Color || "#000";
-      return <div
-          style={{
-            backgroundColor: statusColor, // Thay đổi màu nền
-            color: "#fff", // Màu chữ để nổi bật
-            padding: "4px 8px",
-            borderRadius: "4px",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          {user.Status}
-        </div>
-       }
+      case "Status": {
+        // Tìm màu theo Status
+        const statusColor =
+          Status.find((s) => s.status === user.Status)?.Color || "#000";
+        return (
+          <div
+            style={{
+              backgroundColor: statusColor, // Thay đổi màu nền
+              color: "#fff", // Màu chữ để nổi bật
+              padding: "4px 8px",
+              borderRadius: "4px",
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {user.Status}
+          </div>
+        );
+      }
       default:
         return <div>{user[key]}</div>;
     }

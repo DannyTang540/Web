@@ -103,11 +103,22 @@ const Products: React.FC = () => {
         alignItems="center"
         mt={2}
       >
-        <Typography variant="h3">Products Management</Typography>
-        <Button onClick={handleOpen} variant="contained" color="primary">
-          Add Product
+        <Typography variant="h5" sx={{fontWeight:500}}>Product</Typography>
+        <Button
+          variant="contained"
+           onClick={handleOpen}
+          color="primary"
+          className="!bg-black w-1/2 !capitalize !py-2 !px-4"
+        >
+          + New Product
         </Button>
       </Box>
+      <BreadcrumbComponent
+        label={[
+          { label: "Product", final: false },
+          { label: "List", final: true },
+        ]}
+      />
       <Dialog
         fullWidth={true}
         maxWidth={"lg"}
@@ -117,7 +128,13 @@ const Products: React.FC = () => {
         <DialogTitle>
           <h3>Create Product</h3>
           <p>
-            <BreadcrumbComponent label={[{label:"Dashboard",final:false},{label:"Product",final:false},{label:"Create",final:true}]}/>
+            <BreadcrumbComponent
+              label={[
+                { label: "Dashboard", final: false },
+                { label: "Product", final: false },
+                { label: "Create", final: true },
+              ]}
+            />
           </p>
         </DialogTitle>
         <DialogContent>
@@ -162,7 +179,7 @@ const Products: React.FC = () => {
                   <ListItemText
                     primary={
                       <TestFiedComponent
-                      placeholder={"Enter your product title"}
+                        placeholder={"Enter your product title"}
                         title={"Title Product"}
                         value={productName}
                         setvalue={setProductName}
@@ -263,17 +280,23 @@ const Products: React.FC = () => {
                         <Grid container spacing={3}>
                           <Grid item xs={3}>
                             <CheckBoxComponent
-                              value={productName} setvalue={setProductName} title={"Male"}
+                              value={productName}
+                              setvalue={setProductName}
+                              title={"Male"}
                             />
                           </Grid>
                           <Grid item xs={3}>
                             <CheckBoxComponent
-                              value={productName} setvalue={setProductName} title={"Male"}
+                              value={productName}
+                              setvalue={setProductName}
+                              title={"Male"}
                             />
                           </Grid>
                           <Grid item xs={3}>
-                            <CheckBoxComponent 
-                            value={productName} setvalue={setProductName} title={"Male"}
+                            <CheckBoxComponent
+                              value={productName}
+                              setvalue={setProductName}
+                              title={"Male"}
                             />
                           </Grid>
                         </Grid>
@@ -284,7 +307,7 @@ const Products: React.FC = () => {
                 <Divider component="li" />
               </List>
             </Item>
-             <Item>
+            <Item>
               <List sx={style}>
                 <ListItem>
                   <ListItemText
@@ -301,7 +324,7 @@ const Products: React.FC = () => {
                   <ListItemText
                     primary={
                       <TestFiedComponent
-                      placeholder={"$ 0.00Đ"}
+                        placeholder={"$ 0.00Đ"}
                         title={"Origin Price"}
                         value={productName}
                         setvalue={setProductName}
@@ -313,7 +336,7 @@ const Products: React.FC = () => {
                   <ListItemText
                     primary={
                       <TestFiedComponent
-                      placeholder={"$ 0.00Đ"}
+                        placeholder={"$ 0.00Đ"}
                         title={"Selling Price"}
                         value={productName}
                         setvalue={setProductName}
@@ -327,8 +350,12 @@ const Products: React.FC = () => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button color="info" variant="outlined" onClick={handleClose}>Create</Button>
-          <Button variant="text" color="error" onClick={handleClose}>Close</Button>
+          <Button color="info" variant="outlined" onClick={handleClose}>
+            Create
+          </Button>
+          <Button variant="text" color="error" onClick={handleClose}>
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
       <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
@@ -410,7 +437,7 @@ const Products: React.FC = () => {
             </TableBody>
           </Table>
         </TableContainer> */}
-        <TableProduct/>
+        <TableProduct />
       </Box>
     </Container>
   );
