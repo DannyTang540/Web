@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
+import { GetColor } from "./ColorSlice";
 const local = https + "/authentication";
 
 const Authentication = createSlice({
@@ -57,4 +58,10 @@ export const GetToken = createAsyncThunk(
       return data; // Thay `data` với token hoặc các thông tin cần thiết từ phản hồi
   }
 );
+export const FetchInfom = () => {
+  return async function check(dispatch, getState) {
+    console.log("heheheeh")
+          await dispatch(GetColor());
+  };
+};
 export default Authentication;
