@@ -1,24 +1,22 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
-const SelectInput = ({title}) => {
+const SelectInput = () => {
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const options = ["Option 1", "Option 2", "Option 3"];
+
   return (
-    <FormControl fullWidth margin="dense">
-      <InputLabel id="age-select-label">{title}</InputLabel>
-      <Select
-        labelId="age-select-label"
-        // id="age-select"
-        // value={age}
-        // onChange={handleAgeChange}
-        label="Category"
-        size="medium" // Kích thước
-        required // Bắt buộc chọn
-      >
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
-      </Select>
-    </FormControl>
+    <select
+      value={selectedValue}
+      onChange={(e) => setSelectedValue(e.target.value)}
+    >
+      <option value="" disabled></option>
+      {options.map((option, index) => (
+        <option key={index} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
   );
 };
 

@@ -7,6 +7,11 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import BreadcrumbComponent from "../Components/Breadcrumbs/BreadcrumbComponent";
@@ -115,7 +120,7 @@ const colColor = [
     CreateAt: new Date().toISOString(),
   },
 ];
-const HeaderOneEven = ({ CustomButton }) => {
+const HeaderOneEven = ({ CustomButton }: { CustomButton: React.ReactNode }) => {
   return (
     <TableHead>
       <TableRow>
@@ -129,8 +134,7 @@ const HeaderOneEven = ({ CustomButton }) => {
             className="flex justify-between items-center"
           >
             {/* Select Input */}
-            <Box sx={{ width: "200px" }}>
-            </Box>
+            <Box sx={{ width: "200px" }}></Box>
 
             {/* Button */}
             {CustomButton}
@@ -141,7 +145,13 @@ const HeaderOneEven = ({ CustomButton }) => {
   );
 };
 
-const HeaderTwoEven = ({ SelectInput, CustomButton }) => {
+const HeaderTwoEven = ({
+  SelectInput,
+  CustomButton,
+}: {
+  SelectInput: React.ReactNode;
+  CustomButton: React.ReactNode;
+}) => {
   return (
     <TableHead>
       <TableRow>
@@ -155,9 +165,7 @@ const HeaderTwoEven = ({ SelectInput, CustomButton }) => {
             className="flex justify-between items-center"
           >
             {/* Select Input */}
-            <Box sx={{ width: "200px" }}>
-              {SelectInput}
-            </Box>
+            <Box sx={{ width: "200px" }}>{SelectInput}</Box>
 
             {/* Button */}
             {CustomButton}
@@ -169,9 +177,57 @@ const HeaderTwoEven = ({ SelectInput, CustomButton }) => {
 };
 const Propety = () => {
   const [value, setValue] = useState("1");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [formData, setFormData] = useState({});
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+
+  const handleOpenDialog = (type: string) => {
+    console.log("Dialog type:", type);
+    setFormData({ type });
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setFormData({});
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = () => {
+    // Kiểm tra xem các trường có để trống không
+    if (!formData.NameMaterial && formData.type === "material") {
+      alert("Material Name is required.");
+      return;
+    }
+    if (!formData.CategoryName && formData.type === "category") {
+      alert("Category Name is required.");
+      return;
+    }
+    if (!formData.Size && formData.type === "size") {
+      alert("Size is required.");
+      return;
+    }
+    if (!formData.SizeName && formData.type === "size") {
+      alert("Size Name is required.");
+      return;
+    }
+    if (!formData.Color && formData.type === "color") {
+      alert("Color is required.");
+      return;
+    }
+    if (!formData.HexColor && formData.type === "color") {
+      alert("Hex Color is required.");
+      return;
+    }
+    // Nếu tất cả các trường đều hợp lệ
+    console.log(formData);
+    handleCloseDialog();
   };
 
   return (
@@ -196,7 +252,6 @@ const Propety = () => {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab
                 label="Category"
-                iconPosition="left"
                 icon={
                   <Badge badgeContent={4} color="primary">
                     <Email sx={{ fontSize: "20px" }} color="action" />
@@ -206,7 +261,6 @@ const Propety = () => {
               />
               <Tab
                 label="Size"
-                iconPosition="left"
                 icon={
                   <Badge badgeContent={4} color="primary">
                     <Email sx={{ fontSize: "20px" }} color="action" />
@@ -216,7 +270,6 @@ const Propety = () => {
               />
               <Tab
                 label="Color"
-                iconPosition="left"
                 icon={
                   <Badge badgeContent={4} color="primary">
                     <Email sx={{ fontSize: "20px" }} color="action" />
@@ -226,7 +279,6 @@ const Propety = () => {
               />
               <Tab
                 label="Material"
-                iconPosition="left"
                 icon={
                   <Badge badgeContent={4} color="primary">
                     <Email sx={{ fontSize: "20px" }} color="action" />
@@ -247,7 +299,8 @@ const Propety = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      className="!bg-black !capitalize !py-2 !px-4"
+                      className="Add-Category"
+                      onClick={() => handleOpenDialog("category")}
                     >
                       + New Category
                     </Button>
@@ -266,7 +319,8 @@ const Propety = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      className="!bg-black !capitalize !py-2 !px-4"
+                      className="Add-Size"
+                      onClick={() => handleOpenDialog("size")}
                     >
                       + New Size
                     </Button>
@@ -276,50 +330,143 @@ const Propety = () => {
             />
           </TabPanel>
           <TabPanel value="3">
-            <TabPanel value="3">
-              <TableData
-                Head={rowColor}
-                Data={colColor}
-                HeaderComponent={
-                  <HeaderOneEven
-                    CustomButton={
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className="!bg-black !capitalize !py-2 !px-4"
-                      >
-                        + New Color
-                      </Button>
-                    }
-                  />
-                }
-              />
-            </TabPanel>
+            <TableData
+              Head={rowColor}
+              Data={colColor}
+              HeaderComponent={
+                <HeaderOneEven
+                  CustomButton={
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="Add-Color"
+                      onClick={() => handleOpenDialog("color")}
+                    >
+                      + New Color
+                    </Button>
+                  }
+                />
+              }
+            />
           </TabPanel>
           <TabPanel value="4">
-            <TabPanel value="4">
-              <TableData
-                Head={rowMaterial}
-                Data={colMaterial}
-                HeaderComponent={
-                  <HeaderTwoEven
-                    SelectInput={<SelectInput title={"Status"} />}
-                    CustomButton={
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className="!bg-black !capitalize !py-2 !px-4"
-                      >
-                        + New Material
-                      </Button>
-                    }
-                  />
-                }
-              />
-            </TabPanel>
+            <TableData
+              Head={rowMaterial}
+              Data={colMaterial}
+              HeaderComponent={
+                <HeaderTwoEven
+                  CustomButton={
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="Add"
+                      onClick={() => handleOpenDialog("material")}
+                    >
+                      + New Material
+                    </Button>
+                  }
+                  SelectInput={undefined}
+                />
+              }
+            />
           </TabPanel>
         </TabContext>
       </Box>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>
+          {formData.type === "category"
+            ? "Add Category"
+            : formData.type === "size"
+            ? "Add Size"
+            : formData.type === "color"
+            ? "Add Color"
+            : formData.type === "material"
+            ? "Add Material"
+            : ""}
+        </DialogTitle>
+        <DialogContent sx={{ width: "400px" }}>
+          {formData.type === "category" && (
+            <TextField
+              autoFocus
+              margin="dense"
+              name="CategoryName"
+              label="Category Name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleInputChange}
+              sx={{ mb: 2 }}
+            />
+          )}
+          {formData.type === "size" && (
+            <>
+              <TextField
+                autoFocus
+                margin="dense"
+                name="Size"
+                label="Size"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                margin="dense"
+                name="SizeName"
+                label="Size Name"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
+            </>
+          )}
+          {formData.type === "color" && (
+            <>
+              <TextField
+                autoFocus
+                margin="dense"
+                name="Color"
+                label="Color"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                margin="dense"
+                name="HexColor"
+                label="Hex Color"
+                type="text"
+                fullWidth
+                variant="outlined"
+                onChange={handleInputChange}
+                sx={{ mb: 2 }}
+              />
+            </>
+          )}
+          {formData.type === "material" && (
+            <TextField
+              autoFocus
+              margin="dense"
+              name="NameMaterial"
+              label="Material Name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              onChange={handleInputChange}
+              sx={{ mb: 2 }}
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleSubmit}>Add</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

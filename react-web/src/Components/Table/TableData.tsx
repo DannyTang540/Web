@@ -21,23 +21,23 @@ const Status = [
   { status: "Pending", Color: "#f6d050" },
   { status: "Delete", Color: "#f9556b" },
 ];
-const TableComponent=(props)=> {
+const TableComponent=(props: { count: number; page: number; rowsPerPage: number; onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void })=> {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
-  const handleFirstPageButtonClick = (event) => {
+  const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onPageChange(event, 0);
   };
 
-  const handleBackButtonClick = (event) => {
+  const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onPageChange(event, page - 1);
   };
 
-  const handleNextButtonClick = (event) => {
+  const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onPageChange(event, page + 1);
   };
 
-  const handleLastPageButtonClick = (event) => {
+  const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
@@ -82,11 +82,11 @@ TableComponent.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat) {
+function createData(name: string, calories: number, fat: number) {
   return { name, calories, fat };
 }
 
-const SwtichRow = (key: String, property: Object) => {
+const SwtichRow = (key: string, property: { [key: string]: any }) => {
     switch (key) {
         case "HexColor": {
         return (
@@ -128,7 +128,7 @@ const SwtichRow = (key: String, property: Object) => {
         return <div>{property[key]}</div>;
     }
   };
-const TableData=({Head,Data,HeaderComponent})=> {
+const TableData=({Head,Data,HeaderComponent}: {Head: string[]; Data: { [key: string]: any }[]; HeaderComponent: React.ReactNode})=> {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -136,11 +136,11 @@ const TableData=({Head,Data,HeaderComponent})=> {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - Data.length) : 0;
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement>, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -163,15 +163,18 @@ const TableData=({Head,Data,HeaderComponent})=> {
           {(rowsPerPage > 0
             ? Data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : Data
-          ).map((row) => (
-            <TableRow key={row.name}>
-              {Head.map((el,index)=>{
-                return (
-                  <TableCell key={index}>{SwtichRow(el,row)}</TableCell>
-                )
-              })}
-            </TableRow>
-          ))}
+          ).map((row, rowIndex) => {
+            const uniqueKey = row.id || `${row.name}-${rowIndex}`;
+            return (
+              <TableRow key={uniqueKey}>
+                {Head.map((el, index) => {
+                  return (
+                    <TableCell key={index}>{SwtichRow(el, row)}</TableCell>
+                  )
+                })}
+              </TableRow>
+            );
+          })}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
@@ -181,7 +184,6 @@ const TableData=({Head,Data,HeaderComponent})=> {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={3}
               count={Data.length}
               rowsPerPage={rowsPerPage}

@@ -16,6 +16,7 @@ const AutocompletedComponent = ({array,title,placeholder}) => {
         const { key, ...optionProps } = props;
         return (
           <li key={key} {...optionProps}>
+            
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
