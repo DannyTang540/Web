@@ -18,7 +18,7 @@ import BreadcrumbComponent from "../Components/Breadcrumbs/BreadcrumbComponent";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { Email } from "@mui/icons-material";
+import CategoryIcon from "@mui/icons-material/Category";
 import TableData from "../Components/Table/TableData";
 import SelectInput from "../Components/Input/SelectInput";
 const rowCategory = ["Id", "NameCategory", "CreateAt", "UpdateAt", "Status"];
@@ -231,7 +231,7 @@ const Propety = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 w-full flex flex-col">
+    <div className="property">
       <Box
         display="flex"
         justifyContent="space-between"
@@ -252,38 +252,22 @@ const Propety = () => {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab
                 label="Category"
-                icon={
-                  <Badge badgeContent={4} color="primary">
-                    <Email sx={{ fontSize: "20px" }} color="action" />
-                  </Badge>
-                }
+                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
                 value="1"
               />
               <Tab
                 label="Size"
-                icon={
-                  <Badge badgeContent={4} color="primary">
-                    <Email sx={{ fontSize: "20px" }} color="action" />
-                  </Badge>
-                }
+                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
                 value="2"
               />
               <Tab
                 label="Color"
-                icon={
-                  <Badge badgeContent={4} color="primary">
-                    <Email sx={{ fontSize: "20px" }} color="action" />
-                  </Badge>
-                }
+                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
                 value="3"
               />
               <Tab
                 label="Material"
-                icon={
-                  <Badge badgeContent={4} color="primary">
-                    <Email sx={{ fontSize: "20px" }} color="action" />
-                  </Badge>
-                }
+                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
                 value="4"
               />
             </TabList>
