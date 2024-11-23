@@ -19,12 +19,12 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<DashBoard />}>
-            <Route path="/product" element={<Products/>}/>
-            <Route path="/user" element={<User/>}/>
-            <Route path="/property" element={<Propety/>}/>
+            <Route path="/product" element={<Products />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/property" element={<Propety />} />
           </Route>
-          <Route path="/Sign" element={<SignIn />}/>
-         </Routes>
+          <Route path="/Sign" element={<SignIn />} />
+        </Routes>
       </BrowserRouter>
     </Provider>
   </StrictMode>
