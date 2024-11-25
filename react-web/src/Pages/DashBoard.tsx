@@ -5,6 +5,7 @@ import SidebarMenu from "../Components/Menu/Menu";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {  FetchInfom } from "../Components/Redux/Authentication";
+import { ToastContainer } from "react-toastify";
 // const lastSixMonthsData: SalesData[] = generateLastSixMonthsData();
 
 // const drawerWidth = 240;
@@ -13,7 +14,6 @@ const DashBoard = () => {
     const dispatch=useDispatch()
      useEffect(() => {
          const fetch = async () => {
-        console.log("hheheeheheh")
       await dispatch(FetchInfom());
     };
     fetch();
@@ -27,6 +27,7 @@ const DashBoard = () => {
             <Grid item xs={8}>
                 <Outlet/>
             </Grid>
+            <ToastContainer />
         </Grid>
        
     );

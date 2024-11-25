@@ -13,6 +13,8 @@ import SignIn from "./Components/Auth/SignIn.tsx";
 import UsersSummary from "./Components/DashBoard/UsersSummary.tsx";
 import User from "./Pages/User.tsx";
 import Propety from "./Pages/Propety.tsx";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={Store}>
@@ -25,6 +27,18 @@ createRoot(document.getElementById("root")!).render(
           </Route>
           <Route path="/Sign" element={<SignIn />} />
         </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </BrowserRouter>
     </Provider>
   </StrictMode>

@@ -1,43 +1,40 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
-import { Snackbar } from "@mui/material";
-import MapKeys from "../MapKey/Mapkey";
-import SnackBarComponent, {
-  toasityComponent,
-} from "../SnackBar/SnackBarComponent";
-import { toast } from "react-toastify";
 import { StatusEnum } from "../../types/Status";
-import { Color } from "./Selector";
-const local = https + "/color";
+import { toasityComponent } from "../SnackBar/SnackBarComponent";
+import MapKeys from "../MapKey/Mapkey";
+
+const local = https + "/category";
 const keyMapping = {
   id: "Id",
-  colorname: "Color",
-  colorhex: "HexColor",
-  createAt: "CreateAt",
+  name: "NameCategory",
+  createat: "CreateAt",
+  updateat: "UpdateAt",
+  isdeleted:"Status"
 };
-interface ColorState {
-  Color: [] | null;
+interface CategoryState {
+    Category: [] | null;
   loading: boolean;
   error: string | null;
 }
-const initialState: ColorState = {
-  Color: localStorage.getItem("color")
-    ? JSON.parse(localStorage.getItem("color")!)
+const initialState: CategoryState = {
+  Category: localStorage.getItem("category")
+    ? JSON.parse(localStorage.getItem("Category")!)
     : [],
   loading: false,
   error: null,
 };
-const ColorApi = createSlice({
-  name: "color",
+const CategoryApi = createSlice({
+  name: "category",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(PostColor.fulfilled, (state, action) => {
+      .addCase(PostCategory.fulfilled, (state, action) => {
         const result = action.payload;
         if (result.success) {
-          state.Color.push(MapKeys(result.result, keyMapping));
-          toasityComponent(`Add Color Success`, StatusEnum.SUCCESS);
+          state.Category.push(MapKeys(result.result, keyMapping));
+          toasityComponent(`Add Category Success`, StatusEnum.SUCCESS);
         } else {
           toasityComponent(
             `Cause:  ${result.message}`,
@@ -45,16 +42,16 @@ const ColorApi = createSlice({
           );
         }
       })
-      .addCase(GetColor.fulfilled, (state, action) => {
+      .addCase(GetCategory.fulfilled, (state, action) => {
         const result = action.payload;
-        state.Color = Array.from(result.result).map((item) =>
+        state.Category = Array.from(result.result).map((item) =>
           MapKeys(item, keyMapping)
         );
       });
   },
 });
-export const GetColor = createAsyncThunk(
-  "color/GetColor",
+export const GetCategory = createAsyncThunk(
+  "category/GetCategory",
   async () => {
     try {
       const res = await fetch(`${local}`, {
@@ -72,9 +69,9 @@ export const GetColor = createAsyncThunk(
     }
   }
 );
-export const PostColor = createAsyncThunk(
-  "color/PostColor",
-  async ({color,token}, { rejectWithValue }) => {
+export const PostCategory = createAsyncThunk(
+  "category/PostCategory",
+  async ({category,token}, { rejectWithValue }) => {
     
     try {
       const response = await fetch(`${local}`, {
@@ -83,11 +80,11 @@ export const PostColor = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
         method: "POST",
-        body: JSON.stringify(color),
+        body: JSON.stringify(category),
       });
 
       if (!response.ok) {
-        toasityComponent("Fail to created Color", StatusEnum.ERROR);
+        toasityComponent("Fail to created Category", StatusEnum.ERROR);
       }
       const data = await response.json();
       return data;
@@ -99,21 +96,18 @@ export const PostColor = createAsyncThunk(
     }
   }
 );
-export const CreateColor = (data) => {
+export const CreateCategory = (data) => {
   return async function check(dispatch, getState) {
     const token =JSON.parse(localStorage.getItem("token"));
     const currentState = getState(); // Lấy toàn bộ state
-    const existingColors = currentState.color.Color;
-    existingColors.map((el) => {
-      if (el.Color == data.colorname) {
-        toasityComponent("Color Has exsist",StatusEnum.INFO);
+    const existingCategory = currentState.category.Category;
+    existingCategory.map((el) => {
+      if (el.NameCategory == data.name) {
+        toasityComponent(" CateGory Has exsist",StatusEnum.INFO);
         return;
-      } else if (el.HexColor == data.colorhex) {
-        toasityComponent("Hex Color Has exsist",StatusEnum.INFO);
-        return;
-      }
+      } 
     });
-    await dispatch(PostColor({color:data,token}));
+    await dispatch(PostCategory({category:data,token}));
   };
 };
-export default ColorApi;
+export default CategoryApi;

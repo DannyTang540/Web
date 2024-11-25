@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
 import { GetColor } from "./ColorSlice";
+import { GetCategory } from "./CategorySlice";
+import { GetSize } from "./SizeSlice";
 const local = https + "/authentication";
 
 const Authentication = createSlice({
@@ -22,24 +24,10 @@ const Authentication = createSlice({
         localStorage.setItem('token', JSON.stringify(state.token));
       }
     })
-    .addCase(Getmyinfor.fulfilled, (state, action) => {
-      console.log(action.payload);
-    });
+    
   }
 });
-export const Getmyinfor=createAsyncThunk(
-    "authentication/Getmyinfor",
-    async (payload, action) => {
-    const res = await fetch(`${local}/myinfor`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${payload}`,
-      },
-      method: "GET",
-    });
-    const data = await res.json();
-      return data;
-})
+
 export const GetToken = createAsyncThunk(
   "authentication/GetToken",
   async (payload, { rejectWithValue }) => {
@@ -58,10 +46,12 @@ export const GetToken = createAsyncThunk(
       return data; // Thay `data` với token hoặc các thông tin cần thiết từ phản hồi
   }
 );
+//Component này dùng để lấy thông tin thuộc tính sản phẩm
 export const FetchInfom = () => {
   return async function check(dispatch, getState) {
-    console.log("heheheeh")
           await dispatch(GetColor());
+          await dispatch(GetCategory());
+          await dispatch(GetSize());
   };
 };
 export default Authentication;
