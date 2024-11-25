@@ -13,6 +13,7 @@ import SignIn from "./Components/Auth/SignIn.tsx";
 import UsersSummary from "./Components/DashBoard/UsersSummary.tsx";
 import User from "./Pages/User.tsx";
 import Propety from "./Pages/Propety.tsx";
+import ProductDetail from "./Pages/ProductsDetails.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={Store}>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<DashBoard />}>
             <Route path="/product" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/user" element={<User />} />
             <Route path="/property" element={<Propety />} />
           </Route>
