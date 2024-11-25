@@ -1,40 +1,43 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
-import { StatusEnum } from "../../types/Status";
-import { toasityComponent } from "../SnackBar/SnackBarComponent";
+import { Snackbar } from "@mui/material";
 import MapKeys from "../MapKey/Mapkey";
-
-const local = https + "/category";
+import SnackBarComponent, {
+  toasityComponent,
+} from "../SnackBar/SnackBarComponent";
+import { toast } from "react-toastify";
+import { StatusEnum } from "../../types/Status";
+const local = https + "/material";
 const keyMapping = {
   id: "Id",
-  name: "NameCategory",
+  name: "NameMaterial",
   createat: "CreateAt",
   updateat: "UpdateAt",
   isdeleted:"Status"
 };
-interface CategoryState {
-    Category: [] | null;
+interface MaterialState {
+  Material: [] | null;
   loading: boolean;
   error: string | null;
 }
-const initialState: CategoryState = {
-  Category: localStorage.getItem("category")
-    ? JSON.parse(localStorage.getItem("Category")!)
+const initialState: MaterialState = {
+  Material: localStorage.getItem("material")
+    ? JSON.parse(localStorage.getItem("material")!)
     : [],
   loading: false,
   error: null,
 };
-const CategoryApi = createSlice({
-  name: "category",
+const MaterialApi = createSlice({
+  name: "material",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(PostCategory.fulfilled, (state, action) => {
+      .addCase(PostMaterial.fulfilled, (state, action) => {
         const result = action.payload;
         if (result.success) {
-          state.Category.push(MapKeys(result.result, keyMapping));
-          toasityComponent(`Add Category Success`, StatusEnum.SUCCESS);
+          state.Material.push(MapKeys(result.result, keyMapping));
+          toasityComponent(`Add Material Success`, StatusEnum.SUCCESS);
         } else {
           toasityComponent(
             `Cause:  ${result.message}`,
@@ -42,16 +45,16 @@ const CategoryApi = createSlice({
           );
         }
       })
-      .addCase(GetCategory.fulfilled, (state, action) => {
+      .addCase(GetMaterial.fulfilled, (state, action) => {
         const result = action.payload;
-        state.Category = Array.from(result.result).map((item) =>
+        state.Material = Array.from(result.result).map((item) =>
           MapKeys(item, keyMapping)
         );
       });
   },
 });
-export const GetCategory = createAsyncThunk(
-  "category/GetCategory",
+export const GetMaterial = createAsyncThunk(
+  "material/GetMaterial",
   async () => {
     try {
       const res = await fetch(`${local}`, {
@@ -69,9 +72,9 @@ export const GetCategory = createAsyncThunk(
     }
   }
 );
-export const PostCategory = createAsyncThunk(
-  "category/PostCategory",
-  async ({category,token}, { rejectWithValue }) => {
+export const PostMaterial = createAsyncThunk(
+  "material/PostMaterial",
+  async ({material,token}, { rejectWithValue }) => {
     
     try {
       const response = await fetch(`${local}`, {
@@ -80,11 +83,11 @@ export const PostCategory = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
         method: "POST",
-        body: JSON.stringify(category),
+        body: JSON.stringify(material),
       });
 
       if (!response.ok) {
-        toasityComponent("Fail to created Category", StatusEnum.ERROR);
+        toasityComponent("Fail to created material", StatusEnum.ERROR);
       }
       const data = await response.json();
       return data;
@@ -96,18 +99,18 @@ export const PostCategory = createAsyncThunk(
     }
   }
 );
-export const CreateCategory = (data) => {
+export const CreateMaterial = (data) => {
   return async function check(dispatch, getState) {
     const token =JSON.parse(localStorage.getItem("token"));
     const currentState = getState(); // Lấy toàn bộ state
-    const existingCategory = currentState.category.Category;
-    existingCategory.map((el) => {
-      if (el.NameCategory == data.name) {
-        toasityComponent(" CateGory Has exsist",StatusEnum.INFO);
+    const existingMaterials = currentState.material.Material;
+    existingMaterials.map((el) => {
+      if (el.NameMaterial == data.name) {
+        toasityComponent("Material Has exsist",StatusEnum.INFO);
         return;
       }
     });
-    await dispatch(PostCategory({category:data,token}));
+    await dispatch(PostMaterial({material:data,token}));
   };
 };
-export default CategoryApi;
+export default MaterialApi;

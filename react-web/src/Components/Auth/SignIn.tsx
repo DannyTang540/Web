@@ -42,6 +42,7 @@ const user=useSelector(User);
 useEffect(()=>{
   // Kiểm tra và chuyển hướng nếu user đã có
   if (JSON.stringify(user)!== "{}") {
+    
     navigate("/");  // Chuyển hướng đến trang chủ
   }
 },[useSelector(User)])

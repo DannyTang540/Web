@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
-import { GetToken } from "./Authentication";
+import Authentication, { GetToken } from "./Authentication";
 // Constants
 const local = https + "/user";
 
@@ -90,6 +90,7 @@ export const SignUp = (data: any) => { // Replace 'any' with proper type
         throw new Error('Authentication failed');
       }
       await dispatch(Getmyinfor(token));
+      dispatch(Authentication.actions.ChangeIntrospect);
     } catch (error) {
       console.error('SignUp process failed:', error);
       // You might want to dispatch an error action here

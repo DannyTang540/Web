@@ -23,38 +23,17 @@ import CategoryIcon from "@mui/icons-material/Category";
 import TableData from "../Components/Table/TableData";
 import SelectInput from "../Components/Input/SelectInput";
 import { useDispatch, useSelector } from "react-redux";
-import { Category, Color, Size } from "../Components/Redux/Selector";
+import { Category, Color, Material, Size } from "../Components/Redux/Selector";
 import { CreateColor } from "../Components/Redux/ColorSlice";
 import { toasityComponent } from "../Components/SnackBar/SnackBarComponent";
 import { StatusEnum } from "../types/Status";
 import { CreateCategory } from "../Components/Redux/CategorySlice";
 import { CreateSize } from "../Components/Redux/SizeSlice";
+import { CreateMaterial } from "../Components/Redux/MaterialSlice";
 const rowCategory = ["Id", "NameCategory", "CreateAt", "UpdateAt", "Status"];
 
 const rowMaterial = ["Id", "NameMaterial", "CreateAt", "UpdateAt", "Status"];
-const colMaterial = [
-  {
-    Id: 1,
-    NameMaterial: "Len",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Active",
-  },
-  {
-    Id: 2,
-    NameMaterial: "Cotton",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Active",
-  },
-  {
-    Id: 3,
-    NameMaterial: "Nỉ",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Delete",
-  },
-];
+
 const rowSize = ["Id", "Size", "SizeName", "CreateAt", "UpdateAt"];
 
 const rowColor = ["Id", "Color", "HexColor", "CreateAt"];
@@ -121,7 +100,7 @@ const Propety = () => {
   const colColor = useSelector(Color);
   const colCategory = useSelector(Category);
   const colSize = useSelector(Size);
-  
+  const colMaterial = useSelector(Material);
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -177,9 +156,11 @@ const Propety = () => {
     // Nếu tất cả các trường đều hợp lệ
     console.log(formData);
     switch (formData.type) {
-      // case "material":
-      //   await dispatch(CreateMaterial());
-      //   break;
+      case "material":
+        await dispatch(CreateMaterial({
+          name:formData.NameMaterial,
+        }));
+        break;
       case "category":
         await dispatch(CreateCategory({
           name: formData.CategoryName,
