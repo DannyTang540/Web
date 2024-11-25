@@ -7,37 +7,37 @@ import SnackBarComponent, {
 } from "../SnackBar/SnackBarComponent";
 import { toast } from "react-toastify";
 import { StatusEnum } from "../../types/Status";
-import { Color } from "./Selector";
-const local = https + "/color";
+const local = https + "/material";
 const keyMapping = {
   id: "Id",
-  colorname: "Color",
-  colorhex: "HexColor",
-  createAt: "CreateAt",
+  name: "NameMaterial",
+  createat: "CreateAt",
+  updateat: "UpdateAt",
+  isdeleted:"Status"
 };
-interface ColorState {
-  Color: [] | null;
+interface MaterialState {
+  Material: [] | null;
   loading: boolean;
   error: string | null;
 }
-const initialState: ColorState = {
-  Color: localStorage.getItem("color")
-    ? JSON.parse(localStorage.getItem("color")!)
+const initialState: MaterialState = {
+  Material: localStorage.getItem("material")
+    ? JSON.parse(localStorage.getItem("material")!)
     : [],
   loading: false,
   error: null,
 };
-const ColorApi = createSlice({
-  name: "color",
+const MaterialApi = createSlice({
+  name: "material",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(PostColor.fulfilled, (state, action) => {
+      .addCase(PostMaterial.fulfilled, (state, action) => {
         const result = action.payload;
         if (result.success) {
-          state.Color.push(MapKeys(result.result, keyMapping));
-          toasityComponent(`Add Color Success`, StatusEnum.SUCCESS);
+          state.Material.push(MapKeys(result.result, keyMapping));
+          toasityComponent(`Add Material Success`, StatusEnum.SUCCESS);
         } else {
           toasityComponent(
             `Cause:  ${result.message}`,
@@ -45,16 +45,16 @@ const ColorApi = createSlice({
           );
         }
       })
-      .addCase(GetColor.fulfilled, (state, action) => {
+      .addCase(GetMaterial.fulfilled, (state, action) => {
         const result = action.payload;
-        state.Color = Array.from(result.result).map((item) =>
+        state.Material = Array.from(result.result).map((item) =>
           MapKeys(item, keyMapping)
         );
       });
   },
 });
-export const GetColor = createAsyncThunk(
-  "color/GetColor",
+export const GetMaterial = createAsyncThunk(
+  "material/GetMaterial",
   async () => {
     try {
       const res = await fetch(`${local}`, {
@@ -72,9 +72,9 @@ export const GetColor = createAsyncThunk(
     }
   }
 );
-export const PostColor = createAsyncThunk(
-  "color/PostColor",
-  async ({color,token}, { rejectWithValue }) => {
+export const PostMaterial = createAsyncThunk(
+  "material/PostMaterial",
+  async ({material,token}, { rejectWithValue }) => {
     
     try {
       const response = await fetch(`${local}`, {
@@ -83,11 +83,11 @@ export const PostColor = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
         method: "POST",
-        body: JSON.stringify(color),
+        body: JSON.stringify(material),
       });
 
       if (!response.ok) {
-        toasityComponent("Fail to created Color", StatusEnum.ERROR);
+        toasityComponent("Fail to created material", StatusEnum.ERROR);
       }
       const data = await response.json();
       return data;
@@ -99,21 +99,18 @@ export const PostColor = createAsyncThunk(
     }
   }
 );
-export const CreateColor = (data) => {
+export const CreateMaterial = (data) => {
   return async function check(dispatch, getState) {
     const token =JSON.parse(localStorage.getItem("token"));
     const currentState = getState(); // Lấy toàn bộ state
-    const existingColors = currentState.color.Color;
-    existingColors.map((el) => {
-      if (el.Color == data.colorname) {
-        toasityComponent("Color Has exsist",StatusEnum.INFO);
-        return;
-      } else if (el.HexColor == data.colorhex) {
-        toasityComponent("Hex Color Has exsist",StatusEnum.INFO);
+    const existingMaterials = currentState.material.Material;
+    existingMaterials.map((el) => {
+      if (el.NameMaterial == data.name) {
+        toasityComponent("Material Has exsist",StatusEnum.INFO);
         return;
       }
     });
-    await dispatch(PostColor({color:data,token}));
+    await dispatch(PostMaterial({material:data,token}));
   };
 };
-export default ColorApi;
+export default MaterialApi;

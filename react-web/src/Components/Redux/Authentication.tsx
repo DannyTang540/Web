@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
 import { GetColor } from "./ColorSlice";
+import { GetCategory } from "./CategorySlice";
+import { GetSize } from "./SizeSlice";
+import { toasityComponent } from "../SnackBar/SnackBarComponent";
+import { StatusEnum } from "../../types/Status";
+import { GetMaterial } from "./MaterialSlice";
 const local = https + "/authentication";
 
 const Authentication = createSlice({
@@ -8,9 +13,15 @@ const Authentication = createSlice({
   initialState: {
     Username: "",
     Password: "",
+    Introspect:localStorage.getItem("Introspect") ?localStorage.getItem("Introspect"):false,
     token:localStorage.getItem("token") ? localStorage.getItem("token") : "",
   },
-  reducers: {},
+  reducers: {
+    ChangeIntrospect: (state) => {
+      state.Introspect=true;
+      localStorage.setItem('token', JSON.stringify(true));
+    },
+  },
   extraReducers: (builder) => {
     builder
     .addCase(GetToken.fulfilled, (state, action) => {
@@ -22,24 +33,29 @@ const Authentication = createSlice({
         localStorage.setItem('token', JSON.stringify(state.token));
       }
     })
-    .addCase(Getmyinfor.fulfilled, (state, action) => {
-      console.log(action.payload);
-    });
+    .addCase(Introspect.fulfilled, (state, action) => {
+      const result=action.payload.result
+      state.Introspect=result.valid;
+      localStorage.setItem('Introspect', JSON.stringify(state.Introspect));
+    })
+    .addCase(RefreshToken.fulfilled, (state, action) => {
+      const result=action.payload.result
+      if(action.payload.success){
+        state.token = result.token;
+        state.Introspect=result.authenticated;
+        localStorage.setItem('Introspect', JSON.stringify(result.authenticated));
+        localStorage.setItem('token', JSON.stringify(state.token));
+      }
+      else{
+        toasityComponent(
+          `Cause:  ${action.payload.message}`,
+          StatusEnum.ERROR
+        );
+      }
+    })
   }
 });
-export const Getmyinfor=createAsyncThunk(
-    "authentication/Getmyinfor",
-    async (payload, action) => {
-    const res = await fetch(`${local}/myinfor`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${payload}`,
-      },
-      method: "GET",
-    });
-    const data = await res.json();
-      return data;
-})
+
 export const GetToken = createAsyncThunk(
   "authentication/GetToken",
   async (payload, { rejectWithValue }) => {
@@ -58,10 +74,60 @@ export const GetToken = createAsyncThunk(
       return data; // Thay `data` với token hoặc các thông tin cần thiết từ phản hồi
   }
 );
+export const Introspect = createAsyncThunk(
+  "authentication/Introspect",
+  async (payload, { rejectWithValue }) => {
+      const res = await fetch(`${local}/introspect`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          token: JSON.parse(localStorage.getItem('token')),
+        }),
+      });
+
+      const data = await res.json();
+      return data; // Thay `data` với token hoặc các thông tin cần thiết từ phản hồi
+  }
+);
+export const RefreshToken = createAsyncThunk(
+  "authentication/RefreshToken",
+  async (payload, { rejectWithValue }) => {
+      const res = await fetch(`${local}/refresh`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          token: JSON.parse(localStorage.getItem('token')),
+        }),
+      });
+
+      const data = await res.json();
+      return data; // Thay `data` với token hoặc các thông tin cần thiết từ phản hồi
+  }
+);
+export const IntrospectAndRefresh = () => {
+  return async function check(dispatch, getState) {
+      if(localStorage.getItem('token'))
+      {
+        await dispatch(Introspect());
+        const updateState = getState();
+        if(!updateState.authentication.Introspect)
+        {
+          await dispatch(RefreshToken());
+        }
+      }
+  };
+};
+//Component này dùng để lấy thông tin thuộc tính sản phẩm
 export const FetchInfom = () => {
   return async function check(dispatch, getState) {
-    console.log("heheheeh")
           await dispatch(GetColor());
+          await dispatch(GetCategory());
+          await dispatch(GetSize());
+          await dispatch(GetMaterial());
   };
 };
 export default Authentication;

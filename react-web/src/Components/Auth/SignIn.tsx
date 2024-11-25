@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "@mui/material/Button";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
@@ -8,8 +8,9 @@ import { Typography } from "@mui/material";
 import { Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { SignUp } from "../Redux/User";
+import { useDispatch, useSelector } from "react-redux";
+import { SignUp } from "../Redux/UserSlice";
+import { User } from "../Redux/Selector";
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -37,6 +38,23 @@ const handleSubmit = async (event) => {
   }
 };
 
+const user=useSelector(User);
+useEffect(()=>{
+  // Kiểm tra và chuyển hướng nếu user đã có
+  if (JSON.stringify(user)!== "{}") {
+    
+    navigate("/");  // Chuyển hướng đến trang chủ
+  }
+},[useSelector(User)])
+const handleSignUp = async () => {
+  // Dispatch action để đăng ký
+  await dispatch(SignUp({ username: text.username, password: text.password }));
+  
+  // Kiểm tra và chuyển hướng nếu user đã có
+  // if (JSON.stringify(user) !== "{}") {
+  //   navigate("/");  // Chuyển hướng đến trang chủ
+  // }
+};
   return (
     <Box
       display="flex"
@@ -107,14 +125,22 @@ const handleSubmit = async (event) => {
                 <a href="#">Forgot Password?</a>
               </Typography>
               <Button
-                onClick={async () => {
-                  await dispatch(
-                    SignUp({
-                      username: text.username,
-                      password: text.password,
-                    })
-                  );
-                }}
+                onClick={
+                  handleSignUp
+                //   async () => {
+                //   await dispatch(
+                //     SignUp({
+                //       username: text.username,
+                //       password: text.password,
+                //     })
+                //   );
+                //   const user = useSelector((state) => state.user);
+                //   if(JSON.stringify(useSelector(User))!="{}")
+                //   {
+                //     navigate("/")
+                //   }
+                // }
+              }
                 variant="contained"
                 className="submit-button"
                 type="submit"

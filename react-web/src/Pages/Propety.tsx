@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Snackbar,
 } from "@mui/material";
 import React, { useState } from "react";
 import BreadcrumbComponent from "../Components/Breadcrumbs/BreadcrumbComponent";
@@ -25,105 +26,21 @@ import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CategoryIcon from "@mui/icons-material/Category";
 import TableData from "../Components/Table/TableData";
 import SelectInput from "../Components/Input/SelectInput";
+import { useDispatch, useSelector } from "react-redux";
+import { Category, Color, Material, Size } from "../Components/Redux/Selector";
+import { CreateColor } from "../Components/Redux/ColorSlice";
+import { toasityComponent } from "../Components/SnackBar/SnackBarComponent";
+import { StatusEnum } from "../types/Status";
+import { CreateCategory } from "../Components/Redux/CategorySlice";
+import { CreateSize } from "../Components/Redux/SizeSlice";
+import { CreateMaterial } from "../Components/Redux/MaterialSlice";
 const rowCategory = ["Id", "NameCategory", "CreateAt", "UpdateAt", "Status"];
-const colCategory = [
-  {
-    Id: 1,
-    NameCategory: "Category 1",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Active",
-  },
-  {
-    Id: 2,
-    NameCategory: "Category 2",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Active",
-  },
-  {
-    Id: 3,
-    NameCategory: "Category 3",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Delete",
-  },
-];
+
 const rowMaterial = ["Id", "NameMaterial", "CreateAt", "UpdateAt", "Status"];
-const colMaterial = [
-  {
-    Id: 1,
-    NameMaterial: "Len",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Active",
-  },
-  {
-    Id: 2,
-    NameMaterial: "Cotton",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Active",
-  },
-  {
-    Id: 3,
-    NameMaterial: "Nỉ",
-    CreateAt: "2024-11-22T09:37:12.345Z",
-    UpdateAt: "2024-11-22T09:37:12.345Z",
-    Status: "Delete",
-  },
-];
+
 const rowSize = ["Id", "Size", "SizeName", "CreateAt", "UpdateAt"];
-const colSize = [
-  {
-    Id: 1,
-    Size: "S",
-    SizeName: "Small",
-    CreateAt: new Date().toISOString(),
-    UpdateAt: new Date().toISOString(),
-  },
-  {
-    Id: 2,
-    Size: "M",
-    SizeName: "Medium",
-    CreateAt: new Date().toISOString(),
-    UpdateAt: new Date().toISOString(),
-  },
-  {
-    Id: 3,
-    Size: "L",
-    SizeName: "Large",
-    CreateAt: new Date().toISOString(),
-    UpdateAt: new Date().toISOString(),
-  },
-];
+
 const rowColor = ["Id", "Color", "HexColor", "CreateAt"];
-const colColor = [
-  {
-    Id: 1,
-    Color: "Red",
-    HexColor: "#FF0000",
-    CreateAt: new Date().toISOString(),
-  },
-  {
-    Id: 2,
-    Color: "Blue",
-    HexColor: "#0000FF",
-    CreateAt: new Date().toISOString(),
-  },
-  {
-    Id: 3,
-    Color: "Green",
-    HexColor: "#00FF00",
-    CreateAt: new Date().toISOString(),
-  },
-  {
-    Id: 4,
-    Color: "Yellow",
-    HexColor: "#FFFF00",
-    CreateAt: new Date().toISOString(),
-  },
-];
 const HeaderOneEven = ({ CustomButton }: { CustomButton: React.ReactNode }) => {
   return (
     <TableHead>
@@ -180,10 +97,14 @@ const HeaderTwoEven = ({
   );
 };
 const Propety = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState("1");
   const [openDialog, setOpenDialog] = useState(false);
   const [formData, setFormData] = useState({});
-
+  const colColor = useSelector(Color);
+  const colCategory = useSelector(Category);
+  const colSize = useSelector(Size);
+  const colMaterial = useSelector(Material);
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -202,35 +123,70 @@ const Propety = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = () => {
+  const SnackBarComponent = ({ open, handleClose, message }) => (
+    <Snackbar
+      open={open}
+      autoHideDuration={5000}
+      onClose={handleClose}
+      message={message}
+    />
+  );
+  const handleSubmit = async () => {
     // Kiểm tra xem các trường có để trống không
     if (!formData.NameMaterial && formData.type === "material") {
-      alert("Material Name is required.");
+      toasityComponent("Material Name is required.", StatusEnum.INFO);
       return;
     }
     if (!formData.CategoryName && formData.type === "category") {
-      alert("Category Name is required.");
+      toasityComponent("Category Name is required.", StatusEnum.INFO);
       return;
     }
     if (!formData.Size && formData.type === "size") {
-      alert("Size is required.");
+      toasityComponent("Size is required.", StatusEnum.INFO);
       return;
     }
     if (!formData.SizeName && formData.type === "size") {
-      alert("Size Name is required.");
+      toasityComponent("Size Name is required.", StatusEnum.INFO);
       return;
     }
     if (!formData.Color && formData.type === "color") {
-      alert("Color is required.");
+      toasityComponent("Color is required.", StatusEnum.INFO);
       return;
     }
     if (!formData.HexColor && formData.type === "color") {
-      alert("Hex Color is required.");
+      toasityComponent("Hex Color is required.", StatusEnum.INFO);
       return;
     }
     // Nếu tất cả các trường đều hợp lệ
     console.log(formData);
+    switch (formData.type) {
+      case "material":
+        await dispatch(CreateMaterial({
+          name:formData.NameMaterial,
+        }));
+        break;
+      case "category":
+        await dispatch(CreateCategory({
+          name: formData.CategoryName,
+        }));
+        break;
+      case "size":
+        await dispatch(CreateSize({
+          size: formData.Size,
+          sizename: formData.SizeName,
+        }));
+        break;
+      case "color":
+        await dispatch(
+          CreateColor({
+            colorname: formData.Color,
+            colorhex: formData.HexColor,
+          })
+        );
+        break;
+      default:
+        break;
+    }
     handleCloseDialog();
   };
 

@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
-import { GetToken } from "./Authentication";
-
+import Authentication, { GetToken } from "./Authentication";
 // Constants
 const local = https + "/user";
 
 // Types
 interface UserState {
-  Infor: any; // Replace 'any' with proper type
+  Infor: any;
+  user:{}; // Replace 'any' with proper type
   token: string | null;
   loading: boolean;
   error: string | null;
@@ -17,13 +17,14 @@ interface UserState {
 const initialState: UserState = {
   Infor: "",
   token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')!) : null,
+  user:{},
   loading: false,
   error: null
 };
 
 // Async Thunks
 export const Getmyinfor = createAsyncThunk(
-  "authentication/Getmyinfor",
+  "user/Getmyinfor",
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await fetch(`${local}/myinfor`, {
@@ -37,7 +38,6 @@ export const Getmyinfor = createAsyncThunk(
       if (!response.ok) {
         throw new Error('Failed to fetch user information');
       }
-
       const data = await response.json();
       return data;
     } catch (error) {
@@ -47,8 +47,8 @@ export const Getmyinfor = createAsyncThunk(
 );
 
 // Slice
-const userSlice = createSlice({
-  name: "authentication",
+const UserSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
     clearUserData: (state) => {
@@ -64,13 +64,19 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+      
       .addCase(GetToken.fulfilled, (state, action) => {
         state.loading = false;
         if (action.payload.success) {
           state.token = action.payload.result.token;
           localStorage.setItem('token', JSON.stringify(state.token));
         }
-      });
+      })
+      .addCase(Getmyinfor.fulfilled, (state, action) => {
+        const result=action.payload;
+        state.user=result.result;
+        
+    });;
   },
 });
 
@@ -80,12 +86,11 @@ export const SignUp = (data: any) => { // Replace 'any' with proper type
     try {
       await dispatch(GetToken(data));
       const token = getState().authentication.token;
-      
       if (!token) {
         throw new Error('Authentication failed');
       }
-
       await dispatch(Getmyinfor(token));
+      dispatch(Authentication.actions.ChangeIntrospect);
     } catch (error) {
       console.error('SignUp process failed:', error);
       // You might want to dispatch an error action here
@@ -93,6 +98,7 @@ export const SignUp = (data: any) => { // Replace 'any' with proper type
   };
 };
 
+
 // Export actions and reducer
-export const { clearUserData } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearUserData } = UserSlice;
+export default UserSlice;

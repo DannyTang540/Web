@@ -17,9 +17,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { TableHead } from '@mui/material';
 const Status = [
-  { status: "Active", Color: "#59fbd6" },
-  { status: "Pending", Color: "#f6d050" },
-  { status: "Delete", Color: "#f9556b" },
+  { status: false, Color: "#59fbd6"},
+  { status: true, Color: "#f9556b" },
 ];
 const TableComponent=(props: { count: number; page: number; rowsPerPage: number; onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void })=> {
   const theme = useTheme();
@@ -120,7 +119,7 @@ const SwtichRow = (key: string, property: { [key: string]: any }) => {
               fontWeight: "bold",
             }}
           >
-            {property.Status}
+            {!property.Status?"Active":"Delete"}
           </div>
         );
       }
