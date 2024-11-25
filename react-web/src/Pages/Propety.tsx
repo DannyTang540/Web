@@ -17,8 +17,12 @@ import {
 import React, { useState } from "react";
 import BreadcrumbComponent from "../Components/Breadcrumbs/BreadcrumbComponent";
 import TabContext from "@mui/lab/TabContext";
+import AddIcon from "@mui/icons-material/Add";
+import { CgSize } from "react-icons/cg";
+import { GiMaterialsScience } from "react-icons/gi";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CategoryIcon from "@mui/icons-material/Category";
 import TableData from "../Components/Table/TableData";
 import SelectInput from "../Components/Input/SelectInput";
@@ -213,17 +217,19 @@ const Propety = () => {
               />
               <Tab
                 label="Size"
-                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
+                icon={<CgSize size={"20px"} color="action" />}
                 value="2"
               />
               <Tab
                 label="Color"
-                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
+                icon={
+                  <ColorLensIcon sx={{ fontSize: "20px" }} color="action" />
+                }
                 value="3"
               />
               <Tab
                 label="Material"
-                icon={<CategoryIcon sx={{ fontSize: "20px" }} color="action" />}
+                icon={<GiMaterialsScience size={"20px"} color="action" />}
                 value="4"
               />
             </TabList>
@@ -237,12 +243,13 @@ const Propety = () => {
                   SelectInput={<SelectInput title={"Status"} />}
                   CustomButton={
                     <Button
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
                       className="Add-Category"
+                      sx={{ fontWeight: "Bold", borderRadius: "12px" }}
                       onClick={() => handleOpenDialog("category")}
                     >
-                      + New Category
+                      <AddIcon /> New Category
                     </Button>
                   }
                 />
@@ -257,12 +264,13 @@ const Propety = () => {
                 <HeaderOneEven
                   CustomButton={
                     <Button
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
                       className="Add-Size"
+                      sx={{ fontWeight: "Bold", borderRadius: "12px" }}
                       onClick={() => handleOpenDialog("size")}
                     >
-                      + New Size
+                      <AddIcon /> New Size
                     </Button>
                   }
                 />
@@ -277,12 +285,13 @@ const Propety = () => {
                 <HeaderOneEven
                   CustomButton={
                     <Button
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
                       className="Add-Color"
+                      sx={{ fontWeight: "Bold", borderRadius: "12px" }}
                       onClick={() => handleOpenDialog("color")}
                     >
-                      + New Color
+                      <AddIcon /> New Color
                     </Button>
                   }
                 />
@@ -297,12 +306,13 @@ const Propety = () => {
                 <HeaderTwoEven
                   CustomButton={
                     <Button
-                      variant="contained"
+                      variant="outlined"
                       color="primary"
-                      className="Add"
+                      className="Add-Material"
+                      sx={{ fontWeight: "Bold", borderRadius: "12px" }}
                       onClick={() => handleOpenDialog("material")}
                     >
-                      + New Material
+                      <AddIcon /> New Material
                     </Button>
                   }
                   SelectInput={undefined}
