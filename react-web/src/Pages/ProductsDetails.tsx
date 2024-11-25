@@ -21,9 +21,7 @@ const ProductDetail = () => {
     name: "Classic Leather Loafers",
     description:
       "Thiết kế lấy cảm hứng từ tàu cao tốc Nhật Bản và Nike Air Max 97.",
-    price: "$97.14",
-    rating: 4.5,
-    reviews: "9.12k",
+    price: "600VND",
     size: 9,
     available: 72,
     imageUrl: "https://via.placeholder.com/400",
@@ -51,12 +49,6 @@ const ProductDetail = () => {
               <Typography variant="h6" gutterBottom>
                 Price: {product.price}
               </Typography>
-              <Box display="flex" alignItems="center" mb={2}>
-                <Rating value={product.rating} readOnly precision={0.5} />
-                <Typography variant="body2" ml={1}>
-                  {product.rating} ({product.reviews} reviews)
-                </Typography>
-              </Box>
               <Divider />
               <Typography variant="body1" paragraph mt={2}>
                 {product.description}
@@ -65,7 +57,7 @@ const ProductDetail = () => {
                 Size: {product.size}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Available: {product.available} units
+                Available: {product.available}
               </Typography>
               <Box display="flex" mt={2}>
                 <Button variant="contained" color="primary" sx={{ mr: 1 }}>
