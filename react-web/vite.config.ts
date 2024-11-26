@@ -5,8 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-
-    host: "26.225.63.179", // Cho phép kết nối từ bất kỳ địa chỉ IP nào
+    host: "26.144.191.229", // Cho phép kết nối từ bất kỳ địa chỉ IP nào
 
     port: 5173, // Cổng mà bạn muốn chạy Vite
     strictPort: true, // Đảm bảo sử dụng cổng này (nếu cổng đã được sử dụng, Vite sẽ dừng lại)

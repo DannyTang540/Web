@@ -20,7 +20,7 @@ const menuItems = [
     children: [
       { label: "List", path: "/product" },
       { label: "Details", path: "/product/details" },
-      { label: "Create", path: "/product/create" },
+      { label: "Imports", path: "/product/import" },
       { label: "Edit", path: "/product/edit" },
     ],
   },
@@ -30,7 +30,7 @@ const menuItems = [
     children: [
       { label: "List", path: "/user" },
       { label: "Details", path: "/user/details" },
-      { label: "Create", path: "/user/create" },
+      { label: "Role", path: "/user/role" },
       { label: "Edit", path: "/user/edit" },
     ],
   },

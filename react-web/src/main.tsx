@@ -14,10 +14,12 @@ import UsersSummary from "./Components/DashBoard/UsersSummary.tsx";
 import User from "./Pages/User.tsx";
 import Propety from "./Pages/Propety.tsx";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 import ProductDetail from "./Pages/ProductsDetails.tsx";
+import InventoryImport from "./Components/Inventory/InventoryImport.tsx";
+import UserRoles from "./Components/user/UserRole.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={Store}>
@@ -25,8 +27,10 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<DashBoard />}>
             <Route path="/product" element={<Products />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/product/detail/:id" element={<ProductDetail />} />
+            <Route path="/product/import" element={<InventoryImport />} />
             <Route path="/user" element={<User />} />
+            <Route path="/user/role" element={<UserRoles />} />
             <Route path="/property" element={<Propety />} />
           </Route>
           <Route path="/Sign" element={<SignIn />} />

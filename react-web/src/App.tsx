@@ -4,6 +4,7 @@ import Header1 from "./Components/Header1";
 import SignIn from "./Components/Auth/SignIn";
 import Products from "./Pages/Products";
 import ProductDetail from "./Pages/ProductsDetails";
+import InventoryImport from "./Components/Inventory/InventoryImport";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/home" element={<div>Home Page</div>} />
         <Route path="/products" element={<Products />} />
         <Route path="/product/detail/:id" element={<ProductDetail />} />
+        <Route path="/product/import" element={<InventoryImport />} />
       </Routes>
     </Router>
   );
