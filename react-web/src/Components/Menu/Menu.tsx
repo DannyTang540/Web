@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   List,
   ListItemButton,
@@ -6,12 +6,12 @@ import {
   ListItemText,
   Collapse,
   Divider,
-  Box,
   Grid,
 } from "@mui/material";
 import { FaShoppingCart, FaTshirt } from "react-icons/fa";
 import { Category, ExpandLess, ExpandMore, Person } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { CiImport } from "react-icons/ci";
 
 const menuItems = [
   {
@@ -19,9 +19,17 @@ const menuItems = [
     icon: <FaTshirt />,
     children: [
       { label: "List", path: "/product" },
-      { label: "Details", path: "/product/details" },
-      { label: "Imports", path: "/product/import" },
+      { label: "Details", path: "/product/details/:id" },
       { label: "Edit", path: "/product/edit" },
+      {
+        label: "Invoice",
+        icon: <CiImport />,
+        children: [
+          { label: "List", path: "/invoice" },
+          { label: "Create", path: "/invoice/new" },
+          { label: "Detail", path: "/invoice/detail" },
+        ],
+      },
     ],
   },
   {
@@ -30,22 +38,21 @@ const menuItems = [
     children: [
       { label: "List", path: "/user" },
       { label: "Details", path: "/user/details" },
-      { label: "Role", path: "/user/role" },
+      { label: "Role", path: "/user/roles" },
       { label: "Edit", path: "/user/edit" },
     ],
   },
   {
     label: "Property",
     icon: <Category />,
-    children: [{ label: "List", path: "/property" }],
+    children: [{ label: "Create", path: "/property" }],
   },
   {
     label: "Order",
     icon: <FaShoppingCart />,
     children: [
-      { label: "List", path: "/order" },
-      { label: "Details", path: "/order/details" },
-      { label: "Create", path: "/order/create" },
+      { label: "Customer Orders", path: "/order" },
+      { label: "Details", path: "/order/detail" },
     ],
   },
 ];
@@ -115,7 +122,7 @@ const SidebarMenu = () => {
                   (openMenu[item.label] ? <ExpandLess /> : <ExpandMore />)}
               </ListItemButton>
 
-              {/* Mục con (nếu có) */}
+              {/* Sub-menu items (if any) */}
               {item.children.length > 0 && (
                 <Collapse
                   in={openMenu[item.label]}
@@ -124,34 +131,77 @@ const SidebarMenu = () => {
                 >
                   <List component="div" disablePadding>
                     {item.children.map((child) => (
-                      <ListItemButton
-                        key={child.label}
-                        sx={{
-                          pl: 4,
-                          fontSize: "1.2rem",
-                          bgcolor: isSelected(child.path)
-                            ? "#e8f5e9"
-                            : "transparent",
-                          "&:hover": {
-                            bgcolor: "#e0f7fa",
-                            fontWeight: "bold",
-                          },
-                        }}
-                        onClick={() => navigate(child.path)}
-                      >
-                        <ListItemText
-                          primary={child.label}
+                      <React.Fragment key={child.label}>
+                        <ListItemButton
                           sx={{
-                            fontWeight: isSelected(child.path)
-                              ? "bold"
-                              : "normal",
-                            "& span": {
-                              fontSize: "0.8rem",
+                            pl: 4,
+                            fontSize: "1.2rem",
+                            bgcolor: isSelected(child.path)
+                              ? "#e8f5e9"
+                              : "transparent",
+                            "&:hover": {
+                              bgcolor: "#e0f7fa",
                               fontWeight: "bold",
                             },
                           }}
-                        />
-                      </ListItemButton>
+                          onClick={() => handleToggle(child.label, child.path)}
+                        >
+                          <ListItemText
+                            primary={child.label}
+                            sx={{
+                              fontWeight: isSelected(child.path)
+                                ? "bold"
+                                : "normal",
+                              "& span": {
+                                fontSize: "0.8rem",
+                                fontWeight: "bold",
+                              },
+                            }}
+                          />
+                        </ListItemButton>
+
+                        {/* Sub-menu items under Import */}
+                        {child.children && (
+                          <Collapse
+                            in={openMenu[child.label]}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <List component="div" disablePadding>
+                              {child.children.map((subChild) => (
+                                <ListItemButton
+                                  key={subChild.label}
+                                  sx={{
+                                    pl: 8,
+                                    fontSize: "1rem",
+                                    bgcolor: isSelected(subChild.path)
+                                      ? "#e8f5e9"
+                                      : "transparent",
+                                    "&:hover": {
+                                      bgcolor: "#f0f4c3",
+                                      fontWeight: "bold",
+                                    },
+                                  }}
+                                  onClick={() => navigate(subChild.path)}
+                                >
+                                  <ListItemText
+                                    primary={subChild.label}
+                                    sx={{
+                                      fontWeight: isSelected(subChild.path)
+                                        ? "bold"
+                                        : "normal",
+                                      "& span": {
+                                        fontSize: "0.7rem",
+                                        fontWeight: "bold",
+                                      },
+                                    }}
+                                  />
+                                </ListItemButton>
+                              ))}
+                            </List>
+                          </Collapse>
+                        )}
+                      </React.Fragment>
                     ))}
                   </List>
                 </Collapse>

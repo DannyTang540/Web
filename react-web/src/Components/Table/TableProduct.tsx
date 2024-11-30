@@ -1,3 +1,4 @@
+import React, { useState, MouseEvent } from "react";
 import {
   IconButton,
   Menu,
@@ -9,96 +10,235 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
+  Box,
+  Avatar,
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import CardProduct from "../Card/CardProduct";
+import { useNavigate } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CircleProductStock from "../Box/CircleProductStock";
 import BuildIcon from "@mui/icons-material/Build";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CircleProductStock from "../Box/CircleProductStock";
 
-function createData(id, product, material, Price, Stock, CreateAt) {
-  return { id, product, material, Price, Stock, CreateAt };
+function createData(
+  id,
+  product,
+  category,
+  material,
+  price,
+  stock,
+  createAt,
+  imageUrl,
+  gender
+) {
+  return { id, product, category, material, price, stock, createAt, imageUrl, gender };
 }
 
 const rows = [
-  createData("1", "Frozen yoghurt", "Vai", 60000, 24, "2024/20/12"),
-  createData("2", "Ice cream sandwich", "Cotton", 45000, 15, "2024/20/12"),
-  createData("3", "Eclair", "Silk", 70000, 18, "2024/20/12"),
-  createData("4", "Cupcake", "Leather", 80000, 20, "2024/20/12"),
+  createData(
+    "1",
+    "Urban Explorer Sneakers",
+    "Accessories",
+    "Cotton",
+    8374,
+    0,
+    "2024/08/20",
+    "https://via.placeholder.com/100",
+    "Male"
+  ),
+  createData(
+    "2",
+    "Classic Leather Loafers",
+    "Shoes",
+    "Leather",
+    9714,
+    72,
+    "2024/08/19",
+    "https://via.placeholder.com/100",
+    "Male"
+  ),
+  createData(
+    "3",
+    "Mountain Trekking Boots",
+    "Apparel",
+    "Synthetic",
+    6871,
+    10,
+    "2024/08/17",
+    "https://via.placeholder.com/100",
+    "Female"
+  ),
 ];
 
-const TableProduct = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+const categories = ["All", "Accessories", "Shoes", "Apparel"];
+const genders = ["All", "Male", "Female"];
 
-  const handleMenuOpen = (event) => {
+const TableProduct = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuId, setMenuId] = useState<null | string>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedGender, setSelectedGender] = useState<string>("All");
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
+  const handleMenuOpen = (event: MouseEvent<HTMLElement>, id: string) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
+    setMenuId(id);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    setMenuId(null);
   };
 
+  const handleRowClick = (id: string) => {
+    navigate(`/product/details/${id}`);
+  };
+
+  const handleCategoryChange = (event: SelectChangeEvent<string>) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleGenderChange = (event: SelectChangeEvent<string>) => {
+    setSelectedGender(event.target.value);
+  };
+
+  const filteredRows = rows.filter(
+    (row) =>
+      (selectedCategory === "All" || row.category === selectedCategory) &&
+      (selectedGender === "All" || row.gender === selectedGender)
+  );
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Product Name</TableCell>
-            <TableCell align="right">Material</TableCell>
-            <TableCell align="right">Price Sell&nbsp;(vnđ)</TableCell>
-            <TableCell align="right">Stock</TableCell>
-            <TableCell align="right">Create At</TableCell>
-            <TableCell align="right">Setting</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              component={Link}
-              to={`/product/detail/${row.id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <TableCell align="right">
-                <CardProduct />
-              </TableCell>
-              <TableCell align="right">{row.material}</TableCell>
-              <TableCell align="center">{row.Price}</TableCell>
-              <TableCell align="right">
-                <CircleProductStock value={row.Stock} />
-              </TableCell>
-              <TableCell align="right">{row.CreateAt}</TableCell>
-              <TableCell align="right">
-                <IconButton onClick={handleMenuOpen}>
-                  <MoreVertIcon />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleMenuClose}
-                  sx={{ boxShadow: "none", borderRadius: 20 }}
-                >
-                  <MenuItem onClick={handleMenuClose}>
-                    <BuildIcon sx={{ fontSize: "1rem", color: "#59fbd6" }} />
-                    Edit
-                  </MenuItem>
-                  <MenuItem onClick={handleMenuClose}>
-                    <DeleteForeverIcon
-                      sx={{ fontSize: "1rem", color: "#f37474" }}
-                    />{" "}
-                    Delete
-                  </MenuItem>
-                </Menu>
-              </TableCell>
+    <Box m={4}>
+      <Box display="flex" gap={2} mb={2}>
+        <FormControl variant="standard" sx={{ minWidth: 200 }}>
+          <InputLabel>Category</InputLabel>
+          <Select value={selectedCategory} onChange={handleCategoryChange}>
+            {categories.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl variant="standard" sx={{ minWidth: 200 }}>
+          <InputLabel>Gender</InputLabel>
+          <Select value={selectedGender} onChange={handleGenderChange}>
+            {genders.map((gender) => (
+              <MenuItem key={gender} value={gender}>
+                {gender}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <TableContainer
+        component={Paper}
+        sx={{
+          boxShadow: 5,
+          borderRadius: 15,
+          padding: 2,
+          width: "100%",
+          maxHeight: "80vh",
+        }}
+      >
+        <Table sx={{ minWidth: 1000 }} size="medium" aria-label="product table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Image</TableCell>
+              <TableCell align="left">Product Name</TableCell>
+              <TableCell align="center">Category</TableCell>
+              <TableCell align="center">Material</TableCell>
+              <TableCell align="center">Price&nbsp;(vnđ)</TableCell>
+              <TableCell align="center">Stock</TableCell>
+              <TableCell align="center">Gender</TableCell>
+              <TableCell align="center">Created At</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {filteredRows.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&:hover": {
+                    backgroundColor: "#e0f7fa",
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                  },
+                  backgroundColor: "#fff",
+                  transition: "background-color 0.3s, box-shadow 0.3s",
+                }}
+              >
+                <TableCell align="left">
+                  <Avatar
+                    src={row.imageUrl}
+                    variant="square"
+                    sx={{ width: 50, height: 50 }}
+                  />
+                </TableCell>
+                <TableCell align="left">
+                  <Box
+                    component="span"
+                    sx={{
+                      textDecoration: "none",
+                      "&:hover": { textDecoration: "underline" },
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                    onClick={() => handleRowClick(row.id)}
+                  >
+                    {row.product}
+                  </Box>
+                </TableCell>
+                <TableCell align="center">{row.category}</TableCell>
+                <TableCell align="center">{row.material}</TableCell>
+                <TableCell align="center">
+                  {row.price.toLocaleString()} VND
+                </TableCell>
+                <TableCell align="center">
+                  <CircleProductStock value={row.stock} />
+                </TableCell>
+                <TableCell align="center">{row.gender}</TableCell>
+                <TableCell align="center">{row.createAt}</TableCell>
+                <TableCell align="center">
+                  <IconButton
+                    onClick={(event) => handleMenuOpen(event, row.id)}
+                    aria-label="settings"
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open && menuId === row.id}
+                    onClose={handleMenuClose}
+                    sx={{ boxShadow: "none", borderRadius: 2 }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <MenuItem onClick={handleMenuClose}>
+                      <BuildIcon sx={{ fontSize: "1rem", color: "#59fbd6" }} />
+                      Edit
+                    </MenuItem>
+                    <MenuItem onClick={handleMenuClose}>
+                      <DeleteForeverIcon
+                        sx={{ fontSize: "1rem", color: "#f37474" }}
+                      />
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

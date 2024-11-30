@@ -115,7 +115,7 @@ const User = () => {
         <Button
           variant="contained"
           color="primary"
-          className="!bg-black w-1/2 !capitalize !py-2 !px-4"
+          sx={{mt:5}}
         >
           + New User
         </Button>

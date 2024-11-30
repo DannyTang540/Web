@@ -123,71 +123,8 @@ const InventoryImport = () => {
         sx={{ mt: 2 }}
         onClick={handleClickOpen}
       >
-        Add Products
+        Add Order
       </Button>
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add New Product</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Product Name"
-            type="text"
-            fullWidth
-            value={newProduct.name}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="quantity"
-            label="Quantity"
-            type="number"
-            fullWidth
-            value={newProduct.quantity}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="price"
-            label="Price"
-            type="number"
-            fullWidth
-            value={newProduct.price}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="supplier"
-            label="Vendor"
-            type="text"
-            fullWidth
-            value={newProduct.supplier}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="date"
-            label="Date"
-            type="date"
-            fullWidth
-            value={newProduct.date}
-            onChange={handleChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleAddProduct} color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };
