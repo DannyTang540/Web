@@ -24,19 +24,29 @@ import BuildIcon from "@mui/icons-material/Build";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CircleProductStock from "../Box/CircleProductStock";
 
-function createData(
-  id,
-  product,
-  category,
-  material,
-  price,
-  stock,
-  createAt,
-  imageUrl,
-  gender
-) {
-  return { id, product, category, material, price, stock, createAt, imageUrl, gender };
-}
+const createData = (
+  id: string,
+  product: string,
+  category: string,
+  material: string,
+  price: number,
+  stock: number,
+  createAt: string,
+  imageUrl: string,
+  gender: string
+) => {
+  return {
+    id,
+    product,
+    category,
+    material,
+    price,
+    stock,
+    createAt,
+    imageUrl,
+    gender,
+  };
+};
 
 const rows = [
   createData(
@@ -77,7 +87,7 @@ const rows = [
 const categories = ["All", "Accessories", "Shoes", "Apparel"];
 const genders = ["All", "Male", "Female"];
 
-const TableProduct = () => {
+const TableProduct: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuId, setMenuId] = useState<null | string>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -106,6 +116,11 @@ const TableProduct = () => {
 
   const handleGenderChange = (event: SelectChangeEvent<string>) => {
     setSelectedGender(event.target.value);
+  };
+
+  const handleEditProduct = (id: string) => {
+    navigate(`/product/edit/${id}`);
+    handleMenuClose();
   };
 
   const filteredRows = rows.filter(
@@ -200,7 +215,7 @@ const TableProduct = () => {
                 <TableCell align="center">{row.category}</TableCell>
                 <TableCell align="center">{row.material}</TableCell>
                 <TableCell align="center">
-                  {row.price.toLocaleString()} VND
+                  {row.price.toLocaleString("vi-VN")} VND
                 </TableCell>
                 <TableCell align="center">
                   <CircleProductStock value={row.stock} />
@@ -221,7 +236,7 @@ const TableProduct = () => {
                     sx={{ boxShadow: "none", borderRadius: 2 }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={() => handleEditProduct(row.id)}>
                       <BuildIcon sx={{ fontSize: "1rem", color: "#59fbd6" }} />
                       Edit
                     </MenuItem>

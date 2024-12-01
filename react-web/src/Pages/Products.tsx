@@ -9,7 +9,7 @@ import {
   styled,
   Paper,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import TableProduct from "../Components/Table/TableProduct";
 import CreateProductDialog from "../Components/Product/CreateProduct";
@@ -20,6 +20,7 @@ interface SizePrice {
 }
 
 const Products: React.FC = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<
     {
       id: number;
@@ -52,6 +53,7 @@ const Products: React.FC = () => {
 
   const handleEditProduct = (index: number) => {
     const product = products[index];
+    navigate(`/product/edit/${product.id}`);
     setProductName(product.name);
     handleOpen();
   };

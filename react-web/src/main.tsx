@@ -15,10 +15,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import UserRoles from "./Components/user/UserRole";
 import Products from "./Pages/Products";
-import OrderStatus from "./Components/Product/OrderStatus";
-import CustomerOrders from "./Components/Customer/CustumerOrders";
-import CustomerInvoiceDetail from "./Components/Customer/CustomerInvoiceDetail";
+import OrderStatus from "./Components/Product/ProductOrderStatus";
+import CustomerOrders from "./Components/Customer/CustomerOrders";
+import CustomerDetail from "./Components/Customer/CustomerDetail";
 import UserDetail from "./Components/user/UserDetails";
+import OrderDetail from "./Components/Product/ProductOrderDetail";
+import Home from "./Pages/Home";
+import EditProduct from "./Components/Product/EditProduct";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -27,15 +30,19 @@ createRoot(document.getElementById("root")!).render(
         <Header1 />
         <Routes>
           <Route path="/" element={<DashBoard />}>
+            <Route path="/" element={<Home />} />
+
             <Route path="/product" element={<Products />} />
             <Route path="/product/details/:id" element={<ProductDetail />} />
+            <Route path="/product/edit/:id" element={<EditProduct />} />
             <Route path="/invoice" element={<OrderStatus />} />
             <Route path="/invoice/new" element={<InventoryImport />} />
+            <Route path="/invoice/detail/:orderId" element={<OrderDetail />} />
             <Route path="/user" element={<User />} />
             <Route path="/user/details" element={<UserDetail />} />
             <Route path="/user/roles" element={<UserRoles />} />
-            <Route path="/order" element={<CustomerOrders />} />
-            <Route path="/order/detail" element={<CustomerInvoiceDetail />} />
+            <Route path="/orders" element={<CustomerOrders />} />
+            <Route path="/orders/detail/:COId" element={<CustomerDetail />} />
             <Route path="/property" element={<Propety />} />
             <Route path="/order/list" element={<OrderStatus />} />
           </Route>

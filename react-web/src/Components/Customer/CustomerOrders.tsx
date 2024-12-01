@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -10,66 +10,63 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Menu,
-  MenuItem,
   Collapse,
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router-dom";
 
-const orders = [
+export const customerOrders = [
   {
     id: 1,
-    orderId: "ORD001",
+    orderId: "CUST001",
+    customer: "John Doe",
     date: "2024-12-20",
-    supplier: "Supplier X",
-    status: "Completed",
-    total: 5000,
+    status: "In Transit",
+    total: 10000000,
     details: [
       {
         productId: "P001",
         productName: "Product A",
         quantity: 10,
-        price: 500,
+        price: 500000,
         completionDate: "2024-12-25",
       },
       {
         productId: "P002",
         productName: "Product B",
         quantity: 5,
-        price: 1000,
+        price: 1000000,
         completionDate: "2024-12-26",
       },
     ],
   },
   {
     id: 2,
-    orderId: "ORD002",
+    orderId: "CUST002",
+    customer: "Jane Smith",
     date: "2024-12-21",
-    supplier: "Supplier Y",
-    status: "Processing",
-    total: 6000,
+    status: "Delivered",
+    total: 15000000,
     details: [
       {
         productId: "P003",
         productName: "Product C",
         quantity: 15,
-        price: 400,
+        price: 400000,
         completionDate: "2024-12-27",
       },
     ],
   },
-  // Add more orders as needed
 ];
 
 const calculateTotalAmount = () => {
-  return orders.reduce((total, order) => total + order.total, 0);
+  return customerOrders.reduce((total, order) => total + order.total, 0);
 };
 
-const OrderStatus = () => {
+const CustomerOrders = () => {
   const [open, setOpen] = useState<Record<number, boolean>>({});
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuId, setMenuId] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const handleToggle = (id: number) => {
     setOpen((prevState) => ({
@@ -78,22 +75,15 @@ const OrderStatus = () => {
     }));
   };
 
-  const handleMenuOpen = (event: MouseEvent<HTMLElement>, id: number) => {
-    event.stopPropagation(); // Stop the event from bubbling up to TableRow
-    setAnchorEl(event.currentTarget);
-    setMenuId(id);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setMenuId(null);
+  const handleViewDetails = (COId: string) => {
+    navigate(`/orders/detail/${COId}`);
   };
 
   return (
     <Box m={2}>
-      <Typography variant="h4">Order Status</Typography>
+      <Typography variant="h4">Customer Orders</Typography>
       <Typography variant="h6" sx={{ mb: 2 }}>
-        Total Amount: {calculateTotalAmount()} VND
+        Total Amount: {calculateTotalAmount().toLocaleString()} VND
       </Typography>
       <TableContainer component={Paper}>
         <Table>
@@ -101,15 +91,15 @@ const OrderStatus = () => {
             <TableRow>
               <TableCell />
               <TableCell>Order ID</TableCell>
-              <TableCell>Creation Date</TableCell>
-              <TableCell>Vendor</TableCell>
+              <TableCell>Customer Name</TableCell>
+              <TableCell>Order Date</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Total Amount</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
+            {customerOrders.map((order) => (
               <React.Fragment key={order.id}>
                 <TableRow onClick={() => handleToggle(order.id)}>
                   <TableCell>
@@ -122,44 +112,17 @@ const OrderStatus = () => {
                     </IconButton>
                   </TableCell>
                   <TableCell>{order.orderId}</TableCell>
+                  <TableCell>{order.customer}</TableCell>
                   <TableCell>{order.date}</TableCell>
-                  <TableCell>{order.supplier}</TableCell>
                   <TableCell>{order.status}</TableCell>
-                  <TableCell>{order.total} VND</TableCell>
+                  <TableCell>{order.total.toLocaleString()} VND</TableCell>
                   <TableCell>
                     <IconButton
                       aria-label="view"
-                      aria-controls="view-menu"
-                      aria-haspopup="true"
-                      onClick={(event) =>
-                        handleMenuOpen(event, order.id)
-                      }
+                      onClick={() => handleViewDetails(order.orderId)}
                     >
                       <VisibilityIcon />
                     </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={
-                        Boolean(anchorEl) &&
-                        menuId === order.id
-                      }
-                      onClose={handleMenuClose}
-                      sx={{
-                        boxShadow: "none",
-                        borderRadius: 2,
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <MenuItem onClick={handleMenuClose}>
-                        <VisibilityIcon
-                          sx={{
-                            fontSize: "1rem",
-                            color: "#59fbd6",
-                          }}
-                        />
-                        View
-                      </MenuItem>
-                    </Menu>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -188,7 +151,9 @@ const OrderStatus = () => {
                                 <TableCell>{detail.productId}</TableCell>
                                 <TableCell>{detail.productName}</TableCell>
                                 <TableCell>{detail.quantity}</TableCell>
-                                <TableCell>{detail.price} VND</TableCell>
+                                <TableCell>
+                                  {detail.price.toLocaleString()} VND
+                                </TableCell>
                                 <TableCell>{detail.completionDate}</TableCell>
                               </TableRow>
                             ))}
@@ -207,4 +172,4 @@ const OrderStatus = () => {
   );
 };
 
-export default OrderStatus;
+export default CustomerOrders;

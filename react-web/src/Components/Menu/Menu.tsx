@@ -19,15 +19,12 @@ const menuItems = [
     icon: <FaTshirt />,
     children: [
       { label: "List", path: "/product" },
-      { label: "Details", path: "/product/details/:id" },
-      { label: "Edit", path: "/product/edit" },
       {
         label: "Invoice",
         icon: <CiImport />,
         children: [
           { label: "List", path: "/invoice" },
           { label: "Create", path: "/invoice/new" },
-          { label: "Detail", path: "/invoice/detail" },
         ],
       },
     ],
@@ -39,7 +36,6 @@ const menuItems = [
       { label: "List", path: "/user" },
       { label: "Details", path: "/user/details" },
       { label: "Role", path: "/user/roles" },
-      { label: "Edit", path: "/user/edit" },
     ],
   },
   {
@@ -51,8 +47,7 @@ const menuItems = [
     label: "Order",
     icon: <FaShoppingCart />,
     children: [
-      { label: "Customer Orders", path: "/order" },
-      { label: "Details", path: "/order/detail" },
+      { label: "Customer Orders", path: "/orders" },
     ],
   },
 ];
