@@ -36,7 +36,7 @@ const DashBoard = () => {
     console.log(localStorage.getItem("Introspect"))
     if (localStorage.getItem("Introspect")||!localStorage.getItem("Introspect")) {
       fetch().then(() => {
-        if (localStorage.getItem("Introspect")==="false"||!localStorage.getItem("token")) navigate("/Sign");
+        if (localStorage.getItem("Introspect")==="false"||!localStorage.getItem("token")) navigate("/sign-in");
       });
     }
   }, [dispatch, introspect, navigate]);

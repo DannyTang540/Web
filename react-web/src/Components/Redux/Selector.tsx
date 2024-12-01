@@ -6,3 +6,4 @@ export const Color=(state)=>state.color.Color;
 export const Category=(state)=>state.category.Category;
 export const Size=(state)=>state.size.Size;
 export const Material=(state)=>state.material.Material;
+export const Product=(state)=>state.product.Product;

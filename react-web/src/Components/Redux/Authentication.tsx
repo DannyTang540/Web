@@ -6,6 +6,7 @@ import { GetSize } from "./SizeSlice";
 import { toasityComponent } from "../SnackBar/SnackBarComponent";
 import { StatusEnum } from "../../types/Status";
 import { GetMaterial } from "./MaterialSlice";
+import {GetProduct} from "./Product.tsx";
 const local = https + "/authentication";
 
 const Authentication = createSlice({
@@ -128,6 +129,7 @@ export const FetchInfom = () => {
           await dispatch(GetCategory());
           await dispatch(GetSize());
           await dispatch(GetMaterial());
+          await dispatch(GetProduct());
   };
 };
 export default Authentication;

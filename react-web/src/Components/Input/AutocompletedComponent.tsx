@@ -20,7 +20,7 @@ const AutocompletedComponent = ({array,title,placeholder}) => {
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
-              style={{ marginRight: 8 }}
+              style={{ marginRight: 8,color:option.value}}
               checked={selected}
             />
             {option.key}

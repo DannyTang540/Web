@@ -23,13 +23,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import BuildIcon from "@mui/icons-material/Build";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CircleProductStock from "../Box/CircleProductStock";
-
+import {Product} from "../Redux/Selector.tsx"
+import {useDispatch, useSelector} from "react-redux";
 const createData = (
   id: string,
   product: string,
   category: string,
   material: string,
-  price: number,
   stock: number,
   createAt: string,
   imageUrl: string,
@@ -40,7 +40,6 @@ const createData = (
     product,
     category,
     material,
-    price,
     stock,
     createAt,
     imageUrl,
@@ -48,41 +47,7 @@ const createData = (
   };
 };
 
-const rows = [
-  createData(
-    "1",
-    "Urban Explorer Sneakers",
-    "Accessories",
-    "Cotton",
-    8374,
-    0,
-    "2024/08/20",
-    "https://via.placeholder.com/100",
-    "Male"
-  ),
-  createData(
-    "2",
-    "Classic Leather Loafers",
-    "Shoes",
-    "Leather",
-    9714,
-    72,
-    "2024/08/19",
-    "https://via.placeholder.com/100",
-    "Male"
-  ),
-  createData(
-    "3",
-    "Mountain Trekking Boots",
-    "Apparel",
-    "Synthetic",
-    6871,
-    10,
-    "2024/08/17",
-    "https://via.placeholder.com/100",
-    "Female"
-  ),
-];
+
 
 const categories = ["All", "Accessories", "Shoes", "Apparel"];
 const genders = ["All", "Male", "Female"];
@@ -94,13 +59,24 @@ const TableProduct: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<string>("All");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
-
+  const productdata=useSelector(Product);
   const handleMenuOpen = (event: MouseEvent<HTMLElement>, id: string) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
     setMenuId(id);
   };
-
+  const rows=productdata.map((el)=>
+    createData(
+        el.id||"1",
+        el.name||"",
+        el.category.name||"",
+        el.materials.name||"",
+        10,
+        el.createat.split("T")[0]||"",
+        el.image.urlImage||"",
+        "Female"
+    )
+  )
   const handleMenuClose = () => {
     setAnchorEl(null);
     setMenuId(null);
@@ -170,7 +146,6 @@ const TableProduct: React.FC = () => {
               <TableCell align="left">Product Name</TableCell>
               <TableCell align="center">Category</TableCell>
               <TableCell align="center">Material</TableCell>
-              <TableCell align="center">Price&nbsp;(vnđ)</TableCell>
               <TableCell align="center">Stock</TableCell>
               <TableCell align="center">Gender</TableCell>
               <TableCell align="center">Created At</TableCell>
@@ -214,9 +189,6 @@ const TableProduct: React.FC = () => {
                 </TableCell>
                 <TableCell align="center">{row.category}</TableCell>
                 <TableCell align="center">{row.material}</TableCell>
-                <TableCell align="center">
-                  {row.price.toLocaleString("vi-VN")} VND
-                </TableCell>
                 <TableCell align="center">
                   <CircleProductStock value={row.stock} />
                 </TableCell>

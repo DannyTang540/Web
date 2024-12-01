@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -19,6 +19,8 @@ import TestFiedComponent from '../Input/TestFiedComponent';
 import TestArial from '../Input/TestArial';
 import AutocompletedComponent from '../Input/AutocompletedComponent';
 import CheckBoxComponent from '../Input/CheckBoxComponent';
+import {Category, Color, Material, Size} from "../Redux/Selector.tsx";
+import {useSelector} from "react-redux";
 
 interface CreateProductDialogProps {
   open: boolean;
@@ -33,8 +35,36 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   productName,
   setProductName,
 }) => {
+  const ProductCreate=useState({
+    productname: "",
+    category: '',
+    material: '',
+    gender:'',
+    colors: [],
+    sizes: [],
+    price: 0,
+    description: [],
+    /*
+    * [{
+    "title":"Title",
+    "description":"Mô tả Header của sản phẩm a",
+    "idproduct":"2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff"
+},{
+    "title":"Body",
+    "description":"Mô tả Chi tiết của sản phẩm a",
+    "idproduct":"2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff"
+}]
+* CÓ 2 phần input 1 là title cái 2 l nhập chi tiéết description ông làm cái description thanhf 1 manh như tui để ở trên value dây la description
+* ,Title giống như phân biêt giưa 2 description treên và idproduct thì ông đừng đụng giữ nguyên cho tui cg đc
+    * */
+    Image: '',
+    total: 0,
+  });
   const style = {}; // Define your styles here
-
+    const colordata=useSelector(Color)||[];
+    const sizedata=useSelector(Size)||[];
+    const materialdata=useSelector(Material)||[];
+    const categorydata=useSelector(Category)||[];
   return (
     <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
       <DialogTitle>
@@ -76,10 +106,10 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <SelectInput title="Category" />
+                      <SelectInput title="Category"  options={categorydata.map((el)=>el.NameCategory)} />
                     </Grid>
                     <Grid item xs={4}>
-                      <SelectInput title="Material" />
+                      <SelectInput title="Material" options={materialdata.map((el)=>el.NameMaterial)} />
                     </Grid>
                   </Grid>
                 }
@@ -143,22 +173,15 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                       <AutocompletedComponent
                         title="Color"
                         placeholder="Choose Color"
-                        array={[
-                          { key: 'Đỏ', value: '#1111' },
-                          { key: 'Xanh', value: '#1111' },
-                          { key: 'Vàng', value: '#1111' },
-                        ]}
+                        array={colordata.map((el)=>({key:el.Color,value:el.HexColor}))}
+
                       />
                     </Grid>
                     <Grid item xs={6}>
                       <AutocompletedComponent
                         title="Size"
                         placeholder="Choose Size"
-                        array={[
-                          { key: 'Small', value: 'S' },
-                          { key: 'Medium', value: 'M' },
-                          { key: 'Big', value: 'XL' },
-                        ]}
+                        array={sizedata.map((el)=>({key:el.SizeName,value:el.Size}))}
                       />
                     </Grid>
                   </Grid>
