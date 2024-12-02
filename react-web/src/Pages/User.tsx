@@ -142,10 +142,10 @@ const User = () => {
                 />
               </TableCell>
               <TableCell colSpan={2}>
-                <SelectInput title={"Role"} />
+                <SelectInput title={"Role"} options={Status} />
               </TableCell>
               <TableCell colSpan={2}>
-                <SelectInput title={"Status"} />
+                <SelectInput title={"Status"} options={Status} />
               </TableCell>
             </TableRow>
             <TableRow sx={{ backgroundColor: "#f5f6f8" }}>
