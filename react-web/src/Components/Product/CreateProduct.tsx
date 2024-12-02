@@ -38,18 +38,6 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   productName,
   setProductName,
 }) => {
-  const [productDetails, setProductDetails] = useState([
-    {
-      title: "",
-      description: "",
-      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
-    },
-    {
-      title: "",
-      description: "",
-      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
-    },
-  ]);
   const ProductCreate = useState({
     productname: "",
     category: "",
@@ -58,7 +46,6 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     colors: [],
     sizes: [],
     price: 0,
-    description: [],
     /*
     * [{
     "title":"Title",
@@ -72,6 +59,20 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
 * CÓ 2 phần input 1 là title cái 2 l nhập chi tiéết description ông làm cái description thanhf 1 manh như tui để ở trên value dây la description
 * ,Title giống như phân biêt giưa 2 description treên và idproduct thì ông đừng đụng giữ nguyên cho tui cg đc
     * */
+    description: [
+      //head
+      {
+        title: "",
+        description: "",
+        idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+      },
+      //body
+      {
+        title: "",
+        description: "",
+        idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+      },
+    ],
     Image: "",
     total: 0,
   });
@@ -80,6 +81,18 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   const sizedata = useSelector(Size) || [];
   const materialdata = useSelector(Material) || [];
   const categorydata = useSelector(Category) || [];
+  const [productDetails, setProductDetails] = useState([
+    {
+      title: "",
+      description: "",
+      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+    },
+    {
+      title: "",
+      description: "",
+      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+    },
+  ]);
   return (
     <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
       <DialogTitle>
@@ -142,9 +155,11 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                     title="Title Product"
                     value={productDetails[0].title}
                     setvalue={(value) => {
-                      const updatedDetails = [...productDetails];
-                      updatedDetails[0].title = value;
-                      setProductDetails(updatedDetails);
+                      setProductDetails((prevDetails) => {
+                        const updatedDetails = [...prevDetails];
+                        updatedDetails[0].title = value;
+                        return updatedDetails;
+                      });
                     }}
                   />
                 }
@@ -159,7 +174,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                     value={productDetails[0].description}
                     setvalue={(value) => {
                       const updatedDetails = [...productDetails];
-                      updatedDetails[0].description = value;
+                      updatedDetails[1].description = value;
                       setProductDetails(updatedDetails);
                     }}
                   />
@@ -272,8 +287,12 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   <TestFiedComponent
                     placeholder="$ 0.00Đ"
                     title="Origin Price"
-                    value={productName}
-                    setvalue={setProductName}
+                    value={productDetails[0].price}
+                    setvalue={(value) => {
+                      const updatedDetails = [...productDetails];
+                      updatedDetails[0].price = value;
+                      setProductDetails(updatedDetails);
+                    }}
                   />
                 }
               />
@@ -285,8 +304,12 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   <TestFiedComponent
                     placeholder="$ 0.00Đ"
                     title="Selling Price"
-                    value={productName}
-                    setvalue={setProductName}
+                    value={productDetails[0].price}
+                    setvalue={(value) => {
+                      const updatedDetails = [...productDetails];
+                      updatedDetails[0].price = value;
+                      setProductDetails(updatedDetails);
+                    }}
                   />
                 }
               />
