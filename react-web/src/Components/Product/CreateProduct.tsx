@@ -14,7 +14,6 @@ import {
   Typography,
   Breadcrumbs,
 } from "@mui/material";
-import BreadcrumbComponent from "../Breadcrumbs/BreadcrumbComponent";
 import TestFieldSmall from "../Input/TestFieldSmall";
 import SelectInput from "../Input/SelectInput";
 import TestFiedComponent from "../Input/TestFiedComponent";
@@ -38,7 +37,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   productName,
   setProductName,
 }) => {
-  const ProductCreate = useState({
+  const [ProductCreate, setProductCreate] = useState({
     productname: "",
     category: "",
     material: "",
@@ -81,18 +80,6 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   const sizedata = useSelector(Size) || [];
   const materialdata = useSelector(Material) || [];
   const categorydata = useSelector(Category) || [];
-  const [productDetails, setProductDetails] = useState([
-    {
-      title: "",
-      description: "",
-      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
-    },
-    {
-      title: "",
-      description: "",
-      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
-    },
-  ]);
   return (
     <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
       <DialogTitle>
@@ -153,11 +140,11 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   <TestFiedComponent
                     placeholder="Enter your product title"
                     title="Title Product"
-                    value={productDetails[0].title}
-                    setvalue={(value) => {
-                      setProductDetails((prevDetails) => {
-                        const updatedDetails = [...prevDetails];
-                        updatedDetails[0].title = value;
+                    value={ProductCreate.description[0].title}
+                    setvalue={(value: string) => {
+                      setProductCreate((prev) => {
+                        const updatedDetails = { ...prev };
+                        updatedDetails.description[0].title = value;
                         return updatedDetails;
                       });
                     }}
@@ -171,11 +158,13 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                 primary={
                   <TestArial
                     title="Description"
-                    value={productDetails[0].description}
-                    setvalue={(value) => {
-                      const updatedDetails = [...productDetails];
-                      updatedDetails[1].description = value;
-                      setProductDetails(updatedDetails);
+                    value={ProductCreate.description[1].description}
+                    setvalue={(value: string) => {
+                      setProductCreate((prev) => {
+                        const updatedDetails = { ...prev };
+                        updatedDetails.description[1].description = value;
+                        return updatedDetails;
+                      });
                     }}
                   />
                 }
@@ -195,7 +184,10 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                           const file = e.target.files[0];
                           const reader = new FileReader();
                           reader.onloadend = () => {
-                            // setProductImage(reader.result as string);
+                            setProductCreate((prev) => ({
+                              ...prev,
+                              Image: reader.result as string,
+                            }));
                           };
                           reader.readAsDataURL(file);
                         }
@@ -287,11 +279,11 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   <TestFiedComponent
                     placeholder="$ 0.00Đ"
                     title="Origin Price"
-                    value={productDetails[0].price}
+                    value={ProductCreate.price}
                     setvalue={(value) => {
-                      const updatedDetails = [...productDetails];
-                      updatedDetails[0].price = value;
-                      setProductDetails(updatedDetails);
+                      const updatedDetails = { ...ProductCreate };
+                      updatedDetails.price = value;
+                      setProductCreate(updatedDetails);
                     }}
                   />
                 }
@@ -304,11 +296,11 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   <TestFiedComponent
                     placeholder="$ 0.00Đ"
                     title="Selling Price"
-                    value={productDetails[0].price}
+                    value={ProductCreate.price}
                     setvalue={(value) => {
-                      const updatedDetails = [...productDetails];
-                      updatedDetails[0].price = value;
-                      setProductDetails(updatedDetails);
+                      const updatedDetails = { ...ProductCreate };
+                      updatedDetails.price = value;
+                      setProductCreate(updatedDetails);
                     }}
                   />
                 }
