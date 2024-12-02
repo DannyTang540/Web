@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -14,6 +14,7 @@ import {
   MenuItem,
   IconButton,
   Collapse,
+  Breadcrumbs,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -53,6 +54,12 @@ const UserDetail: React.FC = () => {
 
   return (
     <Box m={4}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" to="/user">
+          User
+        </Link>
+        <Typography color="text.primary">User Details</Typography>
+      </Breadcrumbs>
       <Grid container spacing={4}>
         {/* User image */}
         <Grid item xs={12} md={6}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,16 +11,19 @@ import {
   ListItemText,
   Divider,
   Grid,
-} from '@mui/material';
-import BreadcrumbComponent from '../Breadcrumbs/BreadcrumbComponent';
-import TestFieldSmall from '../Input/TestFieldSmall';
-import SelectInput from '../Input/SelectInput';
-import TestFiedComponent from '../Input/TestFiedComponent';
-import TestArial from '../Input/TestArial';
-import AutocompletedComponent from '../Input/AutocompletedComponent';
-import CheckBoxComponent from '../Input/CheckBoxComponent';
-import {Category, Color, Material, Size} from "../Redux/Selector.tsx";
-import {useSelector} from "react-redux";
+  Typography,
+  Breadcrumbs,
+} from "@mui/material";
+import BreadcrumbComponent from "../Breadcrumbs/BreadcrumbComponent";
+import TestFieldSmall from "../Input/TestFieldSmall";
+import SelectInput from "../Input/SelectInput";
+import TestFiedComponent from "../Input/TestFiedComponent";
+import TestArial from "../Input/TestArial";
+import AutocompletedComponent from "../Input/AutocompletedComponent";
+import CheckBoxComponent from "../Input/CheckBoxComponent";
+import { Category, Color, Material, Size } from "../Redux/Selector.tsx";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 interface CreateProductDialogProps {
   open: boolean;
@@ -35,11 +38,23 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   productName,
   setProductName,
 }) => {
-  const ProductCreate=useState({
+  const [productDetails, setProductDetails] = useState([
+    {
+      title: "",
+      description: "",
+      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+    },
+    {
+      title: "",
+      description: "",
+      idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+    },
+  ]);
+  const ProductCreate = useState({
     productname: "",
-    category: '',
-    material: '',
-    gender:'',
+    category: "",
+    material: "",
+    gender: "",
     colors: [],
     sizes: [],
     price: 0,
@@ -57,27 +72,24 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
 * CÓ 2 phần input 1 là title cái 2 l nhập chi tiéết description ông làm cái description thanhf 1 manh như tui để ở trên value dây la description
 * ,Title giống như phân biêt giưa 2 description treên và idproduct thì ông đừng đụng giữ nguyên cho tui cg đc
     * */
-    Image: '',
+    Image: "",
     total: 0,
   });
   const style = {}; // Define your styles here
-    const colordata=useSelector(Color)||[];
-    const sizedata=useSelector(Size)||[];
-    const materialdata=useSelector(Material)||[];
-    const categorydata=useSelector(Category)||[];
+  const colordata = useSelector(Color) || [];
+  const sizedata = useSelector(Size) || [];
+  const materialdata = useSelector(Material) || [];
+  const categorydata = useSelector(Category) || [];
   return (
     <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
       <DialogTitle>
         <h3>Create Product</h3>
-        <p>
-          <BreadcrumbComponent
-            label={[
-              { label: 'Dashboard', final: false },
-              { label: 'Product', final: false },
-              { label: 'Create', final: true },
-            ]}
-          />
-        </p>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" to="/">
+            Home
+          </Link>
+          <Typography color="text.primary">Create Product</Typography>
+        </Breadcrumbs>
       </DialogTitle>
       <DialogContent>
         <Stack spacing={1}>
@@ -106,10 +118,16 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <SelectInput title="Category"  options={categorydata.map((el)=>el.NameCategory)} />
+                      <SelectInput
+                        title="Category"
+                        options={categorydata.map((el) => el.NameCategory)}
+                      />
                     </Grid>
                     <Grid item xs={4}>
-                      <SelectInput title="Material" options={materialdata.map((el)=>el.NameMaterial)} />
+                      <SelectInput
+                        title="Material"
+                        options={materialdata.map((el) => el.NameMaterial)}
+                      />
                     </Grid>
                   </Grid>
                 }
@@ -122,8 +140,12 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   <TestFiedComponent
                     placeholder="Enter your product title"
                     title="Title Product"
-                    value={productName}
-                    setvalue={setProductName}
+                    value={productDetails[0].title}
+                    setvalue={(value) => {
+                      const updatedDetails = [...productDetails];
+                      updatedDetails[0].title = value;
+                      setProductDetails(updatedDetails);
+                    }}
                   />
                 }
               />
@@ -134,8 +156,12 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                 primary={
                   <TestArial
                     title="Description"
-                    value={productName}
-                    setvalue={setProductName}
+                    value={productDetails[0].description}
+                    setvalue={(value) => {
+                      const updatedDetails = [...productDetails];
+                      updatedDetails[0].description = value;
+                      setProductDetails(updatedDetails);
+                    }}
                   />
                 }
               />
@@ -173,15 +199,20 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                       <AutocompletedComponent
                         title="Color"
                         placeholder="Choose Color"
-                        array={colordata.map((el)=>({key:el.Color,value:el.HexColor}))}
-
+                        array={colordata.map((el) => ({
+                          key: el.Color,
+                          value: el.HexColor,
+                        }))}
                       />
                     </Grid>
                     <Grid item xs={6}>
                       <AutocompletedComponent
                         title="Size"
                         placeholder="Choose Size"
-                        array={sizedata.map((el)=>({key:el.SizeName,value:el.Size}))}
+                        array={sizedata.map((el) => ({
+                          key: el.SizeName,
+                          value: el.Size,
+                        }))}
                       />
                     </Grid>
                   </Grid>

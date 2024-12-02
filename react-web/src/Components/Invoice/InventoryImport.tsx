@@ -69,7 +69,13 @@ const InventoryEntry = () => {
   };
 
   const handleAddItem = () => {
-    if (newItem.title && newItem.quantity > 0 && newItem.price >= 0) {
+    if (
+      newItem.title &&
+      newItem.quantity > 0 &&
+      newItem.price >= 0 &&
+      newItem.size.length > 0 &&
+      newItem.color.length > 0
+    ) {
       setItems([
         ...items,
         { ...newItem, total: newItem.quantity * newItem.price },
@@ -80,14 +86,14 @@ const InventoryEntry = () => {
         service: "",
         quantity: 1,
         price: 0,
-        size: "",
-        color: "",
+        size: [],
+        color: [],
         dateCreated: new Date().toISOString().split("T")[0],
         total: 0,
       });
       setSelectedCategory(null);
     } else {
-      alert("Please fill in the product details correctly."); 
+      alert("Please fill in the product details correctly.");
     }
   };
 
@@ -132,7 +138,7 @@ const InventoryEntry = () => {
               options={categories}
               onChange={(event, newValue) => {
                 setSelectedCategory(newValue);
-                setNewItem({ ...newItem, title: "" }); 
+                setNewItem({ ...newItem, title: "" });
               }}
               renderInput={(params) => (
                 <TextField {...params} label="Category" />
@@ -151,18 +157,6 @@ const InventoryEntry = () => {
               disabled={!selectedCategory}
             />
           </Grid>
-         
-          <Grid item xs={6}>
-            <TextField
-              label="Date created"
-              type="date"
-              value={newItem.dateCreated}
-              onChange={(e) =>
-                setNewItem({ ...newItem, dateCreated: e.target.value })
-              }
-              fullWidth
-            />
-          </Grid>
           <Grid item xs={2}>
             <Autocomplete
               multiple
@@ -171,7 +165,7 @@ const InventoryEntry = () => {
                 setNewItem({ ...newItem, size: newValue })
               }
               renderInput={(params) => (
-                <TextField {...params} label="Size" fullWidth/>
+                <TextField {...params} label="Size" fullWidth />
               )}
               disabled={!selectedCategory}
             />
@@ -184,7 +178,7 @@ const InventoryEntry = () => {
                 setNewItem({ ...newItem, color: newValue })
               }
               renderInput={(params) => (
-                <TextField {...params} label="Color" fullWidth/>
+                <TextField {...params} label="Color" fullWidth />
               )}
               disabled={!selectedCategory}
             />
@@ -223,58 +217,38 @@ const InventoryEntry = () => {
             </Button>
           </Grid>
         </Grid>
-
+        <Box sx={{ display: "flex", gap: 32 }}>
+          <Typography variant="body1">Title:</Typography>
+          <Typography variant="body1">Quantity</Typography>
+          <Typography variant="body1">Price</Typography>
+          <Typography variant="body1">Total</Typography>
+        </Box>
         <Box mt={2}>
           {items.map((item, index) => (
-            <Grid container key={index} spacing={2}>
-              <Grid item xs={3}>
-                {item.title}
-              </Grid>
-              <Grid item xs={2}>
-                {item.quantity}
-              </Grid>
-              <Grid item xs={2}>
-                {item.price}
-              </Grid>
-              <Grid item xs={2}>
-                {item.total}
-              </Grid>
-              <Grid item xs={1}>
-                <Button variant="outlined" onClick={() => handleDeleteItem(index)}>
-                  Xóa
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      multiple
-                      options={selectedCategory ? sizes[selectedCategory] : []}
-                      onChange={(event, newValue) =>
-                        setNewItem({ ...newItem, size: newValue })
-                      }
-                      renderInput={(params) => (
-                        <TextField {...params} label="Size" />
-                      )}
-                      disabled={!selectedCategory}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      multiple
-                      options={selectedCategory ? colors[selectedCategory] : []}
-                      onChange={(event, newValue) =>
-                        setNewItem({ ...newItem, color: newValue })
-                      }
-                      renderInput={(params) => (
-                        <TextField {...params} label="Color" />
-                      )}
-                      disabled={!selectedCategory}
-                    />
-                  </Grid>
+            <>
+              <Grid container key={index} spacing={2}>
+                <Grid item xs={3}>
+                  {item.title}
+                </Grid>
+                <Grid item xs={3}>
+                  {item.quantity}
+                </Grid>
+                <Grid item xs={3}>
+                  {item.price}
+                </Grid>
+                <Grid item xs={2}>
+                  {item.total}
+                </Grid>
+                <Grid item xs={1}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleDeleteItem(index)}
+                  >
+                    Xóa
+                  </Button>
                 </Grid>
               </Grid>
-            </Grid>
+            </>
           ))}
         </Box>
 

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header1 from "./Components/Header1";
 import SignIn from "./Components/Auth/SignIn";
 import Products from "./Pages/Products";
-import ProductDetail from "./Pages/ProductsDetails";
-import InventoryImport from "./Components/Product/InventoryImport";
+import ProductDetail from "./Components/Product/ProductsDetails";
+import InventoryImport from "./Components/Invoice/InventoryImport";
 
 const App = () => {
   return (

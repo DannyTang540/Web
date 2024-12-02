@@ -19,14 +19,6 @@ const menuItems = [
     icon: <FaTshirt />,
     children: [
       { label: "List", path: "/product" },
-      {
-        label: "Invoice",
-        icon: <CiImport />,
-        children: [
-          { label: "List", path: "/invoice" },
-          { label: "Create", path: "/invoice/new" },
-        ],
-      },
     ],
   },
   {
@@ -48,6 +40,14 @@ const menuItems = [
     icon: <FaShoppingCart />,
     children: [
       { label: "Customer Orders", path: "/orders" },
+    ],
+  },
+  {
+    label: "Invoice",
+    icon: <CiImport />,
+    children: [
+      { label: "List", path: "/invoice" },
+      { label: "Create", path: "/invoice/new" },
     ],
   },
 ];
