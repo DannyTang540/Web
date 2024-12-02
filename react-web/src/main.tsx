@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import UserRoles from "./Components/user/UserRole";
 import Products from "./Pages/Products";
-import OrderStatus from "./Components/Invoice/OrderStatus";
+import OrderStatus from "./Components/Invoice/ProductOrderStatus";
 import CustomerOrders from "./Components/Customer/CustomerOrders";
 import CustomerDetail from "./Components/Customer/CustomerDetail";
 import UserDetail from "./Components/user/UserDetails";

@@ -45,19 +45,6 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     colors: [],
     sizes: [],
     price: 0,
-    /*
-    * [{
-    "title":"Title",
-    "description":"Mô tả Header của sản phẩm a",
-    "idproduct":"2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff"
-},{
-    "title":"Body",
-    "description":"Mô tả Chi tiết của sản phẩm a",
-    "idproduct":"2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff"
-}]
-* CÓ 2 phần input 1 là title cái 2 l nhập chi tiéết description ông làm cái description thanhf 1 manh như tui để ở trên value dây la description
-* ,Title giống như phân biêt giưa 2 description treên và idproduct thì ông đừng đụng giữ nguyên cho tui cg đc
-    * */
     description: [
       //head
       {
@@ -75,250 +62,333 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     Image: "",
     total: 0,
   });
+  const [gender, setGender] = useState<string>("");
   const style = {}; // Define your styles here
   const colordata = useSelector(Color) || [];
   const sizedata = useSelector(Size) || [];
   const materialdata = useSelector(Material) || [];
   const categorydata = useSelector(Category) || [];
+
+  const handleCategoryChange = (value: string) => {
+    setProductCreate((prev) => ({ ...prev, category: value }));
+  };
+  const handleMaterialChange = (value: string) => {
+    setProductCreate((prev) => ({ ...prev, material: value }));
+  };
+  const handleGenderChange = (gender: string) => {
+    setGender(gender);
+    setProductCreate((prev) => ({ ...prev, gender }));
+  };
+  const handleColorsChange = (values: string[]) => {
+    setProductCreate((prev) => ({ ...prev, colors: values as any }));
+  };
+  const handleSizesChange = (values: string[]) => {
+    setProductCreate((prev) => ({ ...prev, sizes: values as any }));
+  };
+  const handleDescriptionUpdate = (
+    index: number,
+    field: "title" | "description",
+    value: string
+  ) => {
+    console.log(`Updated ${field} at index ${index}:`, value);
+    setProductCreate((prev) => {
+      const updatedDescription = [...prev.description];
+      updatedDescription[index] = {
+        ...updatedDescription[index],
+        [field]: value,
+      };
+      return { ...prev, description: updatedDescription };
+    });
+  };
+  const handlePriceChange = (value: number) => {
+    setProductCreate((prev) => ({ ...prev, price: value }));
+  };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (!file.type.startsWith("image/")) {
+        console.error("Invalid file type. Please upload an image.");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        console.error("File size exceeds 5MB.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imageData = reader.result as string;
+        setProductCreate((prev) => ({
+          ...prev,
+          Image: imageData,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const resetForm = () => {
+    setProductCreate({
+      productname: "",
+      category: "",
+      material: "",
+      gender: "",
+      colors: [],
+      sizes: [],
+      price: 0,
+      description: [
+        { title: "", description: "", idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff" },
+        { title: "", description: "", idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff" },
+      ],
+      Image: "",
+      total: 0,
+    });
+    setProductName("");
+  };
+  const handleSubmit = () => {
+    console.log("Final Product Data:", ProductCreate);
+    resetForm();
+    handleClose();
+  };
+  const handleProductNameChange = (value: string) => {
+    setProductName(value);
+    setProductCreate((prev) => ({ ...prev, productname: value }));
+  };
   return (
-    <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
-      <DialogTitle>
-        <h3>Create Product</h3>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" to="/">
-            Home
-          </Link>
-          <Typography color="text.primary">Create Product</Typography>
-        </Breadcrumbs>
-      </DialogTitle>
-      <DialogContent>
-        <Stack spacing={1}>
-          <List sx={style}>
-            <ListItem>
-              <ListItemText
-                primary={
-                  <div>
-                    <h4>Details</h4>
-                    <p>Title, short description, image...</p>
-                  </div>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <Grid container spacing={1}>
-                    <Grid item xs={4}>
-                      <TestFieldSmall
-                        placeholder="Enter product name"
-                        value={productName}
-                        setvalue={setProductName}
-                        title="Product Name"
-                      />
+    <div className="create-product-dialog">
+      <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
+        <DialogTitle>
+          <h3>Create Product</h3>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link color="inherit" to="/">
+              Home
+            </Link>
+            <Typography color="text.primary">Create Product</Typography>
+          </Breadcrumbs>
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={1}>
+            <List sx={style}>
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <div>
+                      <h4>Details</h4>
+                      <p>Title, short description, image...</p>
+                    </div>
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <Grid container spacing={1}>
+                      <Grid item xs={4}>
+                        <TestFieldSmall
+                          placeholder="Enter product name"
+                          value={productName}
+                          setvalue={handleProductNameChange}
+                          title="Product Name"
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <SelectInput
+                          title="Category"
+                          options={
+                            categorydata.length > 0
+                              ? categorydata.map(
+                                  (el: { NameCategory: string }) =>
+                                    el.NameCategory
+                                )
+                              : [""]
+                          }
+                          value={ProductCreate.category || ""}
+                          onChange={handleCategoryChange}
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <SelectInput
+                          title="Material"
+                          options={materialdata.map(
+                            (el: { NameMaterial: string }) => el.NameMaterial
+                          )}
+                          value={ProductCreate.material || ""}
+                          onChange={handleMaterialChange}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={4}>
-                      <SelectInput
-                        title="Category"
-                        options={categorydata.map((el) => el.NameCategory)}
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <TestFiedComponent
+                      placeholder="Enter your product title"
+                      title="Title Product"
+                      value={ProductCreate.description[0].title}
+                      setvalue={(value: string) =>
+                        handleDescriptionUpdate(0, "title", value)
+                      }
+                    />
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <TestArial
+                      title="Description"
+                      value={ProductCreate.description[1].description}
+                      setvalue={(value: string) =>
+                        handleDescriptionUpdate(1, "description", value)
+                      }
+                    />
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        title="Product Images"
+                        onChange={handleFileChange}
+                        multiple
                       />
+                    </div>
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <AutocompletedComponent
+                          title="Color"
+                          placeholder="Choose Color"
+                          array={colordata.map((el) => ({
+                            key: el.Color,
+                            value: el.HexColor,
+                          }))}
+                          setValues={(values: string[]) =>
+                            handleColorsChange(values)
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <AutocompletedComponent
+                          title="Size"
+                          placeholder="Choose Size"
+                          array={sizedata.map((el) => ({
+                            key: el.SizeName,
+                            value: el.Size,
+                          }))}
+                          setvalue={(values: string[]) =>
+                            handleSizesChange(values)
+                          }
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item xs={4}>
-                      <SelectInput
-                        title="Material"
-                        options={materialdata.map((el) => el.NameMaterial)}
-                      />
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <Grid container spacing={1}>
+                      <Grid item xs={8}>
+                        <h4>Gender</h4>
+                      </Grid>
+                      <Grid container spacing={3}>
+                        <Grid item xs={3}>
+                          <CheckBoxComponent
+                            value={gender === "Male"}
+                            setvalue={() => handleGenderChange("Male")}
+                            title="Male"
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <CheckBoxComponent
+                            value={gender === "Female"}
+                            setvalue={() => handleGenderChange("Female")}
+                            title="Female"
+                          />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <CheckBoxComponent
+                            value={gender === "Unisex"}
+                            setvalue={() => handleGenderChange("Unisex")}
+                            title="Unisex"
+                          />
+                        </Grid>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <TestFiedComponent
-                    placeholder="Enter your product title"
-                    title="Title Product"
-                    value={ProductCreate.description[0].title}
-                    setvalue={(value: string) => {
-                      setProductCreate((prev) => {
-                        const updatedDetails = { ...prev };
-                        updatedDetails.description[0].title = value;
-                        return updatedDetails;
-                      });
-                    }}
-                  />
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <TestArial
-                    title="Description"
-                    value={ProductCreate.description[1].description}
-                    setvalue={(value: string) => {
-                      setProductCreate((prev) => {
-                        const updatedDetails = { ...prev };
-                        updatedDetails.description[1].description = value;
-                        return updatedDetails;
-                      });
-                    }}
-                  />
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      title="Product Image"
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                          const file = e.target.files[0];
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setProductCreate((prev) => ({
-                              ...prev,
-                              Image: reader.result as string,
-                            }));
-                          };
-                          reader.readAsDataURL(file);
-                        }
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <div>
+                      <h4>Prices</h4>
+                      <p>Price related inputs</p>
+                    </div>
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <TestFiedComponent
+                      placeholder="$ 0.00Đ"
+                      title="Origin Price"
+                      value={ProductCreate.price}
+                      setvalue={(value: number) => {
+                        handlePriceChange(value);
                       }}
                     />
-                  </div>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <AutocompletedComponent
-                        title="Color"
-                        placeholder="Choose Color"
-                        array={colordata.map((el) => ({
-                          key: el.Color,
-                          value: el.HexColor,
-                        }))}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <AutocompletedComponent
-                        title="Size"
-                        placeholder="Choose Size"
-                        array={sizedata.map((el) => ({
-                          key: el.SizeName,
-                          value: el.Size,
-                        }))}
-                      />
-                    </Grid>
-                  </Grid>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <Grid container spacing={1}>
-                    <Grid item xs={8}>
-                      <h4>Gender</h4>
-                    </Grid>
-                    <Grid container spacing={3}>
-                      <Grid item xs={3}>
-                        <CheckBoxComponent
-                          value={productName}
-                          setvalue={setProductName}
-                          title="Male"
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <CheckBoxComponent
-                          value={productName}
-                          setvalue={setProductName}
-                          title="Female"
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <CheckBoxComponent
-                          value={productName}
-                          setvalue={setProductName}
-                          title="Unisex"
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <div>
-                    <h4>Prices</h4>
-                    <p>Price related inputs</p>
-                  </div>
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <TestFiedComponent
-                    placeholder="$ 0.00Đ"
-                    title="Origin Price"
-                    value={ProductCreate.price}
-                    setvalue={(value) => {
-                      const updatedDetails = { ...ProductCreate };
-                      updatedDetails.price = value;
-                      setProductCreate(updatedDetails);
-                    }}
-                  />
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-            <ListItem>
-              <ListItemText
-                primary={
-                  <TestFiedComponent
-                    placeholder="$ 0.00Đ"
-                    title="Selling Price"
-                    value={ProductCreate.price}
-                    setvalue={(value) => {
-                      const updatedDetails = { ...ProductCreate };
-                      updatedDetails.price = value;
-                      setProductCreate(updatedDetails);
-                    }}
-                  />
-                }
-              />
-            </ListItem>
-            <Divider component="li" />
-          </List>
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button color="info" variant="outlined" onClick={handleClose}>
-          Create
-        </Button>
-        <Button variant="text" color="error" onClick={handleClose}>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <TestFiedComponent
+                      placeholder="$ 0.00Đ"
+                      title="Selling Price"
+                      value={ProductCreate.price}
+                      setvalue={(value: number) => {
+                        handlePriceChange(value);
+                      }}
+                    />
+                  }
+                />
+              </ListItem>
+              <Divider component="li" />
+            </List>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button color="info" variant="outlined" onClick={handleSubmit}>
+            Create
+          </Button>
+          <Button variant="text" color="error" onClick={handleClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 

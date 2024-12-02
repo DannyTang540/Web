@@ -4,7 +4,10 @@ import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 const SelectInput = ({
     options,
     title,
-                     }) => {
+}: {
+    options: string[];
+    title: string;
+}) => {
   const [selectedValue, setSelectedValue] = useState("");
 
   return (

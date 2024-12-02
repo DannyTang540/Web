@@ -1,114 +1,191 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
 import {
   Box,
   Typography,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Divider,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
-  IconButton,
-  Collapse,
+  Switch,
+  TextField,
   Breadcrumbs,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-
-interface User {
-  id: string;
-  name: string;
-  bio: string;
-  email: string;
-  phone: string;
-  address: string;
-  imageUrl: string;
-}
+import { Link } from "react-router-dom";
 
 const UserDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-
-  // Sample data for the user (replace with API data later)
-  const user: User = {
-    id: id || "1",
-    name: "John Doe",
-    bio: "A passionate developer with a love for coding.",
-    email: "john.doe@example.com",
-    phone: "123-456-7890",
-    address: "123 Main St, Anytown, USA",
-    imageUrl: "https://via.placeholder.com/15", // Smaller image size
-  };
-
-  // State to manage collapse
-  const [open, setOpen] = React.useState<boolean>(false);
-
-  // Toggle collapse
-  const handleToggleCollapse = () => {
-    setOpen(!open);
+  const user = {
+    name: "Angeliquie Morse",
+    phone: "08-12 34 56",
+    email: "benny89@yahoo.com",
+    country: "Sweden",
+    state: "Virginia",
+    city: "Rancho Cordova",
+    address: "908 Jack Locks",
+    zip: "85807",
+    role: "Content Creator",
+    banned: false,
+    company: "Wuckert Inc",
   };
 
   return (
     <Box m={4}>
+      <Typography variant="h4" gutterBottom>
+        User Details
+      </Typography>
       <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" to="/">
+          Home
+        </Link>
         <Link color="inherit" to="/user">
-          User
+          Users
         </Link>
         <Typography color="text.primary">User Details</Typography>
       </Breadcrumbs>
-      <Grid container spacing={4}>
-        {/* User image */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardMedia
-              component="img"
-              image={user.imageUrl}
-              alt={user.name}
+      <Grid container spacing={2} mt={2}>
+        <Grid item xs={6} md={6} >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="50%"
+          >
+            <img
+              src="path_to_user_image"
+              alt="User"
+              style={{ maxWidth: "100%", borderRadius: "4px" }}
             />
-          </Card>
+          </Box>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ maxWidth: 600 }}>
             <CardContent>
-              <Typography variant="h4" gutterBottom>
-                {user.name}
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Email: {user.email}
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Phone: {user.phone}
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Address: {user.address}
-              </Typography>
-              <Box
-                display="flex"
-                alignItems="center"
-                mt={2}
-                onClick={handleToggleCollapse}
-                sx={{ cursor: "pointer" }}
-              >
-                <Typography variant="h6">Bio</Typography>
-                <IconButton>
-                  {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </IconButton>
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <Typography variant="h6">Full Name</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.name}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">Phone Number</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.phone}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">Email Address</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.email}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">Role</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.role}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="h6">Country</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.country}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">State/Region</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.state}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">City</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.city}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">Address</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.address}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">Zip/Code</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.zip}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Divider sx={{ my: 1 }} />
+              <Box display="flex" alignItems="center">
+                <Typography variant="h6">Banned</Typography>
+                <Switch checked={user.banned} disabled />
               </Box>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box mt={2}>
-                  <Typography variant="body1" paragraph>
-                    {user.bio}
-                  </Typography>
-                </Box>
-              </Collapse>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="h6">Company</Typography>
+              <TextField
+                fullWidth
+                value={user.company}
+                variant="outlined"
+                margin="normal"
+                InputProps={{ readOnly: true, style: { fontSize: "0.875rem" } }}
+              />
             </CardContent>
-            <IconButton>
-              <EditIcon />
-            </IconButton>
           </Card>
         </Grid>
       </Grid>

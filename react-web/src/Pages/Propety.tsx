@@ -240,7 +240,7 @@ const Propety = () => {
               Data={colCategory}
               HeaderComponent={
                 <HeaderTwoEven
-                  SelectInput={<SelectInput title={"Status"} />}
+                  SelectInput={<SelectInput title={"Status"} options={["Active", "Inactive"]} />}
                   CustomButton={
                     <Button
                       variant="outlined"

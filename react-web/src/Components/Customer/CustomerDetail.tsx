@@ -13,10 +13,20 @@ import {
   Breadcrumbs,
 } from "@mui/material";
 import { customerOrders } from "./CustomerOrders";
+import {
+  Timeline,
+  TimelineContent,
+  TimelineConnector,
+  TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
+} from "@mui/lab";
 
 const CustomerDetail: React.FC = () => {
   const { COId } = useParams<{ COId: string }>();
-  const order = customerOrders.find((order: { orderId: string }) => order.orderId === COId);
+  const order = customerOrders.find(
+    (order: { orderId: string }) => order.orderId === COId
+  );
 
   if (!order) {
     return (
@@ -35,6 +45,16 @@ const CustomerDetail: React.FC = () => {
   const taxes = 68710;
   const total = subtotal + shipping + discount + taxes;
 
+  const orderStatusHistory = [
+    { status: "Delivery successful", date: "30 Nov 2024 6:41 am" },
+    { status: "Transporting to [2]", date: "29 Nov 2024 5:41 am" },
+    { status: "Transporting to [1]", date: "28 Nov 2024 4:41 am" },
+    {
+      status: "The shipping unit has picked up the goods",
+      date: "27 Nov 2024 3:41 am",
+    },
+    { status: "Order has been created", date: "26 Nov 2024 2:41 am" },
+  ];
   return (
     <Box m={2}>
       <Typography variant="h4">Customer Order Details</Typography>
@@ -59,7 +79,7 @@ const CustomerDetail: React.FC = () => {
           </TableHead>
           <TableBody>
             {order.details.map((detail) => (
-              <TableRow key={detail.productId}>
+              <TableRow key={detail.productId} sx={{ borderBottom: '2px solid #ccc' }}>
                 <TableCell>{detail.productName}</TableCell>
                 <TableCell align="right">{detail.quantity}</TableCell>
                 <TableCell align="right">
@@ -104,6 +124,36 @@ const CustomerDetail: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box component={Paper} p={2} mt={2}>
+        <Typography variant="h6">History</Typography>
+        <Timeline sx={{ pr: 60 }}>
+          {orderStatusHistory
+            .slice()
+            .reverse()
+            .map((entry: { status: string; date: string }, index: number) => (
+              <TimelineItem key={index}>
+                <TimelineSeparator>
+                  <TimelineDot
+                    color={
+                      index === orderStatusHistory.length - 1
+                        ? "success"
+                        : "grey"
+                    }
+                  />
+                  {index < orderStatusHistory.length - 1 && (
+                    <TimelineConnector />
+                  )}
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Typography variant="body2">{entry.status}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {entry.date}
+                  </Typography>
+                </TimelineContent>
+              </TimelineItem>
+            ))}
+        </Timeline>
+      </Box>
     </Box>
   );
 };

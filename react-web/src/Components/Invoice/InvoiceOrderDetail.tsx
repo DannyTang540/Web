@@ -12,7 +12,14 @@ import {
   Paper,
   Breadcrumbs,
 } from "@mui/material";
-import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineDot, TimelineContent } from '@mui/lab';
+import {
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineConnector,
+  TimelineDot,
+  TimelineContent,
+} from "@mui/lab";
 
 const orders = [
   {
@@ -63,7 +70,10 @@ const orderStatusHistory = [
   { status: "Delivery successful", date: "30 Nov 2024 6:41 am" },
   { status: "Transporting to [2]", date: "29 Nov 2024 5:41 am" },
   { status: "Transporting to [1]", date: "28 Nov 2024 4:41 am" },
-  { status: "The shipping unit has picked up the goods", date: "27 Nov 2024 3:41 am" },
+  {
+    status: "The shipping unit has picked up the goods",
+    date: "27 Nov 2024 3:41 am",
+  },
   { status: "Order has been created", date: "26 Nov 2024 2:41 am" },
 ];
 
@@ -100,7 +110,10 @@ const OrderDetail: React.FC = () => {
         </Link>
         <Typography color="text.primary">Order Detail</Typography>
       </Breadcrumbs>
-      <TableContainer component={Paper} sx={{ mt: 10 }}>
+      <TableContainer
+        component={Paper}
+        sx={{ mt: 10, width: "100%", maxWidth: "800px", margin: "auto" }}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -126,23 +139,32 @@ const OrderDetail: React.FC = () => {
             <TableRow>
               <TableCell rowSpan={4} />
               <TableCell colSpan={2}>Subtotal</TableCell>
-              <TableCell align="right">
+              <TableCell
+                align="right"
+                sx={{ fontWeight: "bold", borderTop: "2px solid black" }}
+              >
                 {subtotal.toLocaleString()} VND
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow
+              sx={{ backgroundColor: "#e0f7fa", borderTop: "2px solid black" }}
+            >
               <TableCell colSpan={2}>Shipping</TableCell>
               <TableCell align="right">
                 {shipping.toLocaleString()} VND
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow
+              sx={{ backgroundColor: "#e0f7fa", borderTop: "2px solid black" }}
+            >
               <TableCell colSpan={2}>Discount</TableCell>
               <TableCell align="right">
                 {discount.toLocaleString()} VND
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow
+              sx={{ backgroundColor: "#e0f7fa", borderTop: "2px solid black" }}
+            >
               <TableCell colSpan={2}>Taxes</TableCell>
               <TableCell align="right">{taxes.toLocaleString()} VND</TableCell>
             </TableRow>
@@ -159,21 +181,32 @@ const OrderDetail: React.FC = () => {
       </TableContainer>
       <Box component={Paper} p={2} mt={2}>
         <Typography variant="h6">History</Typography>
-        <Timeline sx={{ pr: 90 }}>
-          {orderStatusHistory.slice().reverse().map((entry, index) => (
-            <TimelineItem key={index}>
-              <TimelineSeparator>
-                <TimelineDot color={index === orderStatusHistory.length - 1 ? "success" : "grey"} />
-                {index < orderStatusHistory.length - 1 && <TimelineConnector />}
-              </TimelineSeparator>
-              <TimelineContent>
-                <Typography variant="body2">{entry.status}</Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {entry.date}
-                </Typography>
-              </TimelineContent>
-            </TimelineItem>
-          ))}
+        <Timeline sx={{ pr: 60 }}>
+          {orderStatusHistory
+            .slice()
+            .reverse()
+            .map((entry, index) => (
+              <TimelineItem key={index}>
+                <TimelineSeparator>
+                  <TimelineDot
+                    color={
+                      index === orderStatusHistory.length - 1
+                        ? "success"
+                        : "grey"
+                    }
+                  />
+                  {index < orderStatusHistory.length - 1 && (
+                    <TimelineConnector />
+                  )}
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Typography variant="body2">{entry.status}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {entry.date}
+                  </Typography>
+                </TimelineContent>
+              </TimelineItem>
+            ))}
         </Timeline>
       </Box>
     </Box>
