@@ -4,7 +4,7 @@ import { StatusEnum } from "../../types/Status";
 import { toasityComponent } from "../SnackBar/SnackBarComponent";
 import MapKeys from "../MapKey/Mapkey";
 
-const local = https + "/size";
+const local = https + "/sizes";
 const keyMapping = {
   id: "Id",
   size: "Size",

@@ -27,6 +27,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CircleProductStock from "../Box/CircleProductStock";
 import {Product} from "../Redux/Selector.tsx"
 import {useDispatch, useSelector} from "react-redux";
+import  ConvertDateArrayToISO from "../Date/Dateconvert.jsx"
 import { useTheme } from '@mui/material/styles';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -128,7 +129,7 @@ const TableProduct: React.FC = () => {
         el.category.name||"",
         el.materials.name||"",
         10,
-        el.createat.split("T")[0]||"",
+        ConvertDateArrayToISO(el.createat),
         el.image.urlImage||"",
         "Female"
     )

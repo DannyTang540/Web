@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
 import Authentication, { GetToken } from "./Authentication";
 // Constants
-const local = https + "/user";
+const local = https + "/users";
 
 // Types
 interface UserState {
