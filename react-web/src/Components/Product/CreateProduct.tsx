@@ -280,7 +280,6 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                         accept="image/*"
                         title="Product Images"
                         onChange={handleFileChange}
-                        multiple
                       />
                     </div>
                   }
