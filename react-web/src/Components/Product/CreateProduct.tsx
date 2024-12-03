@@ -13,6 +13,10 @@ import {
   Grid,
   Typography,
   Breadcrumbs,
+  Autocomplete,
+  TextField,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import TestFieldSmall from "../Input/TestFieldSmall";
 import SelectInput from "../Input/SelectInput";
@@ -20,24 +24,44 @@ import TestFiedComponent from "../Input/TestFiedComponent";
 import TestArial from "../Input/TestArial";
 import AutocompletedComponent from "../Input/AutocompletedComponent";
 import CheckBoxComponent from "../Input/CheckBoxComponent";
-import { Category, Color, Material, Size } from "../Redux/Selector.tsx";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
+// Dữ liệu giả cho material, color, size và category
+const mockMaterials = ["Cotton", "Polyester", "Wool", "Silk"];
+const mockColors = [
+  { label: "Red", value: "#FF0000" },
+  { label: "Green", value: "#00FF00" },
+  { label: "Blue", value: "#0000FF" },
+  { label: "Black", value: "#000000" },
+];
+const mockSizes = ["S", "M", "L", "XL"];
+const mockCategories = ["Clothing", "Footwear", "Accessories", "Electronics"];
 
 interface CreateProductDialogProps {
   open: boolean;
   handleClose: () => void;
-  productName: string;
-  setProductName: (value: string) => void;
 }
 
 const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   open,
   handleClose,
-  productName,
-  setProductName,
 }) => {
-  const [ProductCreate, setProductCreate] = useState({
+  const [ProductCreate, setProductCreate] = useState<{
+    productname: string;
+    category: string;
+    material: string;
+    gender: string;
+    colors: string[];
+    sizes: string[];
+    price: number;
+    sellingprice: number;
+    description: {
+      title: string;
+      description: string;
+      idproduct: string;
+    }[];
+    Image: string;
+  }>({
     productname: "",
     category: "",
     material: "",
@@ -45,14 +69,13 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     colors: [],
     sizes: [],
     price: 0,
+    sellingprice: 0,
     description: [
-      //head
       {
         title: "",
         description: "",
         idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
       },
-      //body
       {
         title: "",
         description: "",
@@ -60,31 +83,9 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
       },
     ],
     Image: "",
-    total: 0,
   });
   const [gender, setGender] = useState<string>("");
-  const style = {}; // Define your styles here
-  const colordata = useSelector(Color) || [];
-  const sizedata = useSelector(Size) || [];
-  const materialdata = useSelector(Material) || [];
-  const categorydata = useSelector(Category) || [];
 
-  const handleCategoryChange = (value: string) => {
-    setProductCreate((prev) => ({ ...prev, category: value }));
-  };
-  const handleMaterialChange = (value: string) => {
-    setProductCreate((prev) => ({ ...prev, material: value }));
-  };
-  const handleGenderChange = (gender: string) => {
-    setGender(gender);
-    setProductCreate((prev) => ({ ...prev, gender }));
-  };
-  const handleColorsChange = (values: string[]) => {
-    setProductCreate((prev) => ({ ...prev, colors: values as any }));
-  };
-  const handleSizesChange = (values: string[]) => {
-    setProductCreate((prev) => ({ ...prev, sizes: values as any }));
-  };
   const handleDescriptionUpdate = (
     index: number,
     field: "title" | "description",
@@ -100,8 +101,14 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
       return { ...prev, description: updatedDescription };
     });
   };
+  const handleInputChange = (field: string, value: string | string[]) => {
+    setProductCreate((prev) => ({ ...prev, [field]: value }));
+  };
   const handlePriceChange = (value: number) => {
     setProductCreate((prev) => ({ ...prev, price: value }));
+  };
+  const handleSellingPriceChange = (value: number) => {
+    setProductCreate((prev) => ({ ...prev, sellingprice: value }));
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -134,14 +141,21 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
       colors: [],
       sizes: [],
       price: 0,
+      sellingprice: 0,
       description: [
-        { title: "", description: "", idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff" },
-        { title: "", description: "", idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff" },
+        {
+          title: "",
+          description: "",
+          idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+        },
+        {
+          title: "",
+          description: "",
+          idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+        },
       ],
       Image: "",
-      total: 0,
     });
-    setProductName("");
   };
   const handleSubmit = () => {
     console.log("Final Product Data:", ProductCreate);
@@ -149,11 +163,10 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     handleClose();
   };
   const handleProductNameChange = (value: string) => {
-    setProductName(value);
     setProductCreate((prev) => ({ ...prev, productname: value }));
   };
   return (
-    <div className="create-product-dialog">
+    <>
       <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
         <DialogTitle>
           <h3>Create Product</h3>
@@ -166,7 +179,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
         </DialogTitle>
         <DialogContent>
           <Stack spacing={1}>
-            <List sx={style}>
+            <List>
               <ListItem>
                 <ListItemText
                   primary={
@@ -185,34 +198,43 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                       <Grid item xs={4}>
                         <TestFieldSmall
                           placeholder="Enter product name"
-                          value={productName}
-                          setvalue={handleProductNameChange}
+                          value={ProductCreate.productname}
+                          setvalue={(value: string) =>
+                            handleProductNameChange(value)
+                          }
                           title="Product Name"
                         />
                       </Grid>
                       <Grid item xs={4}>
-                        <SelectInput
-                          title="Category"
-                          options={
-                            categorydata.length > 0
-                              ? categorydata.map(
-                                  (el: { NameCategory: string }) =>
-                                    el.NameCategory
-                                )
-                              : [""]
+                        <Autocomplete
+                          options={mockCategories}
+                          value={ProductCreate.category}
+                          onChange={(e, value) =>
+                            handleInputChange("category", value || "")
                           }
-                          value={ProductCreate.category || ""}
-                          onChange={handleCategoryChange}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Category"
+                              placeholder="Select category"
+                            />
+                          )}
                         />
                       </Grid>
                       <Grid item xs={4}>
-                        <SelectInput
-                          title="Material"
-                          options={materialdata.map(
-                            (el: { NameMaterial: string }) => el.NameMaterial
+                        <Autocomplete
+                          options={mockMaterials}
+                          value={ProductCreate.material}
+                          onChange={(e, value) =>
+                            handleInputChange("material", value || "")
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Material"
+                              placeholder="Select material"
+                            />
                           )}
-                          value={ProductCreate.material || ""}
-                          onChange={handleMaterialChange}
                         />
                       </Grid>
                     </Grid>
@@ -270,29 +292,43 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                   primary={
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
-                        <AutocompletedComponent
-                          title="Color"
-                          placeholder="Choose Color"
-                          array={colordata.map((el) => ({
-                            key: el.Color,
-                            value: el.HexColor,
-                          }))}
-                          setValues={(values: string[]) =>
-                            handleColorsChange(values)
+                        <Autocomplete
+                          multiple
+                          options={mockColors}
+                          getOptionLabel={(option) => option.label}
+                          value={ProductCreate.colors.map((color) =>
+                            mockColors.find((c) => c.label === color)
+                          )}
+                          onChange={(e, value) =>
+                            handleInputChange(
+                              "colors",
+                              value.map((item) => item.label)
+                            )
                           }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Colors"
+                              placeholder="Select colors"
+                            />
+                          )}
                         />
                       </Grid>
                       <Grid item xs={6}>
-                        <AutocompletedComponent
-                          title="Size"
-                          placeholder="Choose Size"
-                          array={sizedata.map((el) => ({
-                            key: el.SizeName,
-                            value: el.Size,
-                          }))}
-                          setvalue={(values: string[]) =>
-                            handleSizesChange(values)
+                        <Autocomplete
+                          multiple
+                          options={mockSizes}
+                          value={ProductCreate.sizes}
+                          onChange={(e, value) =>
+                            handleInputChange("sizes", value)
                           }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Sizes"
+                              placeholder="Select sizes"
+                            />
+                          )}
                         />
                       </Grid>
                     </Grid>
@@ -307,28 +343,22 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                       <Grid item xs={8}>
                         <h4>Gender</h4>
                       </Grid>
-                      <Grid container spacing={3}>
-                        <Grid item xs={3}>
-                          <CheckBoxComponent
-                            value={gender === "Male"}
-                            setvalue={() => handleGenderChange("Male")}
-                            title="Male"
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
-                          <CheckBoxComponent
-                            value={gender === "Female"}
-                            setvalue={() => handleGenderChange("Female")}
-                            title="Female"
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
-                          <CheckBoxComponent
-                            value={gender === "Unisex"}
-                            setvalue={() => handleGenderChange("Unisex")}
-                            title="Unisex"
-                          />
-                        </Grid>
+                      <Grid container spacing={2}>
+                        {["Male", "Female", "Unisex"].map((gender) => (
+                          <Grid item key={gender}>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={ProductCreate.gender === gender}
+                                  onChange={() =>
+                                    handleInputChange("gender", gender)
+                                  }
+                                />
+                              }
+                              label={gender}
+                            />
+                          </Grid>
+                        ))}
                       </Grid>
                     </Grid>
                   }
@@ -367,9 +397,9 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                     <TestFiedComponent
                       placeholder="$ 0.00Đ"
                       title="Selling Price"
-                      value={ProductCreate.price}
+                      value={ProductCreate.sellingprice}
                       setvalue={(value: number) => {
-                        handlePriceChange(value);
+                        handleSellingPriceChange(value);
                       }}
                     />
                   }
@@ -388,7 +418,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
