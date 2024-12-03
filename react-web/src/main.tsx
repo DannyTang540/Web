@@ -46,7 +46,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/property" element={<Propety />} />
             <Route path="/order/list" element={<OrderStatus />} />
           </Route>
-          <Route path="/sign" element={<SignIn />} />
+          <Route path="/sign-in" element={<SignIn />} />
         </Routes>
         <ToastContainer
           position="top-right"

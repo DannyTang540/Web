@@ -27,15 +27,7 @@ import CheckBoxComponent from "../Input/CheckBoxComponent";
 import { Link } from "react-router-dom";
 
 // Dữ liệu giả cho material, color, size và category
-const mockMaterials = ["Cotton", "Polyester", "Wool", "Silk"];
-const mockColors = [
-  { label: "Red", value: "#FF0000" },
-  { label: "Green", value: "#00FF00" },
-  { label: "Blue", value: "#0000FF" },
-  { label: "Black", value: "#000000" },
-];
-const mockSizes = ["S", "M", "L", "XL"];
-const mockCategories = ["Clothing", "Footwear", "Accessories", "Electronics"];
+
 
 interface CreateProductDialogProps {
   open: boolean;
@@ -46,6 +38,15 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   open,
   handleClose,
 }) => {
+  const mockMaterials = ["Cotton", "Polyester", "Wool", "Silk"];
+  const mockColors = [
+    { label: "Red", value: "#FF0000" },
+    { label: "Green", value: "#00FF00" },
+    { label: "Blue", value: "#0000FF" },
+    { label: "Black", value: "#000000" },
+  ];
+  const mockSizes = ["S", "M", "L", "XL"];
+  const mockCategories = ["Clothing", "Footwear", "Accessories", "Electronics"];
   const [ProductCreate, setProductCreate] = useState<{
     productname: string;
     category: string;
@@ -166,7 +167,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     setProductCreate((prev) => ({ ...prev, productname: value }));
   };
   return (
-    <>
+    <div>
       <Dialog fullWidth maxWidth="lg" open={open} onClose={handleClose}>
         <DialogTitle>
           <h3>Create Product</h3>
@@ -417,7 +418,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 };
 

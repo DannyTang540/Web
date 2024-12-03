@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { https } from "./Https";
 import {toasityComponent} from "../SnackBar/SnackBarComponent.tsx";
 import {StatusEnum} from "../../types/Status.ts";
-const local = https + "/product";
+const local = https + "/products";
 interface ProductState {
     Product: [] | null;
     loading: boolean;

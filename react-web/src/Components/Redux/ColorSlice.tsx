@@ -8,7 +8,7 @@ import SnackBarComponent, {
 import { toast } from "react-toastify";
 import { StatusEnum } from "../../types/Status";
 import { Color } from "./Selector";
-const local = https + "/color";
+const local = https + "/colors";
 const keyMapping = {
   id: "Id",
   colorname: "Color",

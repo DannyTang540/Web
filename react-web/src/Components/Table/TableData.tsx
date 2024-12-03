@@ -16,6 +16,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { TableHead } from '@mui/material';
+import ConvertDateArrayToISO from "../Date/Dateconvert";
 const Status = [
   { status: false, Color: "#59fbd6"},
   { status: true, Color: "#f9556b" },
@@ -104,6 +105,15 @@ const SwtichRow = (key: string, property: { [key: string]: any }) => {
           </div>
         );
       }
+        case "CreateAt": {
+            return (
+                <div
+
+                >
+                    {ConvertDateArrayToISO(property[key]) }
+                </div>
+            );
+        }
      case "Status": {
         // Tìm màu theo Status
         const statusColor =

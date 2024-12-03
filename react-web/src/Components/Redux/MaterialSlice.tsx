@@ -7,7 +7,7 @@ import SnackBarComponent, {
 } from "../SnackBar/SnackBarComponent";
 import { toast } from "react-toastify";
 import { StatusEnum } from "../../types/Status";
-const local = https + "/material";
+const local = https + "/materials";
 const keyMapping = {
   id: "Id",
   name: "NameMaterial",
