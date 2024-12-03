@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 
 const UserDetail: React.FC = () => {
-  const user = {
+    const user = {
     name: "Angeliquie Morse",
     phone: "08-12 34 56",
     email: "benny89@yahoo.com",
@@ -50,7 +50,7 @@ const UserDetail: React.FC = () => {
             height="50%"
           >
             <img
-              src="path_to_user_image"
+              src={"https://assets.minimals.cc/public/assets/images/mock/avatar/avatar-25.webp"}
               alt="User"
               style={{ maxWidth: "100%", borderRadius: "4px" }}
             />
@@ -59,7 +59,7 @@ const UserDetail: React.FC = () => {
         <Grid item xs={12} md={6}>
           <Card sx={{ maxWidth: 600 }}>
             <CardContent>
-              <Grid container spacing={1}>
+              <Grid container spacing={6  }>
                 <Grid item xs={6}>
                   <Typography variant="h6">Full Name</Typography>
                   <TextField
@@ -69,7 +69,7 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
@@ -81,19 +81,19 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
-                  <Divider sx={{ my: 1 }} />
-                  <Typography variant="h6">Email Address</Typography>
+                        <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">State/Region</Typography>
                   <TextField
                     fullWidth
-                    value={user.email}
+                    value={user.state}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
@@ -105,11 +105,23 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
                 </Grid>
                 <Grid item xs={6}>
+                  <Typography variant="h6">Email Address</Typography>
+                  <TextField
+                    fullWidth
+                    value={user.email}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                      
+                    }}
+                  />
+                  <Divider sx={{ my: 1 }} />
                   <Typography variant="h6">Country</Typography>
                   <TextField
                     fullWidth
@@ -118,21 +130,10 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
-                  <Divider sx={{ my: 1 }} />
-                  <Typography variant="h6">State/Region</Typography>
-                  <TextField
-                    fullWidth
-                    value={user.state}
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                      readOnly: true,
-                      style: { fontSize: "0.875rem" },
-                    }}
-                  />
+      
                   <Divider sx={{ my: 1 }} />
                   <Typography variant="h6">City</Typography>
                   <TextField
@@ -142,7 +143,7 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
@@ -154,7 +155,7 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
@@ -166,7 +167,7 @@ const UserDetail: React.FC = () => {
                     margin="normal"
                     InputProps={{
                       readOnly: true,
-                      style: { fontSize: "0.875rem" },
+                      
                     }}
                   />
                 </Grid>

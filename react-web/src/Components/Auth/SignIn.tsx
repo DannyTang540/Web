@@ -13,7 +13,7 @@ import { SignUp } from "../Redux/UserSlice";
 import { User } from "../Redux/Selector";
 
 const SignIn = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [text, settext] = useState({ username: "", password: "" });
   const handleChange = (e) => {
@@ -24,37 +24,39 @@ const SignIn = () => {
       [name]: value,
     }));
   };
-  
-const handleSubmit = async (event) => {
-  event.preventDefault();
 
-  // Simulate a login check or API call here.
-  const isAuthenticated = text.username === "admin" && text.password === "admin123";
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  if (isAuthenticated) {
-    navigate("/admin/products");
-  } else {
-    // alert("Thông tin đăng nhập không chính xác");
-  }
-};
+    // Simulate a login check or API call here.
+    const isAuthenticated =
+      text.username === "admin" && text.password === "admin123";
 
-const user=useSelector(User);
-useEffect(()=>{
-  // Kiểm tra và chuyển hướng nếu user đã có
-  if (JSON.stringify(user)!== "{}") {
-    
-    navigate("/");  // Chuyển hướng đến trang chủ
-  }
-},[useSelector(User)])
-const handleSignUp = async () => {
-  // Dispatch action để đăng ký
-  await dispatch(SignUp({ username: text.username, password: text.password }));
-  
-  // Kiểm tra và chuyển hướng nếu user đã có
-  // if (JSON.stringify(user) !== "{}") {
-  //   navigate("/");  // Chuyển hướng đến trang chủ
-  // }
-};
+    if (isAuthenticated) {
+      navigate("/");
+    } else {
+      // alert("Thông tin đăng nhập không chính xác");
+    }
+  };
+
+  const user = useSelector(User);
+  useEffect(() => {
+    // Kiểm tra và chuyển hướng nếu user đã có
+    if (JSON.stringify(user) !== "{}") {
+      navigate("/"); // Chuyển hướng đến trang chủ
+    }
+  }, [useSelector(User)]);
+  const handleSignUp = async () => {
+    // Dispatch action để đăng ký
+    await dispatch(
+      SignUp({ username: text.username, password: text.password })
+    );
+
+    // Kiểm tra và chuyển hướng nếu user đã có
+    // if (JSON.stringify(user) !== "{}") {
+    //   navigate("/");  // Chuyển hướng đến trang chủ
+    // }
+  };
   return (
     <Box
       display="flex"
@@ -127,20 +129,20 @@ const handleSignUp = async () => {
               <Button
                 onClick={
                   handleSignUp
-                //   async () => {
-                //   await dispatch(
-                //     SignUp({
-                //       username: text.username,
-                //       password: text.password,
-                //     })
-                //   );
-                //   const user = useSelector((state) => state.user);
-                //   if(JSON.stringify(useSelector(User))!="{}")
-                //   {
-                //     navigate("/")
-                //   }
-                // }
-              }
+                  //   async () => {
+                  //   await dispatch(
+                  //     SignUp({
+                  //       username: text.username,
+                  //       password: text.password,
+                  //     })
+                  //   );
+                  //   const user = useSelector((state) => state.user);
+                  //   if(JSON.stringify(useSelector(User))!="{}")
+                  //   {
+                  //     navigate("/")
+                  //   }
+                  // }
+                }
                 variant="contained"
                 className="submit-button"
                 type="submit"
