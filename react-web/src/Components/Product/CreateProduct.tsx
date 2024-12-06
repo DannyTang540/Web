@@ -25,6 +25,9 @@ import TestArial from "../Input/TestArial";
 import AutocompletedComponent from "../Input/AutocompletedComponent";
 import CheckBoxComponent from "../Input/CheckBoxComponent";
 import { Link } from "react-router-dom";
+import {Category, Color, Material, Size} from "../Redux/Selector.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {CreateProduct} from "../Redux/Product.tsx";
 
 // Dữ liệu giả cho material, color, size và category
 
@@ -38,15 +41,30 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   open,
   handleClose,
 }) => {
+  const dispatch=useDispatch();
+   const mockMaterials =useSelector(Material).map((el)=>el.NameMaterial)
+
+/*
   const mockMaterials = ["Cotton", "Polyester", "Wool", "Silk"];
-  const mockColors = [
+*/
+  const mockColors=useSelector(Color).map((el)=>({label:el.Color,value:el.HexColor}));
+
+  /*const mockColors = [
     { label: "Red", value: "#FF0000" },
     { label: "Green", value: "#00FF00" },
     { label: "Blue", value: "#0000FF" },
     { label: "Black", value: "#000000" },
-  ];
+  ];*/
+   const mockSizes=useSelector(Size).map((el)=>el.SizeName)
+/*
   const mockSizes = ["S", "M", "L", "XL"];
+*/
+   const mockCategories=useSelector(Category).map((el)=>el.NameCategory)
+
+
+/*
   const mockCategories = ["Clothing", "Footwear", "Accessories", "Electronics"];
+*/
   const [ProductCreate, setProductCreate] = useState<{
     productname: string;
     category: string;
@@ -75,12 +93,12 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
       {
         title: "",
         description: "",
-        idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+        idproduct: "",
       },
       {
         title: "",
         description: "",
-        idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
+        idproduct: "",
       },
     ],
     Image: "",
@@ -112,6 +130,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
     setProductCreate((prev) => ({ ...prev, sellingprice: value }));
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files)
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (!file.type.startsWith("image/")) {
@@ -127,7 +146,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
         const imageData = reader.result as string;
         setProductCreate((prev) => ({
           ...prev,
-          Image: imageData,
+          Image: e.target.files[0],
         }));
       };
       reader.readAsDataURL(file);
@@ -145,12 +164,12 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
       sellingprice: 0,
       description: [
         {
-          title: "",
+          title: "Title",
           description: "",
           idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
         },
         {
-          title: "",
+          title: "Body",
           description: "",
           idproduct: "2cdf1a0d-2c98-4c91-94cb-8b28e643e0ff",
         },
@@ -158,7 +177,8 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
       Image: "",
     });
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    await dispatch(CreateProduct(ProductCreate));
     console.log("Final Product Data:", ProductCreate);
     resetForm();
     handleClose();
@@ -249,9 +269,9 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
                     <TestFiedComponent
                       placeholder="Enter your product title"
                       title="Title Product"
-                      value={ProductCreate.description[0].title}
+                      value={ProductCreate.description[0].description}
                       setvalue={(value: string) =>
-                        handleDescriptionUpdate(0, "title", value)
+                        handleDescriptionUpdate(0, "description", value)
                       }
                     />
                   }
