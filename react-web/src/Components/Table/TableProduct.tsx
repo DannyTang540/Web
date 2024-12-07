@@ -33,7 +33,13 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import EditProduct from "../Product/EditProduct.tsx";
-import { mockColors, mockSizes, mockMaterials, mockCategories } from "../Product/CreateProduct";
+import {
+  mockColors,
+  mockSizes,
+  mockMaterials,
+  mockCategories,
+} from "../Product/CreateProduct";
+import { toast } from "react-toastify";
 interface TablePaginationActionsProps {
   count: number;
   page: number;
@@ -270,10 +276,11 @@ const TableProduct: React.FC = () => {
     const product = productdata.find((p) => p.id === id);
     setSelectedProduct(product);
     setIsEditOpen(true);
-    handleMenuClose();
+      handleMenuClose();
   };
 
   const handleSaveProduct = (updatedProduct: any) => {
+    toast.success("Product Updated");
     console.log("Updated product:", updatedProduct);
     setIsEditOpen(false);
   };
@@ -281,6 +288,16 @@ const TableProduct: React.FC = () => {
   const handleCancelEdit = () => {
     setIsEditOpen(false);
     setSelectedProduct(null);
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    const productIndex = productdata.findIndex((p) => p.id === id);
+    if (productIndex !== -1) {
+      productdata.splice(productIndex, 1);
+      console.log(`Product with id ${id} deleted.`);
+    }
+    toast.warning("Product Deleted");
+    handleMenuClose();
   };
 
   const filteredRows = rows.filter(
@@ -426,7 +443,7 @@ const TableProduct: React.FC = () => {
                       <BuildIcon sx={{ fontSize: "1rem", color: "#59fbd6" }} />
                       Edit
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={() => handleDeleteProduct(row.id)}>
                       <DeleteForeverIcon
                         sx={{ fontSize: "1rem", color: "#f37474" }}
                       />

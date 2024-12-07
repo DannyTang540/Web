@@ -27,6 +27,7 @@ import CardProduct from "../Components/Card/CardProduct";
 import { Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import UserUpdate from "../Components/user/UserUpdate";
+import { toast } from "react-toastify";
 
 const createRow = ["Name", "Phone", "Gender", "Dob", "Role", "Status"];
 const Status = [
@@ -126,6 +127,7 @@ const User = () => {
   };
 
   const handleSaveUser = (updatedUser: UserType) => {
+    toast.success("User Updated");
     console.log("Updated user:", updatedUser);
     // Cập nhật danh sách users hoặc lưu vào API
     setIsEditOpen(false);

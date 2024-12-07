@@ -34,6 +34,7 @@ import { StatusEnum } from "../types/Status";
 import { CreateCategory } from "../Components/Redux/CategorySlice";
 import { CreateSize } from "../Components/Redux/SizeSlice";
 import { CreateMaterial } from "../Components/Redux/MaterialSlice";
+import { toast } from "react-toastify";
 const rowCategory = ["Id", "NameCategory", "CreateAt", "UpdateAt", "Status"];
 
 const rowMaterial = ["Id", "NameMaterial", "CreateAt", "UpdateAt", "Status"];
@@ -132,7 +133,6 @@ const Propety = () => {
     />
   );
   const handleSubmit = async () => {
-    // Kiểm tra xem các trường có để trống không
     if (!formData.NameMaterial && formData.type === "material") {
       toasityComponent("Material Name is required.", StatusEnum.INFO);
       return;
@@ -161,20 +161,29 @@ const Propety = () => {
     console.log(formData);
     switch (formData.type) {
       case "material":
-        await dispatch(CreateMaterial({
-          name:formData.NameMaterial,
-        }));
+        await dispatch(
+          CreateMaterial({
+            name: formData.NameMaterial,
+          })
+        );
+        toast.success("Material Created");
         break;
       case "category":
-        await dispatch(CreateCategory({
-          name: formData.CategoryName,
-        }));
+        await dispatch(
+          CreateCategory({
+            name: formData.CategoryName,
+          })
+        );
+        toast.success("Category Created");
         break;
       case "size":
-        await dispatch(CreateSize({
-          size: formData.Size,
-          sizename: formData.SizeName,
-        }));
+        await dispatch(
+          CreateSize({
+            size: formData.Size,
+            sizename: formData.SizeName,
+          })
+        );
+        toast.success("Size Created");
         break;
       case "color":
         await dispatch(
@@ -183,8 +192,7 @@ const Propety = () => {
             colorhex: formData.HexColor,
           })
         );
-        break;
-      default:
+        toast.success("Color Created");
         break;
     }
     handleCloseDialog();
@@ -240,7 +248,12 @@ const Propety = () => {
               Data={colCategory}
               HeaderComponent={
                 <HeaderTwoEven
-                  SelectInput={<SelectInput title={"Status"} options={["Active", "Inactive"]} />}
+                  SelectInput={
+                    <SelectInput
+                      title={"Status"}
+                      options={["Active", "Inactive"]}
+                    />
+                  }
                   CustomButton={
                     <Button
                       variant="outlined"

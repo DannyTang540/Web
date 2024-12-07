@@ -18,7 +18,6 @@ import { Link } from "react-router-dom";
 const users = [
   { id: 1, username: "user1", role: "Admin", status: true },
   { id: 2, username: "user2", role: "User", status: false },
-  // Add more users as needed
 ];
 
 const UserRoles = () => {

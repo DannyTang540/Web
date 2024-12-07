@@ -22,6 +22,7 @@ import TestFieldSmall from "../Input/TestFieldSmall";
 import TestFiedComponent from "../Input/TestFiedComponent";
 import TestArial from "../Input/TestArial";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Dữ liệu giả cho material, color, size và category
 export const mockMaterials = ["Leather", "Cotton", "Polyester", "Wool", "Silk"];
@@ -155,6 +156,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   };
   const handleSubmit = () => {
     console.log("Final Product Data:", ProductCreate);
+    toast.success("Product Created");
     resetForm();
     handleClose();
   };
