@@ -25,55 +25,96 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import BuildIcon from "@mui/icons-material/Build";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CircleProductStock from "../Box/CircleProductStock";
-import {Product} from "../Redux/Selector.tsx"
-import {useDispatch, useSelector} from "react-redux";
-import  ConvertDateArrayToISO from "../Date/Dateconvert.jsx"
-import { useTheme } from '@mui/material/styles';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-
+import { Product } from "../Redux/Selector.tsx";
+import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import EditProduct from "../Product/EditProduct.tsx";
+import {
+  mockColors,
+  mockSizes,
+  mockMaterials,
+  mockCategories,
+} from "../Product/CreateProduct";
+import { toast } from "react-toastify";
 interface TablePaginationActionsProps {
   count: number;
   page: number;
   rowsPerPage: number;
-  onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
+  onPageChange: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    newPage: number
+  ) => void;
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
-  const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleFirstPageButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     onPageChange(event, 0);
   };
 
-  const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleBackButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     onPageChange(event, page - 1);
   };
 
-  const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleNextButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     onPageChange(event, page + 1);
   };
 
-  const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLastPageButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
-      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
       </IconButton>
-      <IconButton onClick={handleNextButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1} aria-label="next page">
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
       </IconButton>
-      <IconButton onClick={handleLastPageButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1} aria-label="last page">
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
     </Box>
   );
@@ -101,10 +142,86 @@ const createData = (
   };
 };
 
-
-
 const categories = ["All", "Accessories", "Shoes", "Apparel"];
-const genders = ["All", "Male", "Female"];
+const genders = ["All", "Unisex", "Male", "Female"];
+
+const mockProductData = [
+  {
+    id: "1",
+    name: "Product 1",
+    title: "Stylish Leather Shoes",
+    description: "A stylish pair of leather shoes.",
+    category: { name: "Shoes" },
+    material: { name: "Leather" },
+    createat: "2023-01-01T00:00:00Z",
+    image: { urlImage: "https://example.com/image1.jpg" },
+    colors: ["Black", "Brown"],
+    sizes: ["S", "M", "L"],
+    gender: "Male",
+    originPrice: 50,
+    sellingPrice: 75,
+  },
+  {
+    id: "2",
+    name: "Product 2",
+    title: "Comfortable Cotton T-Shirt",
+    description: "Comfortable cotton t-shirt.",
+    category: { name: "Apparel" },
+    material: { name: "Cotton" },
+    createat: "2023-02-01T00:00:00Z",
+    image: { urlImage: "https://example.com/image2.jpg" },
+    colors: ["White", "Blue"],
+    sizes: ["M", "L", "XL"],
+    gender: "Female",
+    originPrice: 20,
+    sellingPrice: 30,
+  },
+  {
+    id: "3",
+    name: "Product 3",
+    title: "Trendy Plastic Sunglasses",
+    description: "Trendy plastic sunglasses.",
+    category: { name: "Accessories" },
+    material: { name: "Plastic" },
+    createat: "2023-03-01T00:00:00Z",
+    image: { urlImage: "https://example.com/image3.jpg" },
+    colors: ["Red", "Green"],
+    sizes: [],
+    gender: "Unisex",
+    originPrice: 15,
+    sellingPrice: 25,
+  },
+  {
+    id: "4",
+    name: "Product 4",
+    title: "Durable Rubber Flip-Flops",
+    description: "Durable rubber flip-flops.",
+    category: { name: "Footwear" },
+    material: { name: "Rubber" },
+    createat: "2023-04-01T00:00:00Z",
+    image: { urlImage: "https://example.com/image4.jpg" },
+    colors: ["Yellow", "Blue"],
+    sizes: ["S", "M"],
+    gender: "Unisex",
+    originPrice: 10,
+    sellingPrice: 15,
+  },
+  {
+    id: "5",
+    name: "Product 5",
+    title: "Elegant Silk Dress",
+    description: "Elegant silk dress.",
+    category: { name: "Clothing" },
+    material: { name: "Silk" },
+    createat: "2023-05-01T00:00:00Z",
+    image: { urlImage: "https://example.com/image5.jpg" },
+    colors: ["Pink", "Black"],
+    sizes: ["M", "L"],
+    gender: "Female",
+    originPrice: 100,
+    sellingPrice: 150,
+  },
+];
 
 const TableProduct: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -113,33 +230,37 @@ const TableProduct: React.FC = () => {
   const [selectedGender, setSelectedGender] = useState<string>("All");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
-  const productdata=useSelector(Product);
+  const productdata = mockProductData;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>, id: string) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
     setMenuId(id);
   };
-  const rows=productdata.map((el)=>
+  const rows = productdata.map((el) =>
     createData(
-        el.id||"1",
-        el.name||"",
-        el.category.name||"",
-        el.materials.name||"",
-        10,
-        ConvertDateArrayToISO(el.createat),
-        el.image.urlImage||"",
-        "Female"
+      el.id || "1",
+      el.name || "",
+      el.category.name || "",
+      el.material.name || "",
+      10,
+      el.createat.split("T")[0] || "",
+      el.image.urlImage || "",
+      el.gender || ""
     )
-  )
+  );
   const handleMenuClose = () => {
     setAnchorEl(null);
     setMenuId(null);
   };
 
   const handleRowClick = (id: string) => {
+    const product = productdata.find((p) => p.id === id);
+    setSelectedProduct(product);
     navigate(`/product/details/${id}`);
   };
 
@@ -152,7 +273,30 @@ const TableProduct: React.FC = () => {
   };
 
   const handleEditProduct = (id: string) => {
-    navigate(`/product/edit/${id}`);
+    const product = productdata.find((p) => p.id === id);
+    setSelectedProduct(product);
+    setIsEditOpen(true);
+      handleMenuClose();
+  };
+
+  const handleSaveProduct = (updatedProduct: any) => {
+    toast.success("Product Updated");
+    console.log("Updated product:", updatedProduct);
+    setIsEditOpen(false);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    const productIndex = productdata.findIndex((p) => p.id === id);
+    if (productIndex !== -1) {
+      productdata.splice(productIndex, 1);
+      console.log(`Product with id ${id} deleted.`);
+    }
+    toast.warning("Product Deleted");
     handleMenuClose();
   };
 
@@ -162,11 +306,16 @@ const TableProduct: React.FC = () => {
       (selectedGender === "All" || row.gender === selectedGender)
   );
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -202,10 +351,11 @@ const TableProduct: React.FC = () => {
           borderRadius: 15,
           padding: 2,
           width: "100%",
-          maxHeight: "80vh",
+          maxHeight: "60vh",
+          overflowY: "auto",
         }}
       >
-        <Table sx={{ minWidth: 1000 }} size="medium" aria-label="product table">
+        <Table sx={{ minWidth: 1000 }} size="small" aria-label="product table">
           <TableHead>
             <TableRow>
               <TableCell align="left">Image</TableCell>
@@ -218,31 +368,35 @@ const TableProduct: React.FC = () => {
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={{ backgroundColor: "#fff", marginBottom: 2 }}>
             {(rowsPerPage > 0
-              ? filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ? filteredRows.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
               : filteredRows
             ).map((row) => (
               <TableRow
                 key={row.id}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
+                  height: "48px",
                   "&:hover": {
                     backgroundColor: "#e0f7fa",
-                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                    boxShadow: "0px 4px 20px",
                   },
                   backgroundColor: "#fff",
                   transition: "background-color 0.3s, box-shadow 0.3s",
                 }}
               >
-                <TableCell align="left">
+                <TableCell align="left" sx={{ padding: "4px" }}>
                   <Avatar
                     src={row.imageUrl}
                     variant="square"
-                    sx={{ width: 50, height: 50 }}
+                    sx={{ width: 40, height: 40 }}
                   />
                 </TableCell>
-                <TableCell align="left">
+                <TableCell align="left" sx={{ padding: "4px" }}>
                   <Box
                     component="span"
                     sx={{
@@ -256,14 +410,22 @@ const TableProduct: React.FC = () => {
                     {row.product}
                   </Box>
                 </TableCell>
-                <TableCell align="center">{row.category}</TableCell>
-                <TableCell align="center">{row.material}</TableCell>
-                <TableCell align="center">
+                <TableCell align="center" sx={{ padding: "4px" }}>
+                  {row.category}
+                </TableCell>
+                <TableCell align="center" sx={{ padding: "4px" }}>
+                  {row.material}
+                </TableCell>
+                <TableCell align="center" sx={{ padding: "4px" }}>
                   <CircleProductStock value={row.stock} />
                 </TableCell>
-                <TableCell align="center">{row.gender}</TableCell>
-                <TableCell align="center">{row.createAt}</TableCell>
-                <TableCell align="center">
+                <TableCell align="center" sx={{ padding: "4px" }}>
+                  {row.gender}
+                </TableCell>
+                <TableCell align="center" sx={{ padding: "4px" }}>
+                  {row.createAt}
+                </TableCell>
+                <TableCell align="center" sx={{ padding: "4px" }}>
                   <IconButton
                     onClick={(event) => handleMenuOpen(event, row.id)}
                     aria-label="settings"
@@ -281,7 +443,7 @@ const TableProduct: React.FC = () => {
                       <BuildIcon sx={{ fontSize: "1rem", color: "#59fbd6" }} />
                       Edit
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={() => handleDeleteProduct(row.id)}>
                       <DeleteForeverIcon
                         sx={{ fontSize: "1rem", color: "#f37474" }}
                       />
@@ -295,7 +457,7 @@ const TableProduct: React.FC = () => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
                 colSpan={3}
                 count={filteredRows.length}
                 rowsPerPage={rowsPerPage}
@@ -308,6 +470,14 @@ const TableProduct: React.FC = () => {
           </TableFooter>
         </Table>
       </TableContainer>
+      {selectedProduct && (
+        <EditProduct
+          product={selectedProduct}
+          open={isEditOpen}
+          onSave={handleSaveProduct}
+          onCancel={handleCancelEdit}
+        />
+      )}
     </Box>
   );
 };

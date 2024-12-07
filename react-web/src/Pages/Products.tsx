@@ -98,7 +98,7 @@ const Products: React.FC = () => {
         productName={productName}
         setProductName={setProductName}
       />
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+      <Box display="flex">
         <TableProduct />
       </Box>
     </Container>

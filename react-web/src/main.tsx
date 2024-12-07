@@ -4,7 +4,7 @@ import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import Store from "./Components/Redux/Store";
-import DashBoard from "./Pages/DashBoard";
+import Home from "./Pages/Home";
 import SignIn from "./Components/Auth/SignIn";
 import ProductDetail from "./Components/Product/ProductsDetails";
 import InventoryImport from "./Components/Invoice/InventoryImport";
@@ -20,7 +20,7 @@ import CustomerOrders from "./Components/Customer/CustomerOrders";
 import CustomerDetail from "./Components/Customer/CustomerDetail";
 import UserDetail from "./Components/user/UserDetails";
 import OrderDetail from "./Components/Invoice/InvoiceOrderDetail";
-import Home from "./Pages/Home";
+import DashBoard from "./Pages/DashBoard";
 import EditProduct from "./Components/Product/EditProduct";
 
 createRoot(document.getElementById("root")!).render(
@@ -29,9 +29,8 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Header1 />
         <Routes>
-          <Route path="/" element={<DashBoard />}>
-            <Route path="/" element={<Home />} />
-
+          <Route path="/" element={<Home />}>
+            <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/product" element={<Products />} />
             <Route path="/product/details/:id" element={<ProductDetail />} />
             <Route path="/product/edit/:id" element={<EditProduct />} />
@@ -39,7 +38,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/invoice/new" element={<InventoryImport />} />
             <Route path="/invoice/detail/:orderId" element={<OrderDetail />} />
             <Route path="/user" element={<User />} />
-            <Route path="/user/details" element={<UserDetail />} />
+            <Route path="/user/details/:email" element={<UserDetail />} />
             <Route path="/user/roles" element={<UserRoles />} />
             <Route path="/orders" element={<CustomerOrders />} />
             <Route path="/orders/detail/:COId" element={<CustomerDetail />} />

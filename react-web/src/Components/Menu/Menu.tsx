@@ -9,11 +9,23 @@ import {
   Grid,
 } from "@mui/material";
 import { FaShoppingCart, FaTshirt } from "react-icons/fa";
-import { Category, ExpandLess, ExpandMore, Person } from "@mui/icons-material";
+import {
+  Category,
+  Dashboard,
+  ExpandLess,
+  ExpandMore,
+  Home,
+  Person,
+} from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CiImport } from "react-icons/ci";
 
 const menuItems = [
+  {
+    label: "Home",
+    icon: <Home />,
+    children: [{ label: "Dashboard", path: "/dashboard" }],
+  },
   {
     label: "Product",
     icon: <FaTshirt />,
@@ -26,7 +38,6 @@ const menuItems = [
     icon: <Person />,
     children: [
       { label: "List", path: "/user" },
-      { label: "Details", path: "/user/details" },
       { label: "Role", path: "/user/roles" },
     ],
   },

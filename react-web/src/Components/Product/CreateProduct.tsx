@@ -19,19 +19,24 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import TestFieldSmall from "../Input/TestFieldSmall";
-import SelectInput from "../Input/SelectInput";
 import TestFiedComponent from "../Input/TestFiedComponent";
 import TestArial from "../Input/TestArial";
-import AutocompletedComponent from "../Input/AutocompletedComponent";
-import CheckBoxComponent from "../Input/CheckBoxComponent";
 import { Link } from "react-router-dom";
 import {Category, Color, Material, Size} from "../Redux/Selector.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {CreateProduct} from "../Redux/Product.tsx";
+import { toast } from "react-toastify";
 
 // Dữ liệu giả cho material, color, size và category
-
-
+export const mockMaterials = ["Leather", "Cotton", "Polyester", "Wool", "Silk"];
+export const mockColors = [
+  { label: "Red", value: "#FF0000" },
+  { label: "Green", value: "#00FF00" },
+  { label: "Blue", value: "#0000FF" },
+  { label: "Black", value: "#000000" },
+];
+export const mockSizes = ["S", "M", "L", "XL"];
+export const mockCategories = ["Clothing", "Footwear", "Accessories", "Shoes"];
 interface CreateProductDialogProps {
   open: boolean;
   handleClose: () => void;
@@ -41,6 +46,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   open,
   handleClose,
 }) => {
+
   const dispatch=useDispatch();
    const mockMaterials =useSelector(Material).map((el)=>el.NameMaterial)
 
@@ -180,6 +186,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   const handleSubmit = async () => {
     await dispatch(CreateProduct(ProductCreate));
     console.log("Final Product Data:", ProductCreate);
+    toast.success("Product Created");
     resetForm();
     handleClose();
   };
