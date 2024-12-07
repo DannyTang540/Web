@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,21 +12,12 @@ import {
   Breadcrumbs,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import { users } from "../../Pages/User";
 const UserDetail: React.FC = () => {
-  const user = {
-    name: "Angeliquie Morse",
-    phone: "08-12 34 56",
-    email: "benny89@yahoo.com",
-    country: "Sweden",
-    state: "Virginia",
-    city: "Rancho Cordova",
-    address: "908 Jack Locks",
-    zip: "85807",
-    role: "Content Creator",
-    banned: false,
-    company: "Wuckert Inc",
-  };
+  const { email } = useParams();
+  console.log("Email:", email);
+
+  const user = users.find((user) => user.Email === email);
 
   return (
     <Box m={2}>
@@ -57,6 +49,13 @@ const UserDetail: React.FC = () => {
               style={{ maxWidth: "100%", borderRadius: "4px" }}
             />
           </Box>
+          <Divider sx={{ my: 1 }} />
+          <Box display="flex" alignItems="center">
+            <Typography variant="h6" color="red">
+              Banned
+            </Typography>
+            <Switch checked={user?.Status === "Banned"} />
+          </Box>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ maxWidth: 600 }}>
@@ -66,7 +65,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">Full Name</Typography>
                   <TextField
                     fullWidth
-                    value={user.name}
+                    value={user?.Name}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -77,7 +76,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">Phone Number</Typography>
                   <TextField
                     fullWidth
-                    value={user.phone}
+                    value={user?.Phone}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -88,7 +87,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">State/Region</Typography>
                   <TextField
                     fullWidth
-                    value={user.state}
+                    value={user?.State}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -99,28 +98,31 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">Address</Typography>
                   <TextField
                     fullWidth
-                    value={user.address}
+                    value={user?.Address}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
                       readOnly: true,
                     }}
-                  /><Divider sx={{ my: 1 }} />
+                  />
+                  <Divider sx={{ my: 1 }} />
                   <Typography variant="h6">Company</Typography>
                   <TextField
                     fullWidth
-                    value={user.company}
+                    value={user?.Company}
                     variant="outlined"
                     margin="normal"
-                    InputProps={{ readOnly: true, style: { fontSize: "0.875rem" } }}
+                    InputProps={{
+                      readOnly: true,
+                      style: { fontSize: "0.875rem" },
+                    }}
                   />
-                  
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="h6">Email Address</Typography>
                   <TextField
                     fullWidth
-                    value={user.email}
+                    value={user?.Email}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -131,7 +133,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">Country</Typography>
                   <TextField
                     fullWidth
-                    value={user.country}
+                    value={user?.Country}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -143,7 +145,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">City</Typography>
                   <TextField
                     fullWidth
-                    value={user.city}
+                    value={user?.City}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -155,7 +157,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">Zip/Code</Typography>
                   <TextField
                     fullWidth
-                    value={user.zip}
+                    value={user?.ZipCode}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -166,7 +168,7 @@ const UserDetail: React.FC = () => {
                   <Typography variant="h6">Role</Typography>
                   <TextField
                     fullWidth
-                    value={user.role}
+                    value={user?.Role}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
@@ -175,12 +177,6 @@ const UserDetail: React.FC = () => {
                   />
                 </Grid>
               </Grid>
-              <Divider sx={{ my: 1 }} />
-              <Box display="flex" alignItems="center">
-                <Typography variant="h6">Banned</Typography>
-                <Switch checked={user.banned} disabled />
-              </Box>
-              
             </CardContent>
           </Card>
         </Grid>

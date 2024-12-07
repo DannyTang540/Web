@@ -9,6 +9,13 @@ import {
   Grid,
   Autocomplete,
   Breadcrumbs,
+  Divider,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TableCell,
+  Table,
+  TableBody,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -20,9 +27,10 @@ interface Item {
   quantity: number;
   price: number;
   total: number;
-  size: string;
-  color: string;
+  size: string[];
+  color: string[];
   dateCreated: string;
+  category: string;
 }
 
 // Sample categories and products
@@ -58,9 +66,10 @@ const InventoryEntry = () => {
     quantity: 1,
     price: 0,
     total: 0,
-    size: "",
-    color: "",
+    size: [],
+    color: [],
     dateCreated: new Date().toISOString().split("T")[0],
+    category: "",
   });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -69,32 +78,41 @@ const InventoryEntry = () => {
   };
 
   const handleAddItem = () => {
-    if (
-      newItem.title &&
-      newItem.quantity > 0 &&
-      newItem.price >= 0 &&
-      newItem.size.length > 0 &&
-      newItem.color.length > 0
-    ) {
-      setItems([
-        ...items,
-        { ...newItem, total: newItem.quantity * newItem.price },
+    if (isValidNewItem(newItem)) {
+      setItems((prevItems) => [
+        ...prevItems,
+        { ...newItem, total: newItem.quantity * newItem.price, category: selectedCategory || "" },
       ]);
-      setNewItem({
-        title: "",
-        description: "",
-        service: "",
-        quantity: 1,
-        price: 0,
-        size: [],
-        color: [],
-        dateCreated: new Date().toISOString().split("T")[0],
-        total: 0,
-      });
-      setSelectedCategory(null);
+      resetNewItem();
     } else {
       alert("Please fill in the product details correctly.");
     }
+  };
+
+  const isValidNewItem = (item: Item) => {
+    return (
+      item.title &&
+      item.quantity > 0 &&
+      item.price >= 0 &&
+      item.size.length > 0 &&
+      item.color.length > 0
+    );
+  };
+
+  const resetNewItem = () => {
+    setNewItem({
+      title: "",
+      description: "",
+      service: "",
+      quantity: 1,
+      price: 0,
+      size: [],
+      color: [],
+      dateCreated: new Date().toISOString().split("T")[0],
+      total: 0,
+      category: "",
+    });
+    setSelectedCategory(null);
   };
 
   const handleDeleteItem = (index: number) => {
@@ -104,22 +122,11 @@ const InventoryEntry = () => {
 
   const handleCancel = () => {
     setItems([]);
-    setNewItem({
-      title: "",
-      description: "",
-      service: "",
-      quantity: 1,
-      price: 0,
-      size: "",
-      color: "",
-      dateCreated: new Date().toISOString().split("T")[0],
-      total: 0,
-    });
-    setSelectedCategory(null);
+    resetNewItem();
   };
 
   return (
-    <Box m={2}>
+    <Box m={3}>
       <Typography variant="h4">Inventory Import</Typography>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link color="inherit" to="/">
@@ -130,9 +137,11 @@ const InventoryEntry = () => {
         </Link>
         <Typography color="text.primary">Import</Typography>
       </Breadcrumbs>
-      <Box component={Paper} p={2} mt={2}>
-        <Typography variant="h6">Product Details</Typography>
-        <Grid container spacing={2}>
+      <Box component={Paper} p={1} mt={2}>
+        <Typography variant="h6" mb={2}>
+          Product Details
+        </Typography>
+        <Grid container spacing={5}>
           <Grid item xs={3}>
             <Autocomplete
               options={categories}
@@ -157,7 +166,7 @@ const InventoryEntry = () => {
               disabled={!selectedCategory}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={4}>
             <Autocomplete
               multiple
               options={selectedCategory ? sizes[selectedCategory] : []}
@@ -170,7 +179,7 @@ const InventoryEntry = () => {
               disabled={!selectedCategory}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid ml={61} item xs={5}>
             <Autocomplete
               multiple
               options={selectedCategory ? colors[selectedCategory] : []}
@@ -217,40 +226,44 @@ const InventoryEntry = () => {
             </Button>
           </Grid>
         </Grid>
-        <Box sx={{ display: "flex", gap: 32 }}>
-          <Typography variant="body1">Title:</Typography>
-          <Typography variant="body1">Quantity</Typography>
-          <Typography variant="body1">Price</Typography>
-          <Typography variant="body1">Total</Typography>
-        </Box>
-        <Box mt={2}>
-          {items.map((item, index) => (
-            <>
-              <Grid container key={index} spacing={2}>
-                <Grid item xs={3}>
-                  {item.title}
-                </Grid>
-                <Grid item xs={3}>
-                  {item.quantity}
-                </Grid>
-                <Grid item xs={3}>
-                  {item.price}
-                </Grid>
-                <Grid item xs={2}>
-                  {item.total}
-                </Grid>
-                <Grid item xs={1}>
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleDeleteItem(index)}
-                  >
-                    Xóa
-                  </Button>
-                </Grid>
-              </Grid>
-            </>
-          ))}
-        </Box>
+        <Divider sx={{ my: 2, borderColor: "black" }} />
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Category</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Size</TableCell>
+                <TableCell>Color</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Total</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {items.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.category}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>{item.size.join(", ")}</TableCell>
+                  <TableCell>{item.color.join(", ")}</TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell>{item.price}</TableCell>
+                  <TableCell>{item.total}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleDeleteItem(index)}
+                    >
+                      Xóa
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         <Box mt={2}>
           <Typography variant="h6">Summary:</Typography>

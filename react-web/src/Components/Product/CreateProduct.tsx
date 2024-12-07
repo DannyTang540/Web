@@ -19,16 +19,20 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import TestFieldSmall from "../Input/TestFieldSmall";
-import SelectInput from "../Input/SelectInput";
 import TestFiedComponent from "../Input/TestFiedComponent";
 import TestArial from "../Input/TestArial";
-import AutocompletedComponent from "../Input/AutocompletedComponent";
-import CheckBoxComponent from "../Input/CheckBoxComponent";
 import { Link } from "react-router-dom";
 
 // Dữ liệu giả cho material, color, size và category
-
-
+export const mockMaterials = ["Leather", "Cotton", "Polyester", "Wool", "Silk"];
+export const mockColors = [
+  { label: "Red", value: "#FF0000" },
+  { label: "Green", value: "#00FF00" },
+  { label: "Blue", value: "#0000FF" },
+  { label: "Black", value: "#000000" },
+];
+export const mockSizes = ["S", "M", "L", "XL"];
+export const mockCategories = ["Clothing", "Footwear", "Accessories", "Shoes"];
 interface CreateProductDialogProps {
   open: boolean;
   handleClose: () => void;
@@ -38,15 +42,6 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = ({
   open,
   handleClose,
 }) => {
-  const mockMaterials = ["Cotton", "Polyester", "Wool", "Silk"];
-  const mockColors = [
-    { label: "Red", value: "#FF0000" },
-    { label: "Green", value: "#00FF00" },
-    { label: "Blue", value: "#0000FF" },
-    { label: "Black", value: "#000000" },
-  ];
-  const mockSizes = ["S", "M", "L", "XL"];
-  const mockCategories = ["Clothing", "Footwear", "Accessories", "Electronics"];
   const [ProductCreate, setProductCreate] = useState<{
     productname: string;
     category: string;

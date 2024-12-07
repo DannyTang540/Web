@@ -11,6 +11,7 @@ import {
   TableRow,
   Paper,
   Breadcrumbs,
+  Grid,
 } from "@mui/material";
 import { customerOrders } from "./CustomerOrders";
 import {
@@ -55,75 +56,120 @@ const CustomerDetail: React.FC = () => {
     },
     { status: "Order has been created", date: "26 Nov 2024 2:41 am" },
   ];
+
+  // Thông tin khách hàng
+  const customerInfo = {
+    name: "Jayvion Simon",
+    email: "nannie.abernathy70@yahoo.com",
+    ipAddress: "192.158.1.38",
+    shipping: {
+      address: "19034 Verna Unions Apt. 164 - Honolulu, RI / 87535",
+      phone: "365-374-4961",
+      shipBy: "DHL",
+      speedy: "Standard",
+      trackingNo: "SPX0377391999373",
+    },
+  };
+
   return (
-    <Box m={2}>
+    <Box m={5} width="110%">
       <Typography variant="h4">Customer Order Details</Typography>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link color="inherit" to="/">
-          Dashboard
+          Home
         </Link>
         <Link color="inherit" to="/orders">
           Customer Orders
         </Link>
         <Typography color="text.primary">Customer Order Detail</Typography>
       </Breadcrumbs>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Description</TableCell>
-              <TableCell align="right">Qty</TableCell>
-              <TableCell align="right">Unit Price</TableCell>
-              <TableCell align="right">Total</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {order.details.map((detail) => (
-              <TableRow key={detail.productId} sx={{ borderBottom: '2px solid #ccc' }}>
-                <TableCell>{detail.productName}</TableCell>
-                <TableCell align="right">{detail.quantity}</TableCell>
-                <TableCell align="right">
-                  {detail.price.toLocaleString()} VND
-                </TableCell>
-                <TableCell align="right">
-                  {(detail.price * detail.quantity).toLocaleString()} VND
-                </TableCell>
-              </TableRow>
-            ))}
-            <TableRow>
-              <TableCell rowSpan={4} />
-              <TableCell colSpan={2}>Subtotal</TableCell>
-              <TableCell align="right">
-                {subtotal.toLocaleString()} VND
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Shipping</TableCell>
-              <TableCell align="right">
-                {shipping.toLocaleString()} VND
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Discount</TableCell>
-              <TableCell align="right">
-                {discount.toLocaleString()} VND
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Taxes</TableCell>
-              <TableCell align="right">{taxes.toLocaleString()} VND</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>
-                <strong>Total</strong>
-              </TableCell>
-              <TableCell align="right">
-                <strong>{total.toLocaleString()} VND</strong>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Typography variant="h5">OrderID: {order.orderId}</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <Paper component={Box} p={2} mt={2}>
+            <Typography variant="h6">Customer Info</Typography>
+            <Typography>Name: {customerInfo.name}</Typography>
+            <Typography>Email: {customerInfo.email}</Typography>
+            <Typography>IP Address: {customerInfo.ipAddress}</Typography>
+          </Paper>
+          <Paper component={Box} p={2} mt={2}>
+            <Typography variant="h6">Delivery</Typography>
+            <Typography>Ship by: {customerInfo.shipping.shipBy}</Typography>
+            <Typography>Speedy: {customerInfo.shipping.speedy}</Typography>
+            <Typography>
+              Tracking No: {customerInfo.shipping.trackingNo}
+            </Typography>
+            <Typography>Address: {customerInfo.shipping.address}</Typography>
+            <Typography>Phone number: {customerInfo.shipping.phone}</Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6">Order Details</Typography>
+
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead component={Box} p={2} mt={2}>
+                <TableRow>
+                  <TableCell>Description</TableCell>
+                  <TableCell align="right">Qty</TableCell>
+                  <TableCell align="right">Unit Price</TableCell>
+                  <TableCell align="right">Total</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {order.details.map((detail) => (
+                  <TableRow
+                    key={detail.productId}
+                    sx={{ borderBottom: "2px solid #ccc" }}
+                  >
+                    <TableCell>{detail.productName}</TableCell>
+                    <TableCell align="right">{detail.quantity}</TableCell>
+                    <TableCell align="right">
+                      {detail.price.toLocaleString()} VND
+                    </TableCell>
+                    <TableCell align="right">
+                      {(detail.price * detail.quantity).toLocaleString()} VND
+                    </TableCell>
+                  </TableRow>
+                ))}
+                <TableRow>
+                  <TableCell rowSpan={4} />
+                  <TableCell colSpan={2}>Subtotal</TableCell>
+                  <TableCell align="right">
+                    {subtotal.toLocaleString()} VND
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>Shipping</TableCell>
+                  <TableCell align="right">
+                    {shipping.toLocaleString()} VND
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>Discount</TableCell>
+                  <TableCell align="right">
+                    {discount.toLocaleString()} VND
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>Taxes</TableCell>
+                  <TableCell align="right">
+                    {taxes.toLocaleString()} VND
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <strong>Total</strong>
+                  </TableCell>
+                  <TableCell align="right">
+                    <strong>{total.toLocaleString()} VND</strong>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
       <Box component={Paper} p={2} mt={2}>
         <Typography variant="h6">History</Typography>
         <Timeline sx={{ pr: 60 }}>

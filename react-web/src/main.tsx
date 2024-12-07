@@ -39,7 +39,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/invoice/new" element={<InventoryImport />} />
             <Route path="/invoice/detail/:orderId" element={<OrderDetail />} />
             <Route path="/user" element={<User />} />
-            <Route path="/user/details" element={<UserDetail />} />
+            <Route path="/user/details/:email" element={<UserDetail />} />
             <Route path="/user/roles" element={<UserRoles />} />
             <Route path="/orders" element={<CustomerOrders />} />
             <Route path="/orders/detail/:COId" element={<CustomerDetail />} />
