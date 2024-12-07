@@ -106,17 +106,6 @@ const UserDetail: React.FC = () => {
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
-                  <Typography variant="h6">Company</Typography>
-                  <TextField
-                    fullWidth
-                    value={user?.Company}
-                    variant="outlined"
-                    margin="normal"
-                    InputProps={{
-                      readOnly: true,
-                      style: { fontSize: "0.875rem" },
-                    }}
-                  />
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="h6">Email Address</Typography>

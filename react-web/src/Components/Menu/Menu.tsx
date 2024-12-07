@@ -26,7 +26,6 @@ const menuItems = [
     icon: <Person />,
     children: [
       { label: "List", path: "/user" },
-      { label: "Details", path: "/user/details" },
       { label: "Role", path: "/user/roles" },
     ],
   },

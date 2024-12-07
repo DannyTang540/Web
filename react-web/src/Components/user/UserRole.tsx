@@ -10,7 +10,10 @@ import {
   TableRow,
   Paper,
   Switch,
+  Breadcrumbs,
+  Grid,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const users = [
   { id: 1, username: "user1", role: "Admin", status: true },
@@ -20,8 +23,20 @@ const users = [
 
 const UserRoles = () => {
   return (
+    <Grid mt={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4">Account Authorization</Typography>
+        </Grid>
+        <Grid item xs={12} mb={2}>
+          <Breadcrumbs>
+            <Link to="/user">User</Link>
+            <Typography>User Role</Typography>
+          </Breadcrumbs>
+        </Grid>
+      </Grid>
     <Box m={2}>
-      <Typography variant="h4">Account Authorization</Typography>
+      
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -44,7 +59,8 @@ const UserRoles = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+      </Box>
+    </Grid>
   );
 };
 
