@@ -32,6 +32,7 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import ConvertDateArrayToISO from "../Date/Dateconvert.tsx";
 import EditProduct from "../Product/EditProduct.tsx";
 import {
   mockColors,
@@ -145,6 +146,7 @@ const createData = (
 const categories = ["All", "Accessories", "Shoes", "Apparel"];
 const genders = ["All", "Unisex", "Male", "Female"];
 
+/*
 const mockProductData = [
   {
     id: "1",
@@ -222,8 +224,9 @@ const mockProductData = [
     sellingPrice: 150,
   },
 ];
-
+*/
 const TableProduct: React.FC = () => {
+  const mockProductData=useSelector(Product);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuId, setMenuId] = useState<null | string>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -231,6 +234,7 @@ const TableProduct: React.FC = () => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const productdata = mockProductData;
+  console.log(productdata);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -246,11 +250,11 @@ const TableProduct: React.FC = () => {
       el.id || "1",
       el.name || "",
       el.category.name || "",
-      el.material.name || "",
+      el.materials.name || "",
       10,
-      el.createat.split("T")[0] || "",
+        ConvertDateArrayToISO(el.createat),
       el.image.urlImage || "",
-      el.gender || ""
+      el.gender.gender || ""
     )
   );
   const handleMenuClose = () => {
