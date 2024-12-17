@@ -50,18 +50,6 @@ const Products: React.FC = () => {
       backgroundColor: "#1A2027",
     }),
   }));
-
-  const handleEditProduct = (index: number) => {
-    const product = products[index];
-    navigate(`/product/edit/${product.id}`);
-    setProductName(product.name);
-    handleOpen();
-  };
-
-  const handleDeleteProduct = (index: number) => {
-    setProducts(products.filter((_, i) => i !== index));
-  };
-
   const clearForm = () => {
     setProductName("");
   };
@@ -87,10 +75,10 @@ const Products: React.FC = () => {
         </Button>
       </Box>
       <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" to="/">
-          Product
+        <Link color="inherit" to="/dashboard">
+          DashBoard
         </Link>
-        <Typography color="text.primary">List</Typography>
+        <Typography color="text.primary">Product List</Typography>
       </Breadcrumbs>
       <CreateProductDialog
         open={open}

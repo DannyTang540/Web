@@ -84,6 +84,18 @@ const UserDetail: React.FC = () => {
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
+                  <Typography variant="h6">Country</Typography>
+                  <TextField
+                    fullWidth
+                    value={user?.Country}
+                    variant="outlined"
+                    margin="normal"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+
+                  <Divider sx={{ my: 1 }} />
                   <Typography variant="h6">State/Region</Typography>
                   <TextField
                     fullWidth
@@ -106,6 +118,7 @@ const UserDetail: React.FC = () => {
                     }}
                   />
                   <Divider sx={{ my: 1 }} />
+                  
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="h6">Email Address</Typography>
@@ -118,19 +131,20 @@ const UserDetail: React.FC = () => {
                       readOnly: true,
                     }}
                   />
+                  
                   <Divider sx={{ my: 1 }} />
-                  <Typography variant="h6">Country</Typography>
+                  <Typography variant="h6">Date of Birth</Typography>
                   <TextField
                     fullWidth
-                    value={user?.Country}
+                    value={user?.DoB}
                     variant="outlined"
                     margin="normal"
                     InputProps={{
                       readOnly: true,
                     }}
                   />
-
                   <Divider sx={{ my: 1 }} />
+                  
                   <Typography variant="h6">City</Typography>
                   <TextField
                     fullWidth
@@ -164,6 +178,7 @@ const UserDetail: React.FC = () => {
                       readOnly: true,
                     }}
                   />
+                  <Divider sx={{ my: 1 }} />
                 </Grid>
               </Grid>
             </CardContent>

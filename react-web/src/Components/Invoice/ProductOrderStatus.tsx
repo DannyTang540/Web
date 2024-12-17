@@ -68,6 +68,8 @@ const calculateTotalAmount = () => {
   return orders.reduce((total, order) => total + order.total, 0);
 };
 
+export { calculateTotalAmount };
+
 const OrderStatus = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState<Record<number, boolean>>({});

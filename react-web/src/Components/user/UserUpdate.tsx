@@ -23,11 +23,17 @@ type UserUpdateProps = {
     State: string;
     Address: string;
     ZipCode: string;
+    DoB: string;
   } | null; // Allow user to be null
   onUpdate: (updatedUser: any) => void;
 };
 
-const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }) => {
+const UserUpdate: React.FC<UserUpdateProps> = ({
+  open,
+  onClose,
+  user,
+  onUpdate,
+}) => {
   const [updatedUser, setUpdatedUser] = useState(user);
 
   // Cập nhật trạng thái chỉ khi user không phải là null
@@ -39,10 +45,12 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
     }
   }, [user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (updatedUser) {
-        setUpdatedUser({ ...updatedUser, [name]: value });
+      setUpdatedUser({ ...updatedUser, [name]: value });
     }
   };
 
@@ -69,7 +77,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Name"
           label="Full name"
-          value={updatedUser ? updatedUser.Name : ''}
+          value={updatedUser ? updatedUser.Name : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -77,7 +85,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Email"
           label="Email address"
-          value={updatedUser ? updatedUser.Email : ''}
+          value={updatedUser ? updatedUser.Email : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -85,7 +93,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Phone"
           label="Phone number"
-          value={updatedUser ? updatedUser.Phone : ''}
+          value={updatedUser ? updatedUser.Phone : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -94,7 +102,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
           select
           name="Status"
           label="Status"
-          value={updatedUser ? updatedUser.Status : ''}
+          value={updatedUser ? updatedUser.Status : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -106,7 +114,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Role"
           label="Role"
-          value={updatedUser ? updatedUser.Role : ''}
+          value={updatedUser ? updatedUser.Role : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -114,7 +122,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Country"
           label="Country"
-          value={updatedUser ? updatedUser.Country : ''}
+          value={updatedUser ? updatedUser.Country : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -122,7 +130,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="State"
           label="State/Region"
-          value={updatedUser ? updatedUser.State : ''}
+          value={updatedUser ? updatedUser.State : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -130,7 +138,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="City"
           label="City"
-          value={updatedUser ? updatedUser.City : ''}
+          value={updatedUser ? updatedUser.City : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -138,7 +146,7 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Address"
           label="Address"
-          value={updatedUser ? updatedUser.Address : ''}
+          value={updatedUser ? updatedUser.Address : ""}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -146,7 +154,18 @@ const UserUpdate: React.FC<UserUpdateProps> = ({ open, onClose, user, onUpdate }
         <TextField
           name="Zip"
           label="Zip/Code"
-          value={updatedUser ? updatedUser.ZipCode : ''}
+          value={updatedUser ? updatedUser.ZipCode : ""}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          name="DateOfBirth"
+          label="Date of Birth"
+          type="date"
+          value={
+            updatedUser ? updatedUser.DoB.split("/").reverse().join("-") : ""
+          }
           onChange={handleChange}
           fullWidth
           margin="normal"
