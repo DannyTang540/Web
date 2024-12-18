@@ -24,12 +24,13 @@ import BreadcrumbComponent from "../Components/Breadcrumbs/BreadcrumbComponent";
 import SelectInput from "../Components/Input/SelectInput";
 import TestFiedComponent from "../Components/Input/TestFiedComponent";
 import CardProduct from "../Components/Card/CardProduct";
-import { Search } from "@mui/icons-material";
+import { Add, Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import UserUpdate from "../Components/user/UserUpdate";
 import { toast } from "react-toastify";
+import CreateUser from "../Components/user/CreateUser";
 
-const createRow = ["Name", "Phone", "Gender", "Dob", "Role", "Status"];
+const createRow = ["Name", "Phone", "Gender", "DoB", "Role", "Status"];
 const Status = [
   { status: "Active", Color: "#59fbd6" },
   { status: "Pending", Color: "#f6d050" },
@@ -42,7 +43,7 @@ export const users = [
     Image: 1,
     Phone: "08-12 34 56",
     Gender: "Female",
-    Dob: "20/11/2000",
+    DoB: "20/11/2000",
     Role: "Content Creator",
     Status: "Active",
     Country: "Sweden",
@@ -58,7 +59,7 @@ export const users = [
     Image: 2,
     Phone: "+54 11 1234-5678",
     Gender: "Female",
-    Dob: "20/11/2000",
+    DoB: "24/11/2000",
     Role: "IT Administrator",
     Status: "Active",
     Country: "Argentina",
@@ -74,7 +75,7 @@ export const users = [
     Image: 3,
     Phone: "+34 91 123 4567",
     Gender: "Female",
-    Dob: "20/11/2000",
+    DoB: "20/1/2003",
     Role: "Financial Planner",
     Status: "Active",
     Country: "Spain",
@@ -93,7 +94,7 @@ type UserType = {
   Image: number;
   Phone: string;
   Gender: string;
-  Dob: string;
+  DoB: string;
   Role: string;
   Status: string;
 };
@@ -104,8 +105,13 @@ const User = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [currentMenuEmail, setCurrentMenuEmail] = useState<string | null>(null); // Email của user đang mở menu
 
-  
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, email: string) => {
+  const [isOpenCreate, setIsOpenCreate] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMenuOpen = (
+    event: React.MouseEvent<HTMLElement>,
+    email: string
+  ) => {
     setMenuAnchorEl(event.currentTarget);
     setCurrentMenuEmail(email); // Lưu email của user hiện tại
   };
@@ -126,21 +132,24 @@ const User = () => {
     handleMenuClose();
   };
 
+  const handleOpenCreate = () => {
+    setIsOpenCreate(true);
+  };
+
   const handleSaveUser = (updatedUser: UserType) => {
     toast.success("User Updated");
     console.log("Updated user:", updatedUser);
     // Cập nhật danh sách users hoặc lưu vào API
     setIsEditOpen(false);
+    // Thêm người dùng mới vào danh sách users
+    users.push(updatedUser); // Cần cập nhật state users nếu sử dụng state
   };
 
   const handleCancelEdit = () => {
-    setIsEditOpen(false);
     setSelectedUser(null);
   };
 
-  const SwtichUserRow = (key: string, user: UserType) => {
-    const [isHovered, setIsHovered] = useState(false);
-
+  const SwitchUserRow = (key: string, user: UserType) => {
     switch (key) {
       case "Name":
         return (
@@ -190,7 +199,6 @@ const User = () => {
   };
   console.log("Selected User:", selectedUser);
 
-
   return (
     <div className="p-6 bg-gray-50 w-full flex flex-col">
       <Box
@@ -200,8 +208,14 @@ const User = () => {
         mt={2}
       >
         <Typography variant="h5">Users</Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 5 }}>
-          + New User
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 5 }}
+          onClick={() => handleOpenCreate()}
+        >
+          <Add />
+          New User
         </Button>
       </Box>
       <Breadcrumbs aria-label="breadcrumb">
@@ -261,16 +275,21 @@ const User = () => {
                     </TableCell>
                     {createRow.map((item, index) => (
                       <TableCell key={index}>
-                        {SwtichUserRow(item, user)}
+                        {SwitchUserRow(item, user)}
                       </TableCell>
                     ))}
                     <TableCell>
-                      <IconButton onClick={(event) => handleMenuOpen(event, user.Email)}>
+                      <IconButton
+                        onClick={(event) => handleMenuOpen(event, user.Email)}
+                      >
                         <MoreVertIcon />
                       </IconButton>
-                     <Menu
+                      <Menu
                         anchorEl={menuAnchorEl}
-                        open={Boolean(menuAnchorEl) && currentMenuEmail === user.Email}
+                        open={
+                          Boolean(menuAnchorEl) &&
+                          currentMenuEmail === user.Email
+                        }
                         onClose={handleMenuClose}
                       >
                         <MenuItem
@@ -305,6 +324,13 @@ const User = () => {
           open={isEditOpen}
           onUpdate={handleSaveUser}
           onClose={handleCancelEdit}
+        />
+      )}
+      {isOpenCreate && (
+        <CreateUser
+          open={isOpenCreate}
+          onClose={() => setIsOpenCreate(false)}
+          onSave={handleSaveUser}
         />
       )}
     </div>

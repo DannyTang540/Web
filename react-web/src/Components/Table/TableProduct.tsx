@@ -280,7 +280,7 @@ const TableProduct: React.FC = () => {
     const product = productdata.find((p) => p.id === id);
     setSelectedProduct(product);
     setIsEditOpen(true);
-      handleMenuClose();
+    handleMenuClose();
   };
 
   const handleSaveProduct = (updatedProduct: any) => {
@@ -352,14 +352,19 @@ const TableProduct: React.FC = () => {
         component={Paper}
         sx={{
           boxShadow: 5,
-          borderRadius: 15,
+          borderRadius: 10,
           padding: 2,
           width: "100%",
           maxHeight: "60vh",
           overflowY: "auto",
         }}
       >
-        <Table sx={{ minWidth: 1000 }} size="small" aria-label="product table">
+        <Table
+          sx={{ minWidth: 1000 }}
+          size="medium"
+          aria-label="product table"
+          stickyHeader
+        >
           <TableHead>
             <TableRow>
               <TableCell align="left">Image</TableCell>

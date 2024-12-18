@@ -74,6 +74,8 @@ const calculateTotalAmount = () => {
 };const StatusShipping=[{key:"Pending",value:"#f6d050"},{key:"Completed",value:"#59fbd6"},]
 
 
+export { calculateTotalAmount };
+
 const OrderStatus = () => {
   const PurchaseList=useSelector(Purchase);
   const navigate = useNavigate();
