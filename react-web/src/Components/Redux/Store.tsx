@@ -7,6 +7,10 @@ import CategoryApi from './CategorySlice'
 import SizeApi from './SizeSlice'
 import MaterialApi from './MaterialSlice'
 import ProductApi from "./Product.tsx";
+import OrderApi from "./OrderSlice.tsx";
+import PurchaseApi from "./PurchaseSlice.tsx";
+import PurchaseItemApi from "./PurchaseItemSlice.tsx";
+import InventoryAPi from "./InventorySlice.tsx";
 const store = configureStore({
     reducer: {
         // Define your reducer functions here
@@ -17,6 +21,10 @@ const store = configureStore({
         size:SizeApi.reducer,
         material:MaterialApi.reducer,
         product:ProductApi.reducer,
+        order:OrderApi.reducer,
+        purchase:PurchaseApi.reducer,
+        purchaseitem:PurchaseItemApi.reducer,
+        inventory:InventoryAPi.reducer,
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         

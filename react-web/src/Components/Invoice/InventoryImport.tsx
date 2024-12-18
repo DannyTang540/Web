@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import {
   Box,
@@ -18,23 +18,24 @@ import {
   TableBody,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import {Category, Product, PurchaseCreated} from "../Redux/Selector.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {CreatePurchaseItem, UpdatePurchase} from "../Redux/PurchaseSlice.tsx";
+import {DeleteItem} from "../Redux/PurchaseItemSlice.tsx";
 
 // Define the Item interface
 interface Item {
   title: string;
-  description: string;
-  service: string;
   quantity: number;
   price: number;
   total: number;
   size: string[];
   color: string[];
-  dateCreated: string;
   category: string;
 }
 
 // Sample categories and products
-const categories = ["Áo", "Quần", "Giày", "Phụ kiện"];
+/*const categories = ["Áo", "Quần", "Giày", "Phụ kiện"];
 const products = {
   Áo: ["Áo thun", "Áo sơ mi", "Áo khoác"],
   Quần: ["Quần jeans", "Quần short", "Quần tây"],
@@ -55,30 +56,32 @@ const colors = {
   Quần: ["Đen", "Trắng", "Xám"],
   Giày: ["Nâu", "Đen", "Trắng"],
   "Phụ kiện": ["Đen", "Trắng"], // Màu sắc cho phụ kiện
-};
+};*/
 
 const InventoryEntry = () => {
+  const dispatch=useDispatch();
+  const purchaseItemData=useSelector(PurchaseCreated);
+  const Categorydata=useSelector(Category);
+  const Productdata=useSelector(Product);
   const [items, setItems] = useState<Item[]>([]);
   const [newItem, setNewItem] = useState<Item>({
     title: "",
-    description: "",
-    service: "",
     quantity: 1,
     price: 0,
     total: 0,
     size: [],
     color: [],
-    dateCreated: new Date().toISOString().split("T")[0],
     category: "",
   });
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+  const [selectedCategory, setSelectedCategory] = useState<string | "">("");
+  const product=Array.from(Productdata).filter((el)=>el.category.name==selectedCategory).map((el)=>el.name);
   const calculateTotal = () => {
     return items.reduce((acc, item) => acc + item.total, 0);
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     if (isValidNewItem(newItem)) {
+      await dispatch(CreatePurchaseItem(newItem));
       setItems((prevItems) => [
         ...prevItems,
         { ...newItem, total: newItem.quantity * newItem.price, category: selectedCategory || "" },
@@ -102,29 +105,27 @@ const InventoryEntry = () => {
   const resetNewItem = () => {
     setNewItem({
       title: "",
-      description: "",
-      service: "",
       quantity: 1,
       price: 0,
       size: [],
       color: [],
-      dateCreated: new Date().toISOString().split("T")[0],
       total: 0,
       category: "",
     });
     setSelectedCategory(null);
   };
-
-  const handleDeleteItem = (index: number) => {
-    const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+console.log(newItem)
+  const handleDeleteItem = async (index: number) => {
+    await dispatch(DeleteItem(index));
   };
 
   const handleCancel = () => {
     setItems([]);
     resetNewItem();
   };
-
+  const handleSendItem = async () => {
+    await dispatch(UpdatePurchase());
+  };
   return (
     <Box m={3}>
       <Typography variant="h4">Inventory Import</Typography>
@@ -144,10 +145,10 @@ const InventoryEntry = () => {
         <Grid container spacing={5}>
           <Grid item xs={3}>
             <Autocomplete
-              options={categories}
+              options={Categorydata.map((el)=>el.NameCategory)}
               onChange={(event, newValue) => {
                 setSelectedCategory(newValue);
-                setNewItem({ ...newItem, title: "" });
+                setNewItem({ ...newItem, title: "",color:[],size:[],quantity:1 });
               }}
               renderInput={(params) => (
                 <TextField {...params} label="Category" />
@@ -156,9 +157,9 @@ const InventoryEntry = () => {
           </Grid>
           <Grid item xs={3}>
             <Autocomplete
-              options={selectedCategory ? products[selectedCategory] : []}
+              options={selectedCategory ?product: []}
               onChange={(event, newValue) =>
-                setNewItem({ ...newItem, title: newValue || "" })
+                setNewItem({ ...newItem, title: newValue || "",color:[],size:[],quantity:1 })
               }
               renderInput={(params) => (
                 <TextField {...params} label="Product name" />
@@ -169,7 +170,13 @@ const InventoryEntry = () => {
           <Grid item xs={4}>
             <Autocomplete
               multiple
-              options={selectedCategory ? sizes[selectedCategory] : []}
+              options={selectedCategory
+                  ? Array.from(
+                      new Set(
+                          Productdata.find((el) => el.name == product)?.varients?.map((el) => el.size.size) || []
+                      )
+                  )
+                  : []}
               onChange={(event, newValue) =>
                 setNewItem({ ...newItem, size: newValue })
               }
@@ -182,7 +189,13 @@ const InventoryEntry = () => {
           <Grid ml={61} item xs={5}>
             <Autocomplete
               multiple
-              options={selectedCategory ? colors[selectedCategory] : []}
+              options={selectedCategory
+                  ? Array.from(
+                      new Set(
+                          Productdata.find((el) => el.name == product)?.varients?.map((el) => el.color.colorname) || []
+                      )
+                  )
+                  : []}
               onChange={(event, newValue) =>
                 setNewItem({ ...newItem, color: newValue })
               }
@@ -213,7 +226,8 @@ const InventoryEntry = () => {
             <TextField
               label="Price"
               type="number"
-              value={newItem.price}
+              value={Productdata.find((el) => el.name == product)?.varients?.
+              find((el) => el.color.colorname==newItem.color[0]&&el.size.size==newItem.size[0])?.versions?.find((el)=>el.isdeleted==false)?.originalprice||0}
               onChange={(e) =>
                 setNewItem({ ...newItem, price: Number(e.target.value) })
               }
@@ -242,19 +256,19 @@ const InventoryEntry = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{item.category}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>{item.size.join(", ")}</TableCell>
-                  <TableCell>{item.color.join(", ")}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>{item.price}</TableCell>
-                  <TableCell>{item.total}</TableCell>
+              {purchaseItemData?.items?.map((item, index) => (
+                <TableRow key={item.idpurchaseitem}>
+                  <TableCell>{item?.version?.product?.category?.name}</TableCell>
+                  <TableCell>{item?.version?.product?.name}</TableCell>
+                  <TableCell>{item?.version?.varient?.size?.size}</TableCell>
+                  <TableCell>{item?.version?.varient?.color?.colorname}</TableCell>
+                  <TableCell>{ item?.quantity}</TableCell>
+                  <TableCell>{item?.totalprice.toLocaleString("vi-VN")}</TableCell>
+                  <TableCell>{(item?.quantity*item?.totalprice).toLocaleString("vi-VN")} VND</TableCell>
                   <TableCell>
                     <Button
                       variant="outlined"
-                      onClick={() => handleDeleteItem(index)}
+                      onClick={() => handleDeleteItem(item.idpurchaseitem)}
                     >
                       Xóa
                     </Button>
@@ -279,7 +293,12 @@ const InventoryEntry = () => {
       >
         Hủy
       </Button>
-      <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+      <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+          onClick={handleSendItem}
+      >
         Create & Send
       </Button>
     </Box>

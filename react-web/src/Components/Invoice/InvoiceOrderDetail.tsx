@@ -10,7 +10,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Breadcrumbs,
+  Breadcrumbs, Button,
 } from "@mui/material";
 import {
   Timeline,
@@ -20,7 +20,11 @@ import {
   TimelineDot,
   TimelineContent,
 } from "@mui/lab";
+import {Purchase} from "../Redux/Selector.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {ImportPurchase} from "../Redux/PurchaseSlice.tsx";
 
+/*
 const orders = [
   {
     id: 1,
@@ -65,8 +69,9 @@ const orders = [
   },
   // Add more orders as needed
 ];
+*/
 
-const orderStatusHistory = [
+/*const orderStatusHistory = [
   { status: "Delivery successful", date: "30 Nov 2024 6:41 am" },
   { status: "Transporting to [2]", date: "29 Nov 2024 5:41 am" },
   { status: "Transporting to [1]", date: "28 Nov 2024 4:41 am" },
@@ -75,28 +80,33 @@ const orderStatusHistory = [
     date: "27 Nov 2024 3:41 am",
   },
   { status: "Order has been created", date: "26 Nov 2024 2:41 am" },
-];
+];*/
 
 const OrderDetail: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
+  const dispatch=useDispatch();
+/*
   const order = orders.find((order) => order.orderId === orderId);
-
-  if (!order) {
+*/
+  const Purchasedata=useSelector(Purchase)?.find((el)=>el.id==orderId)||null;
+  if (!Purchasedata) {
     return (
       <Box m={2}>
         <Typography variant="h6">Order not found</Typography>
       </Box>
     );
   }
-
-  const subtotal = order.details.reduce(
-    (sum, detail) => sum + detail.price * detail.quantity,
+  const handleInportPurchase=async ()=>{
+    await dispatch(ImportPurchase(orderId));
+  }
+  const subtotal = Purchasedata.items.reduce(
+    (sum, detail) => sum + detail.totalprice * detail.quantity,
     0
   );
-  const shipping = -52170;
-  const discount = -85210;
-  const taxes = 68710;
+
+/*
   const total = subtotal + shipping + discount + taxes;
+*/
 
   return (
     <Box m={2}>
@@ -118,69 +128,93 @@ const OrderDetail: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell>Description</TableCell>
+              <TableCell align="right">Size</TableCell>
+              <TableCell align="right">Color</TableCell>
               <TableCell align="right">Qty</TableCell>
               <TableCell align="right">Unit Price</TableCell>
               <TableCell align="right">Total</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {order.details.map((detail) => (
+            {Purchasedata.items.map((detail) => (
               <TableRow key={detail.productId}>
-                <TableCell>{detail.productName}</TableCell>
+                <TableCell>{detail?.version?.product.name}</TableCell>
+                <TableCell align={"right"}>{detail?.version?.varient?.size?.size}</TableCell>
+                <TableCell align={"right"}>{detail?.version?.varient?.color?.colorname}</TableCell>
                 <TableCell align="right">{detail.quantity}</TableCell>
                 <TableCell align="right">
-                  {detail.price.toLocaleString()} VND
+                  {detail.totalprice.toLocaleString("vi-VN")} VND
                 </TableCell>
                 <TableCell align="right">
-                  {(detail.price * detail.quantity).toLocaleString()} VND
+                  {(detail.totalprice * detail.quantity).toLocaleString()} VND
                 </TableCell>
               </TableRow>
             ))}
             <TableRow>
-              <TableCell rowSpan={4} />
-              <TableCell colSpan={2}>Subtotal</TableCell>
+              <TableCell rowSpan={6} />
+              <TableCell colSpan={4}>Subtotal</TableCell>
               <TableCell
                 align="right"
                 sx={{ fontWeight: "bold", borderTop: "2px solid black" }}
               >
-                {subtotal.toLocaleString()} VND
+                {subtotal.toLocaleString("vi-VN")} VND
               </TableCell>
             </TableRow>
             <TableRow
               sx={{ backgroundColor: "#e0f7fa", borderTop: "2px solid black" }}
             >
-              <TableCell colSpan={2}>Shipping</TableCell>
+              <TableCell colSpan={4}>Shipping</TableCell>
               <TableCell align="right">
-                {shipping.toLocaleString()} VND
+                {0} VND
               </TableCell>
             </TableRow>
             <TableRow
               sx={{ backgroundColor: "#e0f7fa", borderTop: "2px solid black" }}
             >
-              <TableCell colSpan={2}>Discount</TableCell>
+              <TableCell colSpan={4}>Discount</TableCell>
               <TableCell align="right">
-                {discount.toLocaleString()} VND
+                {0} VND
               </TableCell>
             </TableRow>
             <TableRow
               sx={{ backgroundColor: "#e0f7fa", borderTop: "2px solid black" }}
             >
-              <TableCell colSpan={2}>Taxes</TableCell>
-              <TableCell align="right">{taxes.toLocaleString()} VND</TableCell>
+              <TableCell colSpan={4}>Taxes</TableCell>
+              <TableCell align="right">{0} VND</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={2}>
+              <TableCell colSpan={4}>
                 <strong>Total</strong>
               </TableCell>
               <TableCell align="right">
-                <strong>{total.toLocaleString()} VND</strong>
+                <strong>{subtotal.toLocaleString("vi-VN")} VND</strong>
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-      <Box component={Paper} p={2} mt={2}>
-        <Typography variant="h6">History</Typography>
+      <Box sx={{display:"flex",justifyContent:"End",width:"800px",margin:"auto"}} component={Paper} p={1}  mt={1}>
+        <Button variant="contained"
+                onClick={handleInportPurchase}
+                  size="large"
+                disabled={Purchasedata.status=="Completed"?true:false}
+            sx={{
+              backgroundColor: "#1976d2", // Màu xanh chủ đạo
+              color: "#fff", // Màu chữ
+              borderRadius: "8px", // Bo tròn góc
+              textTransform: "none", // Giữ nguyên kiểu chữ
+              fontWeight: "bold",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Đổ bóng
+              "&:hover": {
+                backgroundColor:Purchasedata.status=="Completed"?"#59fbd6":"#1565c0" , // Màu khi hover
+                boxShadow: "0px 6px 8px rgba(0, 0, 0, 0.3)", // Đổ bóng mạnh hơn khi hover
+              },
+              "&:active": {
+                backgroundColor: "#0d47a1", // Màu khi nhấn
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)", // Giảm bóng khi click
+              },
+            }}>Confirmation of import</Button>
+{/*
         <Timeline sx={{ pr: 60 }}>
           {orderStatusHistory
             .slice()
@@ -208,6 +242,7 @@ const OrderDetail: React.FC = () => {
               </TimelineItem>
             ))}
         </Timeline>
+*/}
       </Box>
     </Box>
   );
