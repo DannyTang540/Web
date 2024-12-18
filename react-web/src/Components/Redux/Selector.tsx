@@ -7,3 +7,7 @@ export const Category=(state)=>state.category.Category;
 export const Size=(state)=>state.size.Size;
 export const Material=(state)=>state.material.Material;
 export const Product=(state)=>state.product.Product;
+export const Order=(state)=>state.order.Order;
+export const Purchase=(state)=>state.purchase.Purchase
+export const PurchaseCreated=(state)=>state.purchaseitem.PurchaseCreated;
+

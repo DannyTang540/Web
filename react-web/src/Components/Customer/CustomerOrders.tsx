@@ -10,12 +10,15 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Collapse,
-  Breadcrumbs,
+  Collapse, Chip,
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {useSelector} from "react-redux";
+import {Color, Order, Size} from "../Redux/Selector.tsx";
+import {generateLastSixMonthsData} from "../../Utils/dataGenerator.ts";
+import ConvertDateArrayToISO from "../Date/Dateconvert.tsx";
 
 export const customerOrders = [
   {
@@ -59,7 +62,7 @@ export const customerOrders = [
     ],
   },
 ];
-
+const StatusShipping=[{key:"CONFIRMED",value:"#f6d050"},{key:"SHIPPED",value:"#83a3ff"},{key:"DELIVERED",value:"#59fbd6"},]
 const calculateTotalAmount = () => {
   // Ensure this function is exported
   return customerOrders.reduce((total, order) => total + order.total, 0);
@@ -70,7 +73,9 @@ export { calculateTotalAmount }; // Add this line to export the function
 const CustomerOrders = () => {
   const [open, setOpen] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
-
+  const Orderdata=useSelector(Order);
+  const Sizedata=useSelector(Size);
+  const Colordata=useSelector(Color);
   const handleToggle = (id: number) => {
     setOpen((prevState) => ({
       ...prevState,
@@ -109,28 +114,28 @@ const CustomerOrders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customerOrders.map((order) => (
-              <React.Fragment key={order.id}>
-                <TableRow onClick={() => handleToggle(order.id)}>
+            {Orderdata.map((order) => (
+              <React.Fragment key={order.idorder}>
+                <TableRow onClick={() => handleToggle(order.idorder)}>
                   <TableCell>
                     <IconButton aria-label="expand row" size="small">
-                      {open[order.id] ? (
+                      {open[order.idorder] ? (
                         <KeyboardArrowUp />
                       ) : (
                         <KeyboardArrowDown />
                       )}
                     </IconButton>
                   </TableCell>
-                  <TableCell>{order.orderId}</TableCell>
-                  <TableCell>{order.customer}</TableCell>
-                  <TableCell>{order.date}</TableCell>
-                  <TableCell>{order.completionDate}</TableCell>
-                  <TableCell>{order.status}</TableCell>
-                  <TableCell>{order.total.toLocaleString()} VND</TableCell>
+                  <TableCell>{order.idorder}</TableCell>
+                  <TableCell>{order.user.fullname}</TableCell>
+                  <TableCell>{ConvertDateArrayToISO(order.orderdate).split("T")[0] }</TableCell>
+                  <TableCell><div style={{backgroundColor:`${StatusShipping.find((el)=>el.key==order.status).value}`,color:"white",borderRadius:3,padding:5,display:"flex",justifyContent:"center",alignItems:"center"}}>{order.status}</div></TableCell>
+                  <TableCell>{order.totalamount.toLocaleString()} VND</TableCell>
+
                   <TableCell>
                     <IconButton
                       aria-label="view"
-                      onClick={() => handleViewDetails(order.orderId)}
+                      onClick={() => handleViewDetails(order.idorder)}
                     >
                       <VisibilityIcon />
                     </IconButton>
@@ -141,7 +146,7 @@ const CustomerOrders = () => {
                     style={{ paddingBottom: 0, paddingTop: 0 }}
                     colSpan={7}
                   >
-                    <Collapse in={open[order.id]} timeout="auto" unmountOnExit>
+                    <Collapse in={open[order.idorder]} timeout="auto" unmountOnExit>
                       <Box margin={2}>
                         <Typography variant="h6" gutterBottom component="div">
                           Order Details
@@ -149,21 +154,28 @@ const CustomerOrders = () => {
                         <Table size="small" aria-label="purchases">
                           <TableHead>
                             <TableRow>
-                              <TableCell>Product ID</TableCell>
+                              <TableCell>Order Item ID</TableCell>
                               <TableCell>Product Name</TableCell>
                               <TableCell>Quantity</TableCell>
                               <TableCell>Price</TableCell>
+
+                              <TableCell>Color/Size</TableCell>
+
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {order.details.map((detail) => (
-                              <TableRow key={detail.productId}>
-                                <TableCell>{detail.productId}</TableCell>
-                                <TableCell>{detail.productName}</TableCell>
+                            {order.orderitems.map((detail) => (
+                              <TableRow key={detail.idorderitem}>
+                                <TableCell>{detail.idorderitem}</TableCell>
+                                <TableCell>{detail.productname}</TableCell>
                                 <TableCell>{detail.quantity}</TableCell>
                                 <TableCell>
-                                  {detail.price.toLocaleString()} VND
+                                  {detail.price_at_sale.toLocaleString()} VND
                                 </TableCell>
+                                <TableCell><div>
+                                  <Chip style={{backgroundColor:Colordata.find((el)=>el.Color==detail.colorname).HexColor}} label={Sizedata.find((el)=>el.SizeName==detail.sizename).Size}/>
+                                </div></TableCell>
+
                               </TableRow>
                             ))}
                           </TableBody>

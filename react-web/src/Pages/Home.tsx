@@ -29,11 +29,12 @@ const Home = () => {
 
   useEffect(() => {
     const fetch = async () => {
+
       await dispatch(FetchInfom());
       await dispatch(IntrospectAndRefresh());
     };
     console.log(localStorage.getItem("Introspect"))
-    if (localStorage.getItem("Introspect") === "true" || localStorage.getItem("Introspect") === "false") {
+    if (localStorage.getItem("Introspect")==null || localStorage.getItem("Introspect") === "false"||localStorage.getItem("Introspect") === "true") {
       fetch().then(() => {
         if (localStorage.getItem("Introspect")==="false"||!localStorage.getItem("token")) navigate("/sign-in");
       });

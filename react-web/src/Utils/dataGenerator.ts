@@ -16,5 +16,6 @@ export const generateLastSixMonthsData = () => {
             orders: randomInt(10,1000)
         });
     }
+    console.log(data)
     return data;
 }; 
