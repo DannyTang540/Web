@@ -47,7 +47,7 @@ const UserDetail: React.FC = () => {
               }
               alt="User"
               style={{ maxWidth: "100%", borderRadius: "4px" }}
-            />
+            />n
           </Box>
           <Divider sx={{ my: 1 }} />
           <Box display="flex" alignItems="center">

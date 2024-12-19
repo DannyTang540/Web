@@ -10,4 +10,4 @@ export const Product=(state)=>state.product.Product;
 export const Order=(state)=>state.order.Order;
 export const Purchase=(state)=>state.purchase.Purchase
 export const PurchaseCreated=(state)=>state.purchaseitem.PurchaseCreated;
-
+export const Users=(state)=>state.user.users;

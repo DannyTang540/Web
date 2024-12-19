@@ -216,7 +216,8 @@ export const CreatePurchaseItem = (data:any) => {
   return async function check(dispatch, getState) {
       const Sizedata=getState().size.Size;
       const token = JSON.parse(getState().authentication.token);
-      if(Object.entries(getState().purchaseitem.PurchaseCreated).length==0){
+      if (!getState().purchaseitem.PurchaseCreated || Object.keys(getState().purchaseitem.PurchaseCreated).length === 0)
+          {
          const purchase= await dispatch(PostPurchase({token}));
         dispatch(PurchaseItemApi.actions.ChangePurchaseCreate(purchase.payload.result));
       }
@@ -229,7 +230,8 @@ export const CreatePurchaseItem = (data:any) => {
           size:Sizedata?.find((size)=>size.Size==el).SizeName||"",
           productname:data.title,
         }))))
-      await dispatch(PostPurchaseItemList({list:listItemConvert, token:token}))
+      const purchaseupdate=await dispatch(PostPurchaseItemList({list:listItemConvert, token:token}))
+      dispatch(PurchaseItemApi.actions.ChangePurchaseCreate(purchaseupdate.payload.result));
   };
 };
 export const UpdatePurchase = () => {

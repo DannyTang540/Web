@@ -8,6 +8,8 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
+import {useDispatch} from "react-redux";
+import {CreateUserAmin} from "../Redux/UserSlice.tsx";
 
 const CreateUser: React.FC<{
   open: boolean;
@@ -17,22 +19,22 @@ const CreateUser: React.FC<{
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [phonenumber, setphonenumber] = useState("");
+  const [fullname, setfullname] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
-
-  const handleSave = () => {
+const dispatch=useDispatch()
+  const handleSave = async () => {
     const user = {
       username,
       password,
       email,
-      phoneNumber,
-      fullName,
+      phonenumber,
+      fullname,
       gender,
       dob,
     };
-    onSave(user);
+    await dispatch(CreateUserAmin(user));
     onClose();
   };
 
@@ -64,15 +66,15 @@ const CreateUser: React.FC<{
         />
         <TextField
           label="Phone Number"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          value={phonenumber}
+          onChange={(e) => setphonenumber(e.target.value)}
           fullWidth
           margin="dense"
         />
         <TextField
           label="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          value={fullname}
+          onChange={(e) => setfullname(e.target.value)}
           fullWidth
           margin="dense"
         />

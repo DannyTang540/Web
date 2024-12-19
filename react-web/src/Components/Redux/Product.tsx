@@ -211,6 +211,7 @@ export const CreateProduct = (payload) => {
         try {
             const token = JSON.parse(getState().authentication.token);
             // @ts-ignore
+            console.log(token)
             const product = await dispatch(PostProduct({
                 product: {
                     name: payload.productname,

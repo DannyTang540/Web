@@ -29,6 +29,8 @@ import { Link } from "react-router-dom";
 import UserUpdate from "../Components/user/UserUpdate";
 import { toast } from "react-toastify";
 import CreateUser from "../Components/user/CreateUser";
+import {Users} from "../Components/Redux/Selector.tsx";
+import {useSelector} from "react-redux";
 
 const createRow = ["Name", "Phone", "Gender", "DoB", "Role", "Status"];
 const Status = [
@@ -104,10 +106,20 @@ const User = () => {
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [currentMenuEmail, setCurrentMenuEmail] = useState<string | null>(null); // Email của user đang mở menu
-
+  const Usersdata=useSelector(Users);
   const [isOpenCreate, setIsOpenCreate] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
+  const userlist: UserType[] = Usersdata.map((el) => ({
+    Name: el?.username,
+    Email: el?.email,
+    Image: el?.avatar,
+    Phone: el?.phonenumber,
+    Gender: el?.gender,
+    DoB: el?.dob?el?.dob[0]+"/"+el?.dob[1]+"/"+el?.dob[2]:"",
+    Role: el?.roles[0]?.name||"Chua Cap Nhap",
+    Status: !el?.isdeleted?"Active":"Pending",
+  }));
+  console.log(userlist)
   const handleMenuOpen = (
     event: React.MouseEvent<HTMLElement>,
     email: string
@@ -159,7 +171,7 @@ const User = () => {
           >
             {/* <img src={`/images/user/${user.Image}.png`} alt="User" /> */}
             <img
-              src={`https://assets.minimals.cc/public/assets/images/mock/avatar/avatar-25.webp`}
+              src={user?.Image||`https://assets.minimals.cc/public/assets/images/mock/avatar/avatar-25.webp`}
               alt="User"
               style={{ width: "50px", height: "50px", borderRadius: "50%" }}
             />
@@ -268,7 +280,7 @@ const User = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((user, index) => (
+                {userlist.map((user, index) => (
                   <TableRow key={index}>
                     <TableCell>
                       <Checkbox />

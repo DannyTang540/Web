@@ -75,6 +75,7 @@ const InventoryEntry = () => {
   });
   const [selectedCategory, setSelectedCategory] = useState<string | "">("");
   const product=Array.from(Productdata).filter((el)=>el.category.name==selectedCategory).map((el)=>el.name);
+  console.log(product)
   const calculateTotal = () => {
     return items.reduce((acc, item) => acc + item.total, 0);
   };
@@ -173,7 +174,7 @@ console.log(newItem)
               options={selectedCategory
                   ? Array.from(
                       new Set(
-                          Productdata.find((el) => el.name == product)?.varients?.map((el) => el.size.size) || []
+                          Productdata.find((el) => el.name == newItem?.title)?.varients?.map((el) => el.size.size) || []
                       )
                   )
                   : []}
@@ -192,7 +193,7 @@ console.log(newItem)
               options={selectedCategory
                   ? Array.from(
                       new Set(
-                          Productdata.find((el) => el.name == product)?.varients?.map((el) => el.color.colorname) || []
+                          Productdata.find((el) => el.name == newItem?.title)?.varients?.map((el) => el.color.colorname) || []
                       )
                   )
                   : []}
@@ -226,7 +227,7 @@ console.log(newItem)
             <TextField
               label="Price"
               type="number"
-              value={Productdata.find((el) => el.name == product)?.varients?.
+              value={Productdata.find((el) => el.name == newItem?.title)?.varients?.
               find((el) => el.color.colorname==newItem.color[0]&&el.size.size==newItem.size[0])?.versions?.find((el)=>el.isdeleted==false)?.originalprice||0}
               onChange={(e) =>
                 setNewItem({ ...newItem, price: Number(e.target.value) })

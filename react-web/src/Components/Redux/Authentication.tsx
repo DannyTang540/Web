@@ -10,6 +10,7 @@ import {GetProduct} from "./Product.tsx";
 import {GetOrder} from "./OrderSlice.tsx";
 import {Getpurchase} from "./PurchaseSlice.tsx";
 import PurchaseItemApi from "./PurchaseItemSlice.tsx";
+import {GetUser} from "./UserSlice.tsx";
 const local = https + "/authentication";
 
 const Authentication = createSlice({
@@ -135,6 +136,7 @@ export const FetchInfom = () => {
           await dispatch(GetProduct());
           await dispatch(GetOrder());
           await dispatch(Getpurchase());
+          await dispatch(GetUser());
           const purchase=getState().purchase.Purchase;
           dispatch(PurchaseItemApi.actions.ChangePurchaseCreate(purchase?.find((el=>el.status=="Created"))));
   };
