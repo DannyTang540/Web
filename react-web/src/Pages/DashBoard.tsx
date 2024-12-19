@@ -73,15 +73,15 @@
 
     // Sample data for the chart
     const data = [
-      { month: "Jan", teamA: 40 },
-      { month: "Feb", teamA: 30 },
-      { month: "Mar", teamA: 60 },
-      { month: "Apr", teamA: 50 },
-      { month: "May", teamA: 70 },
-      { month: "Jun", teamA: 80 },
-      { month: "Jul", teamA: 60 },
-      { month: "Aug", teamA: 90 },
-      { month: "Sep", teamA: 70 },
+      { month: "Jan",Sale: 40 },
+      { month: "Feb",Sale: 30 },
+      { month: "Mar",Sale: 60 },
+      { month: "Apr",Sale: 50 },
+      { month: "May",Sale: 70 },
+      { month: "Jun",Sale: 80 },
+      { month: "Jul",Sale: 60 },
+      { month: "Aug",Sale: 90 },
+      { month: "Sep",Sale: 70 },
     ];
     const currentWeekValue = trendData[trendData.length - 1].value; const previousWeekValue = trendData[trendData.length - 2].value;
     const totalAmount = calculateTotalAmount();

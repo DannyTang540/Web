@@ -219,9 +219,6 @@ const SidebarMenu = () => {
         </List>
       </Grid>
       <Divider orientation="vertical" flexItem />
-      <Grid item xs={9}>
-        {/* Content of the selected page goes here */}
-      </Grid>
     </Grid>
   );
 };
