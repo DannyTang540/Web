@@ -15,6 +15,7 @@ import {
   ExpandLess,
   ExpandMore,
   Home,
+  Inventory,
   Person,
 } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -29,9 +30,7 @@ const menuItems = [
   {
     label: "Product",
     icon: <FaTshirt />,
-    children: [
-      { label: "List", path: "/product" },
-    ],
+    children: [{ label: "List", path: "/product" }],
   },
   {
     label: "User",
@@ -49,9 +48,7 @@ const menuItems = [
   {
     label: "Order",
     icon: <FaShoppingCart />,
-    children: [
-      { label: "Customer Orders", path: "/orders" },
-    ],
+    children: [{ label: "Customer Orders", path: "/orders" }],
   },
   {
     label: "Invoice",
@@ -60,6 +57,11 @@ const menuItems = [
       { label: "List", path: "/invoice" },
       { label: "Create", path: "/invoice/new" },
     ],
+  },
+  {
+    label: "Inventory",
+    icon: <Inventory />,
+    children: [{ label: "List", path: "/inventory" }],
   },
 ];
 
