@@ -22,6 +22,7 @@ import UserDetail from "./Components/user/UserDetails";
 import OrderDetail from "./Components/Invoice/InvoiceOrderDetail";
 import DashBoard from "./Pages/DashBoard";
 import EditProduct from "./Components/Product/EditProduct";
+import Inventory from "./Pages/Inventory";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -44,6 +45,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/orders/detail/:COId" element={<CustomerDetail />} />
             <Route path="/property" element={<Propety />} />
             <Route path="/order/list" element={<OrderStatus />} />
+            <Route path="/inventory" element={<Inventory />} />
           </Route>
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
